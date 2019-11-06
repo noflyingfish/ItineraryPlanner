@@ -45,24 +45,57 @@ public class ItineraryResource {
             @PathParam("uId") Long uId,
             @Context HttpHeaders headers,
             Itinerary i) {
-        
+
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
-            try {
-                itinerarySessionLocal.createItinerary(i, uId);
-                return Response.status(200)
-                        .build();
-            } catch (Exception e) {
-                JsonObject exception = Json.createObjectBuilder()
-                        .add("error", "Unable to create new itinerary")
-                        .build();
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(exception)
-                        .build();
-            }
+        try {
+            itinerarySessionLocal.createItinerary(i, uId);
+            return Response.status(200)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
         //}
-    } 
+    }
+
+    //add user to itinerary
+    @PUT
+    //@Secured
+    @Path("/{uId}/iti_add_user/{new_uId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addUserToIti(
+            @PathParam("uId") Long uId,
+            @PathParam("new_uId") Long new_uId,
+            @Context HttpHeaders headers,
+            Long iId) {
+
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            List<Users> uList = itinerarySessionLocal.addUser(new_uId, iId);
+            GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
+            };
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //}
+    }
 
     //get all itinerary
     @GET
@@ -70,49 +103,114 @@ public class ItineraryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllItinerary() {
 
-    //        if (!isAuthorized(headers, uId)) {
-    //            return Response.status(Response.Status.UNAUTHORIZED).build();
-    //        } else {
-            try {
-                List<Itinerary> iList = itinerarySessionLocal.retrieveAllItinerary();
-                // for all the itinerary
-                for(Itinerary i : iList){
-                    //break the itinerary ---> user -/-> itinerary
-                    for(Users u : i.getUsersList()){
-                        u.setItineraryList(null);
-                    }
-                        
-                    //break the itinerary ---> event -/-> itinerary    
-                    for(Event e : i.getEventList()){
-                        e.setItinerary(null);
-                    }
+        try {
+            List<Itinerary> iList = itinerarySessionLocal.retrieveAllItinerary();
+            // for all the itinerary
+            for (Itinerary i : iList) {
+                //break the itinerary ---> user -/-> itinerary
+                for (Users u : i.getUsersList()) {
+                    u.setItineraryList(null);
                 }
-                
-                GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {};
-                
-                return Response.status(200)
-                        .entity(entity) 
-                        .build();
-            } catch (Exception e) {
-                JsonObject exception = Json.createObjectBuilder()
-                        .add("error", "Unable to create new itinerary")
-                        .build();
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(exception)
-                        .build();
+
+                //break the itinerary ---> event -/-> itinerary    
+                for (Event e : i.getEventList()) {
+                    e.setItinerary(null);
+                }
             }
- //}
-    } 
-    
-    //get itinerary by id
-    
-    //get itinerary by owner
-    
-    //delete itinerary, delete link from itinary from user, 
+            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {
+            };
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+    }
+
+    //get itinerary by user
+    @GET
+    //@Secured
+    @Path("/{uId}/iti_by_user/{uId_get}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getItineraryByUser(
+            @PathParam("uId") Long uId,
+            @PathParam("uId_get") Long uId_get) {
+
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            Users u = usersSessionLocal.getUser(uId_get);
+            List<Itinerary> iList = itinerarySessionLocal.searchItineraryByUser(u.getUserName());
+            // for all the itinerary
+            for (Itinerary i : iList) {
+                //break the itinerary ---> user -/-> itinerary
+                for (Users u1 : i.getUsersList()) {
+                    u1.setItineraryList(null);
+                }
+                //break the itinerary ---> event -/-> itinerary    
+                for (Event e : i.getEventList()) {
+                    e.setItinerary(null);
+                }
+            }
+            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {
+            };
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //}
+    }
+
+    //get itinerary by location
+    @GET
+    @Path("iti_by_loc")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getItineraryByLocation(
+            String place) {
+        try {
+            List<Itinerary> iList = itinerarySessionLocal.searchItineraryByLocation(place);
+            // for all the itinerary
+            for (Itinerary i : iList) {
+                //break the itinerary ---> user -/-> itinerary
+                for (Users u : i.getUsersList()) {
+                    u.setItineraryList(null);
+                }
+                //break the itinerary ---> event -/-> itinerary    
+                for (Event e : i.getEventList()) {
+                    e.setItinerary(null);
+                }
+            }
+            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {
+            };
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+    }
+
     //if no user, delete everythig, event in it also.
     //update itinerary
-    
-    
     //method that returns whether the logged in user
     //have access to user with mId
     private boolean isAuthorized(HttpHeaders headers, Long uId) {

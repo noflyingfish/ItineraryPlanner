@@ -3,24 +3,20 @@ package session;
 import entity.Event;
 import entity.Comment;
 import entity.Itinerary;
+import entity.Photo;
 import entity.Users;
 import java.util.List;
 import javax.ejb.Local;
 
 @Local
 public interface ItinerarySessionLocal {
-    
-    public void createItinerary(Itinerary i, Long uId);
 
-    public void updateItinerary(Itinerary i);
+    public Itinerary createItinerary(Itinerary i, Long uId);
 
-    public void deleteItinerary(Long iId);
+    public Itinerary updateItinerary(Itinerary i);
 
-    public void exportItinerary(Itinerary i, Users u);
-
-    public void addUser(Users User, Long iId);
-
-    public void deleteUser(Users User, Itinerary i);
+    //public void exportItinerary(Itinerary i, Users u);
+    public List<Users> addUser(Long uId, Long iId);
 
     public List<Itinerary> retrieveAllItinerary();
 
@@ -34,11 +30,26 @@ public interface ItinerarySessionLocal {
 
     public List<Itinerary> searchItineraryByLocation(String location);
 
-    public void addComment(Comment c, Itinerary i);
+    //Event
+    public void addEvent(Event e, Long iId);
 
-    public void deleteComment(Comment c, Itinerary i);
+    public void removeEvent(Long eId, Long iId);
     
-    public void addActivity(Event a, Itinerary i);
+    public List<Event> retrieveAllEvent(Long iId);
     
-    public void deleteActivity(Event a, Itinerary i);
+    // Photo
+    public Photo addPhoto(Photo p, Long iId);
+    
+    public List<Photo> removePhoto(Long pId, Long iId);
+    
+    public List<Photo> retrieveAllPhoto(Long iId);
+
+    // Comments 
+    public Comment createComment(Comment c, Long iId);
+
+    public Comment updateComment(Comment c);
+
+    public List<Comment> removeComment(Long cId, Long iId);
+
+    public List<Comment> retrieveAllComment(Long iId);
 }
