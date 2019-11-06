@@ -18,108 +18,120 @@ public class ItinerarySession implements ItinerarySessionLocal {
     private EntityManager em;
 
     @Override
-    public Itinerary createItinerary(Itinerary i, Long uId) {
+    public void createItinerary(Itinerary i, Long uId) {
         Users u = em.find(Users.class, uId);
         em.persist(i);
         u.getItineraryList().add(i);
         i.getUsersList().add(u);
-        return i;
     }
 
     @Override
-    public Itinerary updateItinerary(Itinerary i) {
+    public void updateItinerary(Itinerary i) {
         Itinerary oldI = em.find(Itinerary.class, i.getId());
 
         oldI.setLikes(i.getLikes());
         oldI.setDuration(i.getDuration());
+        oldI.setCreatedDate(i.getCreatedDate());
         oldI.setStartDate(i.getStartDate());
         oldI.setEndDate(i.getEndDate());
         oldI.setTitle(i.getTitle());
         oldI.setCaption(i.getCaption());
-        oldI.setPlaceList(i.getPlaceList());
-        
-        return oldI;
     }
-
-//    @Override
-//    public void deleteItinerary(Long iId) {
-//        Itinerary i = em.find(Itinerary.class, iId);
-//
-//        List<Users> users = i.getUsersList();
-//        i.setUsersList(null);
-//
-//        for (Users u : users) {
-//            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :users MEMBER OF i.users");
-//            q.setParameter("users", u);
-//            long count = (Long) q.getSingleResult();
-//            if (count == 0) {
-//                em.remove(u);
-//            }
-//        }
-//        List<Event> events = i.getEventList();
-//        i.setEventList(null);
-//        for (Event e : events) {
-//            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :event MEMBER OF i.events");
-//            q.setParameter("event", e);
-//            long count = (Long) q.getSingleResult();
-//            if (count == 0) {
-//                em.remove(e);
-//            }
-//        }
-//        List<Comment> comments = i.getCommentList();
-//        i.setCommentList(null);
-//        for (Comment c : comments) {
-//            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :comment MEMBER OF i.comments");
-//            q.setParameter("comment", c);
-//            long count = (Long) q.getSingleResult();
-//            if (count == 0) {
-//                em.remove(c);
-//            }
-//        }
-//        List<Photo> photos = i.getPhotoList();
-//        i.setPhotoList(null);
-//        for (Photo p : photos) {
-//            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :photo MEMBER OF i.photos");
-//            q.setParameter("photo", p);
-//            long count = (Long) q.getSingleResult();
-//            if (count == 0) {
-//                em.remove(p);
-//            }
-//        }
-//        em.remove(i);
-//    }
-//
-//    @Override
-//    public void exportItinerary(Itinerary i, Users uId) {
-//
-//        Users u = em.find(Users.class, uId);
-//
-//        em.persist(i);
-//        u.getItineraryList().add(i);
-//
-//    }
 
     @Override
-    public List<Users> addUser(Long uId, Long iId) {
+    public void deleteItinerary(Long iId) {
         Itinerary i = em.find(Itinerary.class, iId);
-        Users u = em.find(Users.class, uId);
-        i.getUsersList().add(u);
-        u.getItineraryList().add(i);
-        return i.getUsersList();
+
+        List<Users> users = i.getUsersList();
+        i.setUsersList(null);
+
+        for (Users u : users) {
+            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :users MEMBER OF i.users");
+            q.setParameter("users", u);
+
+            long count = (Long) q.getSingleResult();
+
+            if (count == 0) {
+                em.remove(u);
+            }
+        }
+        List<Event> events = i.getEventList();
+        i.setEventList(null);
+
+        for (Event e : events) {
+            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :event MEMBER OF i.events");
+            q.setParameter("event", e);
+
+            long count = (Long) q.getSingleResult();
+
+            if (count == 0) {
+                em.remove(e);
+            }
+        }
+
+        List<Comment> comments = i.getCommentList();
+        i.setCommentList(null);
+
+        for (Comment c : comments) {
+            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :comment MEMBER OF i.comments");
+            q.setParameter("comment", c);
+
+            long count = (Long) q.getSingleResult();
+
+            if (count == 0) {
+                em.remove(c);
+            }
+        }
+
+        List<Photo> photos = i.getPhotoList();
+        i.setPhotoList(null);
+
+        for (Photo p : photos) {
+            Query q = em.createQuery("SELECT count(i) FROM Itinerary i WHERE :photo MEMBER OF i.photos");
+            q.setParameter("photo", p);
+
+            long count = (Long) q.getSingleResult();
+
+            if (count == 0) {
+                em.remove(p);
+            }
+        }
+
+        em.remove(i);
     }
 
-//    @Override
-//    public void deleteUser(Users User, Itinerary i) {
-//
-//        if (User != null) {
-//            if (i != null) {
-//                Query q = em.createQuery("SELECT i FROM Itinerary i WHERE :users MEMBER OF i.users");
-//                q.setParameter("users", User);
-//                i.getUsersList().remove(User);
-//                em.remove(User);
-//            }
-//        }
-//    }
+    @Override
+    public void exportItinerary(Itinerary i, Users uId) {
+
+        Users u = em.find(Users.class, uId);
+
+        em.persist(i);
+        u.getItineraryList().add(i);
+
+    }
+
+    @Override
+    public void addUser(Users User, Long iId) {
+        Itinerary i = em.find(Itinerary.class, iId);
+
+        i.getUsersList().add(User);
+        User.getItineraryList().add(i);
+
+    }
+
+    @Override
+    public void deleteUser(Users User, Itinerary i) {
+
+        if (User != null) {
+            if (i != null) {
+                Query q = em.createQuery("SELECT i FROM Itinerary i WHERE :users MEMBER OF i.users");
+                q.setParameter("users", User);
+                i.getUsersList().remove(User);
+                em.remove(User);
+            }
+
+        }
+    }
 
     @Override
     public List<Itinerary> retrieveAllItinerary() {
@@ -129,119 +141,110 @@ public class ItinerarySession implements ItinerarySessionLocal {
 
     @Override
     public List<Itinerary> searchItineraryByUser(String username) {
-        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.usersList.userName LIKE :username");
-        q.setParameter("username", "%"+ username + "%");
+        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.usersList.userName = :username");
+        q.setParameter("username", username);
+
+        List<Itinerary> itineraries = q.getResultList();
+
         return q.getResultList();
+
     }
 
     @Override
     public List<Itinerary> searchItineraryByTitle(String title) {
-        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.title LIKE :title");
-        q.setParameter("title", "%"+ title + "%");
+        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.title = :title");
+        q.setParameter("title", title);
+
+        List<Itinerary> itineraries = q.getResultList();
+
         return q.getResultList();
 
     }
 
     @Override
     public List<Itinerary> searchItineraryByDuration(String duration) {
-        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.duration LIKE :duration");
-        q.setParameter("duration","%"+ duration + "%");
+        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.duration = :duration");
+        q.setParameter("duration", duration);
+
+        List<Itinerary> itineraries = q.getResultList();
+
         return q.getResultList();
 
     }
 
     @Override
     public List<Itinerary> searchItineraryByHashTag(String hashtag) {
-        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.caption LIKE :hashtag");
-        q.setParameter("hashtag", "%"+ hashtag + "%");
+        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.hashtagList.tag = :hashtag");
+        q.setParameter("hashtag", hashtag);
+
+        List<Itinerary> itineraries = q.getResultList();
+
         return q.getResultList();
 
     }
 
     @Override
     public List<Itinerary> searchItineraryByLocation(String location) {
-        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.countryList.location LIKE :location");
-        q.setParameter("location","%"+ location + "%");
-        return q.getResultList(); 
+        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.countryList.location = :location");
+        q.setParameter("location", location);
+
+        List<Itinerary> itineraries = q.getResultList();
+
+        return q.getResultList();
     }
-    
-    public List<Event> retrieveAllEvent(Long iId){
-        Itinerary i = em.find(Itinerary.class, iId);
-        return i.getEventList();
+
+    public void persist(Object object) {
+        em.persist(object);
     }
 
     @Override
-    public Comment createComment(Comment c, Long iId) {
-        Itinerary i = em.find(Itinerary.class, iId);
+    public void addComment(Comment c, Itinerary i) {
+        Itinerary itinerary = em.find(Itinerary.class, i.getId());
+
         em.persist(c);
-        i.getCommentList().add(c);
-        return c;
+        itinerary.getCommentList().add(c);
     }
 
-    public Comment updateComment(Comment c){
-        Comment oldC = em.find(Comment.class, c.getId());
-        oldC.setComment(c.getComment());
-        return oldC;
-    }
-    
     @Override
-    public List<Comment> removeComment(Long cId, Long iId) {
-        Itinerary i = em.find(Itinerary.class, iId);
-        Comment c = em.find(Comment.class, cId);
-        i.getCommentList().remove(c);
+    public void deleteComment(Comment c, Itinerary i) {
+        Itinerary itinerary = em.find(Itinerary.class, i.getId());
+        Comment comment = em.find(Comment.class, c.getId());
+
+        itinerary.getCommentList().remove(c);
         em.remove(c);
-        return i.getCommentList();
-    }
-    
-    @Override
-    public List<Comment> retrieveAllComment(Long iId){
-        Itinerary i = em.find(Itinerary.class, iId);
-        return i.getCommentList();
     }
 
     @Override
-    public void addEvent(Event e, Long iId) {
-        em.persist(e);
-        Itinerary i = em.find(Itinerary.class, iId);
-        i.getEventList().add(e);
+    public void addActivity(Event a, Itinerary i) {
+        Query q;
+        Long itId = i.getId();
+        em.persist(a);
+        q = em.createQuery("SELECT i FROM Itinerary WHERE i.id =: itId");
+        q.setParameter("itId", itId);
+        if (q != null) {
+            Itinerary itinerary = (Itinerary) q.getSingleResult();
+            itinerary.getEventList().add(a);
+        }
     }
 
     @Override
-    public void removeEvent(Long eId, Long iId) {
-       Event e = em.find(Event.class, eId);
-       Itinerary i = em.find(Itinerary.class, iId);
-       
-     
-       List<Comment> commentList = e.getCommentList();
-       for(Comment c : commentList){
-           em.remove(c);
-       }
-       commentList.clear();
-       
-       List<Photo> photoList = e.getPhotoList();
-       for(Photo p : photoList){
-           em.remove(p);
-       }
-       commentList.clear();
-    }
-    
-    public Photo addPhoto(Photo p, Long iId){
-        em.persist(p);
-        Itinerary i = em.find(Itinerary.class, iId);
-        i.getPhotoList().add(p);
-        return p;
-    }
-    
-    public List<Photo> removePhoto(Long pId, Long iId){
-        Itinerary i = em.find(Itinerary.class, iId);
-        Photo p = em.find(Photo.class, pId);
-        i.getPhotoList().remove(p);
-        em.remove(p);
-        return i.getPhotoList();
-    }
-    
-    public List<Photo> retrieveAllPhoto(Long iId){
-        Itinerary i = em.find(Itinerary.class, iId);
-        return i.getPhotoList();
+    public void deleteActivity(Event a, Itinerary i) {
+        Query q1;
+        Query q2;
+        Long itId = i.getId();
+        Long aId = a.getId();
+
+        q1 = em.createQuery("SELECT i FROM Itinerary WHERE i.id =: itId");
+        q1.setParameter("itId", itId);
+        q2 = em.createQuery("SELECT a FROM Activity WHERE a.id =: aId");
+        q2.setParameter("aId", aId);
+        if (q1 != null) {
+            Itinerary itinerary = (Itinerary) q1.getSingleResult();
+            if (q2 != null) {
+                Event activity = (Event) q2.getSingleResult();
+                itinerary.getEventList().remove(activity);
+                em.remove(activity);
+            }
+        }
     }
 }

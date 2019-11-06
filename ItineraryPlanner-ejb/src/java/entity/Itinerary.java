@@ -171,5 +171,4 @@ public class Itinerary implements Serializable {
     public String toString() {
         return "entity.Itinerary[ id=" + id + " ]";
     }
-
 }

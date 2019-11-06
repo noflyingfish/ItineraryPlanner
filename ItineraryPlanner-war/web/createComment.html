@@ -1,0 +1,68 @@
+<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+
+<form id="myform">
+
+        <label for="caption">Caption</label>
+        <input type="text" id="caption" placeholder="Caption" />
+        <br>
+        <label for="duration">Duration</label>
+        <input type="text" id="duration" placeholder="Duration" />
+        <br>
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" placeholder="Start Date" />                
+        <br>
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" placeholder="End Date" />                
+        <br>
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Title" />                
+        <br>
+        <input type="submit" id="create" value="Create"/>
+
+        </form>
+
+<script>
+uId = sessionStorage.getItem('uId')
+userName = sessionStorage.getItem('userName')
+token = sessionStorage.getItem('token')
+console.log(uId)
+
+$(document).ready(function() {
+
+$('#myform').submit(function() {
+
+    var currentDate = new Date();
+    
+    var body = JSON.stringify({
+
+        "caption": $("#caption").val(),
+        "duration": $("#duration").val(),
+        "startDate": new Date($("#startDate").val()),
+        "endDate": new Date($("#endDate").val()),
+        "title": $("#title").val(),
+        "createdDate": currentDate
+    })
+    console.log(body)
+
+    $.ajax({
+        type: "POST",
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/'+ uId +'/create',
+        data: body,
+        contentType: "application/json; charset=utf-8",
+        
+        success: function(data, textStatus, xhr)
+        {
+            console.log("Response: ", data)
+            console.log(textStatus)
+        },
+        error: function(xhr, error, errorType) {
+            console.log(error);
+        }
+    });
+    return false;
+});
+
+});
+</script>

@@ -1,6 +1,5 @@
 package session;
 
-import entity.Comment;
 import entity.Itinerary;
 import entity.Users;
 import java.util.List;
@@ -15,28 +14,22 @@ public interface UsersSessionLocal {
 
     public void createUser(Users u);
 
-    public Users updateUser(Users u);
+    public void updateUser(Users u);
+
+    public void deleteUser(Long uId);
 
     public List<Users> searchUser(String userName);
 
     public Users getUser(Long uId);
 
+    public void addItinerary(Long uId, Itinerary i);
+
+    public void deleteItinerary(Long uId, Itinerary i);
+
     public List<Users> retrieveAllUser();
-
-    public List<Itinerary> deleteItinerary(Long uId, Long iId);
-
-    public List<Itinerary> getAllItineray(Long uId);
+            
+    public List<Itinerary> getAllItineray(Long uId, Itinerary i);
 
     public Users userLogin(String userName, String password);
-
-    // comments 
-
-    public Comment createComment(Comment c, Long uId);
-
-    public Comment updateComment(Comment c);
-
-    public List<Comment> removeComment(Long uId, Long cId);
-
-    public List<Comment> retrieveAllComment(Long uId);
 
 }
