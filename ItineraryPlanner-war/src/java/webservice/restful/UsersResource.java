@@ -26,6 +26,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import session.ItinerarySessionLocal;
 import session.UsersSessionLocal;
 import util.AuthFilter;
 import util.Secured;
@@ -35,9 +36,10 @@ public class UsersResource {
 
     @EJB
     private UsersSessionLocal usersSessionLocal;
+    @EJB
+    private ItinerarySessionLocal itinerarySessionLocal;
 
     @POST
-    @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Users register(Users u) {
@@ -62,33 +64,27 @@ public class UsersResource {
         Users curr = usersSessionLocal.userLogin(username, password);
 
         if (curr != null) {
-
             try {
                 //use the subject to store the member id
                 String accessToken = Jwts.builder().setSubject("" + curr.getId()).signWith(AuthFilter.SECRET_KEY).compact();
-
                 JsonObject obj = Json.createObjectBuilder()
                         .add("uId", curr.getId())
                         .add("accessToken", accessToken)
                         .build();
-
                 return Response.status(200)
                         .entity(obj)
                         .build();
             } catch (Exception e) {
                 e.printStackTrace();
                 //Invalid Signing configuration / Couldn't convert Claims.
-
                 JsonObject exception = Json.createObjectBuilder()
                         .add("error", "Unable to obtain access token")
                         .build();
-
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(
                         exception
                 ).build();
             }
         }
-
         JsonObject exception = Json.createObjectBuilder()
                 .add("error", "username or password is wrong")
                 .build();
@@ -99,7 +95,8 @@ public class UsersResource {
     } //end login
 
     @PUT
-    @Path("/{uId}/editprofile")
+    @Path("/{uId}")
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editProfile(@PathParam("uId") Long uId,
@@ -126,7 +123,8 @@ public class UsersResource {
     }
 
     @POST
-    @Path("/{uId}/addcomment")
+    @Path("/{uId}/comment")
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addComment(@PathParam("uId") Long uId,
@@ -154,7 +152,8 @@ public class UsersResource {
     }
 
     @PUT
-    @Path("/{uId}/updatecomment")
+    @Path("/{uId}/comment")
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateComment(@PathParam("uId") Long uId,
@@ -182,7 +181,8 @@ public class UsersResource {
     }
 
     @GET
-    @Path("/{uId}/getusercomment")
+    @Path("/{uId}/comment")
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsersComment(@PathParam("uId") Long uId,
@@ -209,18 +209,20 @@ public class UsersResource {
     }
     
     @DELETE
-    @Path("/{uId}/deletecomment/{cId}")
+    @Path("/{uId}/comment")
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeComment(@PathParam("uId") Long uId,
-            @PathParam("cId") Long cId,
-            @Context HttpHeaders headers) {
-
+            @Context HttpHeaders headers,
+            Comment c) {
+           System.out.println("vfdbggfsbgf");
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            List<Comment> list = usersSessionLocal.removeComment(uId, cId);
+            System.out.println("asdsadsadsa");
+            List<Comment> list = usersSessionLocal.removeComment(uId, c.getId());
             GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
             return Response.status(200)
                     .entity(entity)
@@ -236,8 +238,47 @@ public class UsersResource {
         //} 
     }
     
+    //add user to itinerary
+    @POST
+    //@Secured
+    @Path("/{uId}/itinerary/{new_uId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addUserToItinerary(
+            @PathParam("uId") Long uId,
+            @PathParam("new_uId") Long new_uId,
+            @Context HttpHeaders headers,
+            Itinerary i) {
+
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            List<Users> uList = itinerarySessionLocal.addUser(new_uId, i.getId());
+            for (Users u : uList) {
+                for (Itinerary i1 : u.getItineraryList()) {
+                    i.setUsersList(null);
+                }
+            }
+            GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
+            };
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //}
+    }
+    
     @GET
-    @Path("/{uId}/getuseritinerary")
+    @Path("/{uId}/itinerary")
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserItinerary(@PathParam("uId") Long uId,
@@ -265,21 +306,21 @@ public class UsersResource {
     
     @DELETE
     //@Secured
-    @Path("/{uId}/delete_iti/{iId}")
+    @Path("/{uId}/ditinerary")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteItinerary(
             @PathParam("uId") Long uId,
-            @PathParam("iId") Long iId,
-            @Context HttpHeaders headers) {
+            @Context HttpHeaders headers,
+            Itinerary i) {
 
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            List<Itinerary> iList = usersSessionLocal.deleteItinerary(uId, iId);
+            List<Itinerary> iList = usersSessionLocal.deleteItinerary(uId, i.getId());
             // for all the itinerary
-            for (Itinerary i : iList) {
+            for (Itinerary i1 : iList) {
                 //break the itinerary ---> user -/-> itinerary
                 for (Users u : i.getUsersList()) {
                     u.setItineraryList(null);
@@ -304,22 +345,25 @@ public class UsersResource {
         }
         //}
     }
-//    @GET
-//    @Path("/getallusers")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response getAllUsers() {
-//        List<Users> list = usersSessionLocal.retrieveAllUser();
-//        for(Users u : list){
-//            for (Itinerary i : u.getItineraryList()){
-//                i.setUsersList(null);
-//            }
-//        }
-//        GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(list) {
-//        };
-//        return Response.status(200)
-//                .entity(entity)
-//                .build();
-//    }
+    
+    // no use case, for testing purpose
+    @GET
+    @Path("/getallusers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsers() {
+        List<Users> list = usersSessionLocal.retrieveAllUser();
+        for(Users u : list){
+            for (Itinerary i : u.getItineraryList()){
+                i.setUsersList(null);
+            }
+        }
+        GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(list) {
+        };
+        return Response.status(200)
+                .entity(entity)
+                .build();
+    }
+    
     //method that returns whether the logged in user
     //have access to user with mId
     private boolean isAuthorized(HttpHeaders headers, Long uId) {
