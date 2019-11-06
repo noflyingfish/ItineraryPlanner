@@ -64,6 +64,5 @@ public class Photo implements Serializable {
     @Override
     public String toString() {
         return "entity.Photo[ id=" + id + " ]";
-    }
-    
+    }   
 }

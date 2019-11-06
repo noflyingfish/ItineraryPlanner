@@ -1,6 +1,6 @@
 package webservice.restful;
 
-import entity.Event;
+import entity.Comment;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -19,38 +19,37 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import session.EventSessionLocal;
+import session.CommentSessionLocal;
 
-@Path("events")
-public class EventResource {
+@Path("comments")
+public class CommentResource {
 
     @EJB
-    private EventSessionLocal eventSessionLocal;
+    private CommentSessionLocal commentSessionLocal;
+
+    //Tested API (Comment with userID will cause internal error 
+    //Get all Comment
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Comment> getAllComment() {
+        return commentSessionLocal.retrieveAllComment();
+    } //end retrieveAllComments
 
     //Tested API
-    //Get all Events
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Event> getAllEvents() {
-        return eventSessionLocal.retrieveAllEvent();
-    } //end retrieveAllEvents
-
-    //Tested API (Dates format is wrong)
     //Search Event
     @GET
-    @Path("/searchEvent")
+    @Path("/searchComment")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response searchEvent(
-            @QueryParam("name") String name,
-            @QueryParam("createdDate") Date createdDate,
-            @QueryParam("startDate") Date startDate,
-            @QueryParam("endDate") Date endDate,
-            @QueryParam("duration") String duration) {
+    public Response searchComment(
+            @QueryParam("comment") String comment,
+            @QueryParam("createdDate") Date createdDate)
+            /* @QueryParam("writer") Users writer */
+            /* @QueryParam("itinerary") Itinerary itinerary */ {
         
-        if (name != null) {
-            List<Event> results = eventSessionLocal.searchEventByName(name);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
+        if (comment != null) {
+            List<Comment> results = commentSessionLocal.searchCommentByComment(comment);
+            GenericEntity<List<Comment>> entity = new 
+            GenericEntity<List<Comment>>(results){};
 
             return Response.status(200)
                     .entity(entity)
@@ -58,68 +57,47 @@ public class EventResource {
         }
 
         else if (createdDate != null) {
-            List<Event> results = eventSessionLocal.searchEventByCreatedDate(createdDate);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
+            List<Comment> results = commentSessionLocal.searchCommentByCreatedDate(createdDate);
+            GenericEntity<List<Comment>> entity = new 
+            GenericEntity<List<Comment>>(results){};
 
             return Response.status(200)
                     .entity(entity)
                     .build();
         }
 
-        else if (startDate != null) {
-            List<Event> results = eventSessionLocal.searchEventByStartDate(startDate);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
+        /*else if (writer != null) {
+            List<Comment> results = commentSessionLocal.searchCommentByWriter(writer.getId());
+            GenericEntity<List<Comment>> entity = new 
+            GenericEntity<List<Comment>>(results){};
 
             return Response.status(200)
                     .entity(entity)
                     .build();
-        }
-
-        else if (endDate != null) {
-            List<Event> results = eventSessionLocal.searchEventByEndDate(endDate);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
-
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        }
-
-        else if (duration != null) {
-            List<Event> results = eventSessionLocal.searchEventByDuration(duration);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
-
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        }
+        } */
 
         else {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", "No query condition")
                     .build();
 
-            return Response.status(400)
-                    .entity(exception)
+            return Response.status(400).entity(exception)
                     .build();
         }
     }
     
     //Tested API
-    //Get Event with ID
+    //Get Comment with ID
     @GET
     @Path("/{id}")
     @Produces (MediaType.APPLICATION_JSON)
-    public Response getEvent(
-	@PathParam("id") Long eId) {
+    public Response getComment(
+	@PathParam("id") Long cId) {
 	
 	try {
-            Event e = eventSessionLocal.getEvent(eId);
+            Comment c = commentSessionLocal.getComment(cId);
             return Response.status(200)
-                    .entity(e)
+                    .entity(c)
                     .type(MediaType.APPLICATION_JSON)
                     .build();
 	} catch (NoResultException n) {
@@ -132,30 +110,32 @@ public class EventResource {
                     .type(MediaType.APPLICATION_JSON)
                     .build();
 	}
-    } //end getEvent
+    } //end getComment
     
-    //Create Event
+    //Tested API
+    //Create Comment
     @POST
     @Consumes (MediaType.APPLICATION_JSON)
     @Produces (MediaType.APPLICATION_JSON)
-    public Event createEvent(Event e) {
-	e.setCreatedDate (new Date());
-	eventSessionLocal.createEvent(e);
-	return e;
+    public Comment createComment(Comment c) {
+        //Need add currentUser ID
+	c.setCreatedDate (new Date());
+	commentSessionLocal.createComment(c);
+	return c;
     } //end createEvent
     
     //Tested API
-    //Edit Event
+    //Edit Comment
     @PUT
     @Path("/{id}")
     @Consumes (MediaType.APPLICATION_JSON)
     @Produces (MediaType.APPLICATION_JSON)
-    public Response updateEvent(
-	@PathParam("id") Long eId, Event e) {
-	e.setId(eId);
+    public Response updateComment(
+	@PathParam("id") Long cId, Comment c) {
+	c.setId(cId);
 
 	try {
-            eventSessionLocal.updateEvent(e);
+            commentSessionLocal.updateComment(c);
             return Response.status(204).build();
 	} catch (NoResultException n) {
             JsonObject exception = Json.createObjectBuilder()
@@ -170,19 +150,19 @@ public class EventResource {
     } //end updateEvent
     
     //Tested API
-    //Delete Event
+    //Delete Comment
     @DELETE
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEvent(
-	@PathParam("id") Long eId) {
+    @Produces()
+    public Response deleteComment(
+	@PathParam("id") Long cId) {
 	try {
-            eventSessionLocal.removeEvent(eId);
+            commentSessionLocal.removeComment(cId);
             return Response.status(204)
                     .build();
 	} catch (NoResultException e) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Event ID not found")
+                    .add("error", "Comment ID not found")
                     .build();
 
         return Response.status(404)

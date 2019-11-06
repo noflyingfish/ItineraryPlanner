@@ -179,5 +179,4 @@ public class Users implements Serializable {
     public String toString() {
         return "entity.User[ id=" + id + " ]";
     }
-
 }
