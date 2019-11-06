@@ -99,7 +99,7 @@ public class UsersResource {
     } //end login
 
     @PUT
-    @Path("/{uId}/editprofile")
+    @Path("/{uId}/editProfile")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editProfile(@PathParam("uId") Long uId,
@@ -126,7 +126,7 @@ public class UsersResource {
     }
 
     @POST
-    @Path("/{uId}/addcomment")
+    @Path("/{uId}/addComment")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addComment(@PathParam("uId") Long uId,
@@ -154,7 +154,7 @@ public class UsersResource {
     }
 
     @PUT
-    @Path("/{uId}/updatecomment")
+    @Path("/{uId}/updateComment")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateComment(@PathParam("uId") Long uId,
@@ -182,10 +182,10 @@ public class UsersResource {
     }
 
     @GET
-    @Path("/{uId}/getusercomment")
+    @Path("/{uId}/getUserComment")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUsersComment(@PathParam("uId") Long uId,
+    public Response getUserComment(@PathParam("uId") Long uId,
             @Context HttpHeaders headers) {
 
 //        if (!isAuthorized(headers, uId)) {
@@ -209,7 +209,7 @@ public class UsersResource {
     }
     
     @DELETE
-    @Path("/{uId}/deletecomment/{cId}")
+    @Path("/{uId}/removeComment/{cId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeComment(@PathParam("uId") Long uId,
@@ -237,7 +237,7 @@ public class UsersResource {
     }
     
     @GET
-    @Path("/{uId}/getuseritinerary")
+    @Path("/{uId}/getUserItinerary")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserItinerary(@PathParam("uId") Long uId,
@@ -265,7 +265,7 @@ public class UsersResource {
     
     @DELETE
     //@Secured
-    @Path("/{uId}/delete_iti/{iId}")
+    @Path("/{uId}/deleteItinerary/{iId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteItinerary(
