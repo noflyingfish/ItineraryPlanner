@@ -1,0 +1,28 @@
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# User defined
+nbproject/private/
+build/
+dist/
+
+/ItineraryPlanner-war/nbproject/private/
+/ItineraryPlanner-war/build
+/ItineraryPlanner-war/dist
+
+/ItineraryPlanner-ejb/nbproject/private/
+/ItineraryPlanner-ejb/build
+/ItineraryPlanner-ejb/dist
+

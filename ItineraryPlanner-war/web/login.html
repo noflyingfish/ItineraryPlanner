@@ -1,0 +1,58 @@
+<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+
+
+
+<form id="myform">
+
+        <label for="userName">Username</label>
+        <input type="text" id="userName" placeholder="Username" />
+        <br>
+        <label for="password">Password</label>
+        <input type="text" id="password" placeholder="Password" />
+        <br>
+        <input type="submit" id="login" value="Login"/>
+        
+        </form>
+
+<script>
+$(document).ready(function() {
+
+$('#myform').submit(function() {
+
+    var userName = $("#userName").val()
+    var password = $("#password").val()
+
+    var body = JSON.stringify({
+        "userName": userName,
+        "password": password
+    })
+
+    $.ajax({
+        type: "POST",
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/login',
+        data: body,
+        contentType: "application/json; charset=utf-8",
+        success: function(data, textStatus, xhr)
+        {
+            sessionStorage.setItem('uId', data.uId);
+            sessionStorage.setItem('userName', userName);
+            sessionStorage.setItem('token', data.accessToken);
+            alert("You have successful logged in")
+            window.location.href = "createItinerary.html";
+            console.log(data)
+            console.log("User ID: ", sessionStorage.getItem('uId'))
+            console.log("Username: ", sessionStorage.getItem('userName'))
+            console.log("Token: ", sessionStorage.getItem('token'))
+            console.log(textStatus)
+        },
+        error: function(xhr, error, errorType) {
+            alert("Error logging in...")
+        }
+    });
+    return false;
+});
+
+});
+</script>
