@@ -1,6 +1,8 @@
 package webservice.restful;
 
 import entity.Event;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,9 +19,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.EventSessionLocal;
+import util.AuthFilter;
 
 @Path("events")
 public class EventResource {
@@ -29,11 +33,11 @@ public class EventResource {
 
     //Tested API
     //Get all Events
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Event> getAllEvents() {
-        return eventSessionLocal.retrieveAllEvent();
-    } //end retrieveAllEvents
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Event> getAllEvents() {
+//        return eventSessionLocal.retrieveAllEvent();
+//    } //end retrieveAllEvents
 
     //Tested API (Dates format is wrong)
     //Search Event
@@ -132,17 +136,17 @@ public class EventResource {
                     .type(MediaType.APPLICATION_JSON)
                     .build();
 	}
-    } //end getEvent
+} //end getEvent
     
-    //Create Event
-    @POST
-    @Consumes (MediaType.APPLICATION_JSON)
-    @Produces (MediaType.APPLICATION_JSON)
-    public Event createEvent(Event e) {
-	e.setCreatedDate (new Date());
-	eventSessionLocal.createEvent(e);
-	return e;
-    } //end createEvent
+//    //Create Event
+//    @POST
+//    @Consumes (MediaType.APPLICATION_JSON)
+//    @Produces (MediaType.APPLICATION_JSON)
+//    public Event createEvent(Event e) {
+//	e.setCreatedDate (new Date());
+//	eventSessionLocal.createEvent(e);
+//	return e;
+//    } //end createEvent
     
     //Tested API
     //Edit Event
@@ -171,23 +175,43 @@ public class EventResource {
     
     //Tested API
     //Delete Event
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEvent(
-	@PathParam("id") Long eId) {
-	try {
-            eventSessionLocal.removeEvent(eId);
-            return Response.status(204)
-                    .build();
-	} catch (NoResultException e) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Event ID not found")
-                    .build();
+//    @DELETE
+//    @Path("/{id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response deleteEvent(
+//	@PathParam("id") Long eId) {
+//	try {
+//            eventSessionLocal.removeEvent(eId);
+//            return Response.status(204)
+//                    .build();
+//	} catch (NoResultException e) {
+//            JsonObject exception = Json.createObjectBuilder()
+//                    .add("error", "Event ID not found")
+//                    .build();
+//
+//        return Response.status(404)
+//                .entity(exception)
+//                .build();
+//        }
+//    } //end deleteEvent    
+    
+    
+     private boolean isAuthorized(HttpHeaders headers, Long uId) {
+        List<String> headerString = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        System.out.println("#headerString: " + headerString);
+        System.out.println("#uId: " + uId);
 
-        return Response.status(404)
-                .entity(exception)
-                .build();
+        //since AuthenticationFilter allowed it to reach here, the size of the header should be at least 1
+        Jws<Claims> accessToken = AuthFilter.getAccessTokenFromHeaderString(headerString.get(0));
+
+        boolean authorized = false;
+
+        String loggedInUserId = accessToken
+                .getBody()
+                .getSubject();
+        if (loggedInUserId.equals("" + uId)) {
+            authorized = true;
         }
-    } //end deleteEvent    
+        return authorized;
+    } //end isAuthorized
 }

@@ -1,6 +1,9 @@
 package session;
 
+import entity.Comment;
+import entity.Event;
 import entity.Itinerary;
+import entity.Photo;
 import entity.Users;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -24,7 +27,7 @@ public class UsersSession implements UsersSessionLocal {
     } //end createUser
 
     @Override
-    public void updateUser(Users u) {
+    public Users updateUser(Users u) {
         Users oldU = em.find(Users.class, u.getId());
 
         //do not need to persist oldU beuause it is still managed by persistence context
@@ -32,65 +35,78 @@ public class UsersSession implements UsersSessionLocal {
         oldU.setLastName(u.getLastName());
         oldU.setUserName(u.getUserName());
         oldU.setPassword(u.getPassword());
+        oldU.setProfilepic(u.getProfilepic());
         oldU.setEmail(u.getEmail());
-    }
-
-    @Override
-    public void deleteUser(Long uId) {
-        Users u = em.find(Users.class, uId);
-
-        em.remove(u);
-
+        oldU.setDescription(u.getDescription());
+        oldU.setBirthday(u.getBirthday());
+        oldU.setBlogURL(u.getBlogURL());
+        oldU.setInstaURL(u.getInstaURL());
+        
+        return oldU;
     }
 
     @Override
     public List<Users> searchUser(String userName) {
         Query q;
-        if (userName != null) {
-            q = em.createQuery("SELECT u FROM Users u WHERE " + "LOWER(u.name) LIKE :name");
+        if (!"".equals(userName)) {
+            q = em.createQuery("SELECT u FROM Users u WHERE LOWER(u.name) LIKE :name");
             q.setParameter("name", "%" + userName.toLowerCase() + "%");
         } else {
             //if no name, display list of Users instead
-            q = em.createQuery("SELECT u FROM User u");
+            q = em.createQuery("SELECT u FROM Users u");
         }
-
         return q.getResultList();
     }
 
     @Override
     public Users getUser(Long uId) {
         Users u = em.find(Users.class, uId);
-
         return u;
-
     }
-
-    @Override
-    public void addItinerary(Long uId, Itinerary i) {
-        Users user = em.find(Users.class, uId);
-        user.getItineraryList().add(i);
-    }
-
-    @Override
-    public void deleteItinerary(Long uId, Itinerary i) {
-        Itinerary selectedI = em.find(Itinerary.class, i.getId());
-        Users selectedU = em.find(Users.class, uId);
-
-        selectedU.getItineraryList().remove(selectedI);
-        // itinerary not owned by anyone, delete from db
-        if (selectedI.getUsersList().isEmpty()) {
-            em.remove(selectedI);
-        }
-    }
-
+    
     @Override
     public List<Users> retrieveAllUser() {
         Query q = em.createQuery("SELECT u FROM Users u");
         return q.getResultList();
     }
-    
+
     @Override
-    public List<Itinerary> getAllItineray(Long uId, Itinerary i) {
+    public List<Itinerary> deleteItinerary(Long uId, Long iId) {
+        Itinerary i = em.find(Itinerary.class, iId);
+        Users u = em.find(Users.class, uId);
+
+        u.getItineraryList().remove(i);
+        // itinerary not owned by anyone, delete from db
+        if (i.getUsersList().isEmpty()) {
+            
+            //delete comments
+            List<Comment> cList = i.getCommentList();
+            for(Comment c : cList){
+                cList.remove(c);
+                em.remove(c);
+            }
+            
+            //delete comment
+            List<Photo> pList = i.getPhotoList();
+            for(Photo p : pList){
+                pList.remove(p);
+                em.remove(p);
+            }
+            
+            //delete photo
+            List<Event> eList= i.getEventList();
+            for(Event e : eList){
+                eList.remove(e);
+                em.remove(e);
+            }
+            
+            em.remove(i);
+        }
+        return u.getItineraryList();
+    }
+
+    @Override
+    public List<Itinerary> getAllItineray(Long uId) {
         Users user = em.find(Users.class, uId);
         return user.getItineraryList();
     }
@@ -107,5 +123,37 @@ public class UsersSession implements UsersSessionLocal {
 
         return u;
     }
+    
+    @Override
+    public Comment createComment(Comment c, Long uId){
+        em.persist(c);
+        Users u = em.find(Users.class, uId);
+        List<Comment> list = u.getCommentList();
+        list.add(c);
+        u.setCommentList(list);
+        return c;
+    }
+    
+    @Override
+    public Comment updateComment(Comment c){
+        Comment oldC = em.find(Comment.class, c.getId());
+        oldC.setComment(c.getComment());
+        return oldC;
+    }
+    
+    @Override
+    public List<Comment> removeComment(Long uId, Long cId){
+        Comment c = em.find(Comment.class, cId);
+        Users u = em.find(Users.class, uId);
+        List<Comment> list = u.getCommentList();
+        list.remove(c);
+        em.remove(c);
+        return list;
+    }
 
+    @Override
+    public List<Comment> retrieveAllComment(Long uId){
+        Users u = em.find(Users.class, uId);
+        return u.getCommentList();
+    }
 }

@@ -1,32 +1,43 @@
 package session;
 
+import entity.Comment;
 import entity.Event;
+import entity.Photo;
 import entity.Users;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
-import javax.persistence.NoResultException;
 
 @Local
 public interface EventSessionLocal {
 
-    public void createEvent(Event e);
-
     public void updateEvent(Event e);
 
-    public void removeEvent(Long eId);
-    
-    public List<Event> retrieveAllEvent();
-    
     public List<Event> searchEventByName(String name);
-    
+
     public List<Event> searchEventByCreatedDate(Date createdDate);
-    
+
     public List<Event> searchEventByStartDate(Date startDate);
+
+    public List<Event> searchEventByEndDate(Date endDate);
+
+    public List<Event> searchEventByDuration(String duration);
+
+    public Event getEvent(Long eId);
     
-    public List<Event> searchEventByEndDate(Date endDate); 
+    // comments
+    public Comment createComment(Comment c, Long eId);
+
+    public Comment updateComment(Comment c);
+
+    public List<Comment> removeComment(Long cId, Long eId);
+
+    public List<Comment> retrieveAllComment(Long eId);
     
-    public List<Event> searchEventByDuration(String duration);  
+    // photo
+    public Photo addPhoto(Photo p, Long eId);
     
-    public Event getEvent(Long eId) throws NoResultException;
+    public List<Photo> removePhoto(Long pId, Long eId);
+    
+    public List<Photo> retrieveAllPhoto(Long eId);
 }

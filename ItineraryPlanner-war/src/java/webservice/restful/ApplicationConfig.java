@@ -26,9 +26,9 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(util.AuthFilter.class);
         resources.add(webservice.restful.CORSFilter.class);
-        resources.add(webservice.restful.CommentResource.class);
         resources.add(webservice.restful.EventResource.class);
         resources.add(webservice.restful.ItineraryResource.class);
         resources.add(webservice.restful.UsersResource.class);
-    }   
+    }
+    
 }
