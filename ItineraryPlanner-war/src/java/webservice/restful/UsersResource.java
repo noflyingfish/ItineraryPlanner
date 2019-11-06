@@ -114,6 +114,92 @@ public class UsersResource {
                 .build();
     } //end login
 
+
+    @PUT
+    @Path("/{uId}/editprofile")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editProfile(@PathParam("uId") Long uId,
+            @Context HttpHeaders headers,
+            Users u) {
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            System.out.println("TESTETSTETSETSTE");
+            Users newU = usersSessionLocal.updateUser(u);
+            return Response.status(200)
+                    .entity(newU)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to edit profile")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //}
+        
+    }
+    
+    @POST
+    @Path("/{uId}/addcomment")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addComment(@PathParam("uId") Long uId,
+            @Context HttpHeaders headers,
+            Comment c) {
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            Comment newC = usersSessionLocal.createComment(c, uId);
+
+            return Response.status(200)
+                    .entity(newC)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to add new comment")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //} 
+    }
+
+    @PUT
+    @Path("/{uId}/updatecomment")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateComment(@PathParam("uId") Long uId,
+            @Context HttpHeaders headers,
+            Comment c) {
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            Comment newC = usersSessionLocal.updateComment(c);
+
+            return Response.status(200)
+                    .entity(newC)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to update comment")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //} 
+    }
+
     @GET
     @Secured
     @Path("/{uId}/secured")
