@@ -109,6 +109,7 @@ public class UsersResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
+            System.out.println("TESTETSTETSETSTE");
             Users newU = usersSessionLocal.updateUser(u);
             return Response.status(200)
                     .entity(newU)
@@ -122,9 +123,10 @@ public class UsersResource {
                     .entity(exception)
                     .build();
         }
-        //} 
+        //}
+        
     }
-
+    
     @POST
     @Path("/{uId}/addcomment")
     @Consumes(MediaType.APPLICATION_JSON)
