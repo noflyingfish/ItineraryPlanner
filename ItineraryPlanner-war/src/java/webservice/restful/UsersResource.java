@@ -200,7 +200,8 @@ public class UsersResource {
 //        } else {
         try {
             List<Comment> list = usersSessionLocal.retrieveAllComment(uId);
-            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
+            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {
+            };
             return Response.status(200)
                     .entity(entity)
                     .build();
@@ -214,7 +215,7 @@ public class UsersResource {
         }
         //} 
     }
-    
+
     @DELETE
     @Path("/{uId}/comment")
     //@Secured
@@ -223,14 +224,15 @@ public class UsersResource {
     public Response removeComment(@PathParam("uId") Long uId,
             @Context HttpHeaders headers,
             Comment c) {
-           System.out.println("vfdbggfsbgf");
+        System.out.println("vfdbggfsbgf");
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
             System.out.println("asdsadsadsa");
             List<Comment> list = usersSessionLocal.removeComment(uId, c.getId());
-            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
+            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {
+            };
             return Response.status(200)
                     .entity(entity)
                     .build();
@@ -244,7 +246,7 @@ public class UsersResource {
         }
         //} 
     }
-    
+
     //add user to itinerary
     @POST
     //@Secured
@@ -282,7 +284,7 @@ public class UsersResource {
         }
         //}
     }
-    
+
     @GET
     @Path("/{uId}/itinerary")
     //@Secured
@@ -296,7 +298,8 @@ public class UsersResource {
 //        } else {
         try {
             List<Itinerary> list = usersSessionLocal.getAllItineray(uId);
-            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(list) {};
+            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(list) {
+            };
             return Response.status(200)
                     .entity(entity)
                     .build();
@@ -310,7 +313,7 @@ public class UsersResource {
         }
         //} 
     }
-    
+
     @DELETE
     //@Secured
     @Path("/{uId}/itinerary")
@@ -352,44 +355,47 @@ public class UsersResource {
         }
         //}
     }
-    
+    //search user by username
     @GET
-    @Path("/{uId}/getUser")
+    //@Secured
+    @Path("/{search}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(
-            @PathParam("uId") Long uId,
+    public Response getUserByUsername(
+            @PathParam("search") String search,
             @Context HttpHeaders headers) {
-        
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
         try {
-            Users u = usersSessionLocal.getUser(uId);
-            
-            for (Itinerary i : u.getItineraryList()){
-                i.setUsersList(null);
+            List<Users> list = usersSessionLocal.searchUser(search);
+            for (Users u : list) {
+                for (Itinerary i1 : u.getItineraryList()) {
+                    i1.setUsersList(null);
+                }
             }
-        
+
+            GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(list) {
+            };
             return Response.status(200)
-                    .entity(u)
-                    .type(MediaType.APPLICATION_JSON)
+                    .entity(entity)
                     .build();
-        } catch (NoResultException e) {
-            System.out.println("NOT FOUND");
+        } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Not found")
+                    .add("error", "Unable to search for user")
                     .build();
-            return Response.status(404)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(exception)
-                    .type(MediaType.APPLICATION_JSON)
                     .build();
-        }      
+        }
+//    }    
     }
-    
-    @GET
+
     @Path("/getallusers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
         List<Users> list = usersSessionLocal.retrieveAllUser();
-        for(Users u : list){
-            for (Itinerary i : u.getItineraryList()){
+        for (Users u : list) {
+            for (Itinerary i : u.getItineraryList()) {
                 i.setUsersList(null);
             }
         }
@@ -399,7 +405,7 @@ public class UsersResource {
                 .entity(entity)
                 .build();
     }
-    
+
     //method that returns whether the logged in user
     //have access to user with mId
     private boolean isAuthorized(HttpHeaders headers, Long uId) {

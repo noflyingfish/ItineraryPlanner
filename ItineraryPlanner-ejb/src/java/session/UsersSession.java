@@ -49,7 +49,7 @@ public class UsersSession implements UsersSessionLocal {
     public List<Users> searchUser(String userName) {
         Query q;
         if (!"".equals(userName)) {
-            q = em.createQuery("SELECT u FROM Users u WHERE LOWER(u.name) LIKE :name");
+            q = em.createQuery("SELECT u FROM Users u WHERE LOWER(u.username) LIKE :name");
             q.setParameter("name", "%" + userName.toLowerCase() + "%");
         } else {
             //if no name, display list of Users instead

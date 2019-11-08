@@ -1,5 +1,6 @@
 package webservice.restful;
 
+import entity.Comment;
 import entity.Event;
 import entity.Itinerary;
 import entity.Users;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -142,39 +144,158 @@ public class ItineraryResource {
         //}
     }
 
-    //get itinerary by location
-    @GET
-    @Path("iti_by_loc")
+//    //get itinerary by location
+//    @GET
+//    @Path("iti_by_loc")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getItineraryByLocation() {
+//        try {
+//            List<Itinerary> iList = itinerarySessionLocal.searchItineraryByLocation();
+//            // for all the itinerary
+//            for (Itinerary i : iList) {
+//                //break the itinerary ---> user -/-> itinerary
+//                for (Users u : i.getUsersList()) {
+//                    u.setItineraryList(null);
+//                }
+//                //break the itinerary ---> event -/-> itinerary    
+//                for (Event e : i.getEventList()) {
+//                    e.setItinerary(null);
+//                }
+//            }
+//            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {
+//            };
+//            return Response.status(200)
+//                    .entity(entity)
+//                    .build();
+//        } catch (Exception e) {
+//            JsonObject exception = Json.createObjectBuilder()
+//                    .add("error", "Unable to create new itinerary")
+//                    .build();
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+//                    .entity(exception)
+//                    .build();
+//        }
+//    }
+    
+    
+    //add comments
+    @POST
+    @Path("/{uId}/{iId}/comment")
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItineraryByLocation(
-            String place) {
+    public Response addComment(@PathParam("uId") Long uId,
+            @PathParam("iId") Long iId,
+            @Context HttpHeaders headers,
+            Comment c) {
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
         try {
-            List<Itinerary> iList = itinerarySessionLocal.searchItineraryByLocation(place);
-            // for all the itinerary
-            for (Itinerary i : iList) {
-                //break the itinerary ---> user -/-> itinerary
-                for (Users u : i.getUsersList()) {
-                    u.setItineraryList(null);
-                }
-                //break the itinerary ---> event -/-> itinerary    
-                for (Event e : i.getEventList()) {
-                    e.setItinerary(null);
-                }
-            }
-            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {
-            };
+            Comment newC = itinerarySessionLocal.createComment(c, iId);
+
             return Response.status(200)
-                    .entity(entity)
+                    .entity(newC)
+                    .type(MediaType.APPLICATION_JSON)
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to create new itinerary")
+                    .add("error", "Unable to add new comment")
                     .build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(exception)
                     .build();
         }
+        //} 
+    }
+
+    @PUT
+    @Path("/{uId}/{iId}/comment")
+    //@Secured
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateComment(@PathParam("uId") Long uId,
+            @PathParam("iId") Long iId,
+            @Context HttpHeaders headers,
+            Comment c) {
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            Comment newC = itinerarySessionLocal.updateComment(c);
+
+            return Response.status(200)
+                    .entity(newC)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to update comment")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //} 
+    }
+
+    @GET
+    @Path("/{uId}/{iId}/comment")
+    //@Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getItineraryComment(@PathParam("uId") Long uId,
+            @PathParam("iId") Long iId,
+            @Context HttpHeaders headers) {
+
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            List<Comment> list = itinerarySessionLocal.retrieveAllComment(iId);
+            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to retreive comments")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //} 
+    }
+    
+    @DELETE
+    @Path("/{uId}/{iId}/comment")
+    //@Secured
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeComment(@PathParam("uId") Long uId,
+            @PathParam("iId") Long iId,
+            @Context HttpHeaders headers,
+            Comment c) {
+           System.out.println("vfdbggfsbgf");
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            System.out.println("asdsadsadsa");
+            List<Comment> list = itinerarySessionLocal.removeComment(uId, c.getId());
+            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to retreive comments")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //} 
     }
 
     //if no user, delete everythig, event in it also.

@@ -11,8 +11,6 @@ import javax.ejb.Local;
 @Local
 public interface EventSessionLocal {
 
-    public void updateEvent(Event e);
-
     public List<Event> searchEventByName(String name);
 
     public List<Event> searchEventByCreatedDate(Date createdDate);
