@@ -13,15 +13,15 @@
                     <file>${reference.ItineraryPlanner-ejb.dist}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jjwt-api-0.10.7.jar-1}</file>
+                    <file>${file.reference.jjwt-api-0.10.7.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jjwt-impl-0.10.7.jar-1}</file>
+                    <file>${file.reference.jjwt-impl-0.10.7.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jjwt-jackson-0.10.7.jar-1}</file>
+                    <file>${file.reference.jjwt-jackson-0.10.7.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

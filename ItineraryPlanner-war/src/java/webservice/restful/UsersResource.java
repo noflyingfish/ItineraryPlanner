@@ -7,11 +7,13 @@ import entity.Users;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.persistence.NoResultException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -45,6 +47,7 @@ public class UsersResource {
     public Users register(Users u) {
         System.out.println("username: " + u.getUserName());
         System.out.println("password: " + u.getPassword());
+        System.out.println(u.getFirstName());
         System.out.println("userSessionLocal: " + usersSessionLocal);
         u.setCreatedDate(new Date());
         usersSessionLocal.createUser(u);
@@ -107,6 +110,10 @@ public class UsersResource {
 //        } else {
         try {
             Users newU = usersSessionLocal.updateUser(u);
+            
+            for (Itinerary i : newU.getItineraryList()){
+                i.setUsersList(null);
+            }
             return Response.status(200)
                     .entity(newU)
                     .type(MediaType.APPLICATION_JSON)
@@ -185,7 +192,7 @@ public class UsersResource {
     //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUsersComment(@PathParam("uId") Long uId,
+    public Response getUserComment(@PathParam("uId") Long uId,
             @Context HttpHeaders headers) {
 
 //        if (!isAuthorized(headers, uId)) {
@@ -348,7 +355,6 @@ public class UsersResource {
         }
         //}
     }
-
     //search user by username
     @GET
     //@Secured
@@ -384,8 +390,6 @@ public class UsersResource {
 //    }    
     }
 
-    // no use case, for testing purpose
-    @GET
     @Path("/getallusers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {

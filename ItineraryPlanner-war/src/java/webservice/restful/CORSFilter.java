@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package webservice.restful;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -18,4 +23,5 @@ public class CORSFilter implements ContainerResponseFilter {
         response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
         response.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type");
     }
+    
 }

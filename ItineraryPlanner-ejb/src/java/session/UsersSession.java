@@ -61,6 +61,7 @@ public class UsersSession implements UsersSessionLocal {
     @Override
     public Users getUser(Long uId) {
         Users u = em.find(Users.class, uId);
+        System.out.println(u.getUserName());
         return u;
     }
     
