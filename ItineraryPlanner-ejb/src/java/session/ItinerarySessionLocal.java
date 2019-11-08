@@ -31,9 +31,11 @@ public interface ItinerarySessionLocal {
     public List<Itinerary> searchItineraryByLocation(String location);
 
     //Event
-    public void addEvent(Event e, Long iId);
+    public Event addEvent(Event e, Long iId);
+    
+    public Event updateEvent(Event e);
 
-    public void removeEvent(Long eId, Long iId);
+    public List<Event> removeEvent(Long eId, Long iId);
     
     public List<Event> retrieveAllEvent(Long iId);
     
