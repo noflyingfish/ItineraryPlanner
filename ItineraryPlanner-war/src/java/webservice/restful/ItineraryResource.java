@@ -38,7 +38,7 @@ public class ItineraryResource {
     //create itinerary
     @POST
     //@Secured
-    @Path("/{uId}/create")
+    @Path("/{uId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createItinerary(
@@ -52,39 +52,6 @@ public class ItineraryResource {
         try {
             itinerarySessionLocal.createItinerary(i, uId);
             return Response.status(200)
-                    .build();
-        } catch (Exception e) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to create new itinerary")
-                    .build();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(exception)
-                    .build();
-        }
-        //}
-    }
-
-    //add user to itinerary
-    @PUT
-    //@Secured
-    @Path("/{uId}/iti_add_user/{new_uId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addUserToIti(
-            @PathParam("uId") Long uId,
-            @PathParam("new_uId") Long new_uId,
-            @Context HttpHeaders headers,
-            Long iId) {
-
-//        if (!isAuthorized(headers, uId)) {
-//            return Response.status(Response.Status.UNAUTHORIZED).build();
-//        } else {
-        try {
-            List<Users> uList = itinerarySessionLocal.addUser(new_uId, iId);
-            GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
-            };
-            return Response.status(200)
-                    .entity(entity)
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
@@ -139,7 +106,8 @@ public class ItineraryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getItineraryByUser(
             @PathParam("uId") Long uId,
-            @PathParam("uId_get") Long uId_get) {
+            @PathParam("uId_get") Long uId_get,
+            @Context HttpHeaders headers) {
 
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
