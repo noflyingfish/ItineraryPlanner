@@ -2,6 +2,7 @@ package webservice.restful;
 
 import entity.Comment;
 import entity.Event;
+import entity.Itinerary;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import java.util.Date;
@@ -116,10 +117,9 @@ public class EventResource {
 //        } else {
         try {
             List<Event> eList = itinerarySessionLocal.removeEvent(eId, iId);
-            for(Event e: eList){
+            for(Event e : eList){
                 e.setItinerary(null);
             }
-            
             GenericEntity<List<Event>> entity = new GenericEntity<List<Event>>(eList) {
             };
             
@@ -142,7 +142,7 @@ public class EventResource {
     //@Secured
     @Path("/{uId}/{iId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItineraryEvent(
+    public Response getEventInIntinerary(
             @PathParam("uId") Long uId,
             @PathParam("iId") Long iId,
             @Context HttpHeaders headers) {
@@ -161,7 +161,7 @@ public class EventResource {
                     .build();
         } catch (Exception ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to get all event in itinery")
+                    .add("error", "Unable to get event in Itinerary")
                     .build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(exception)
@@ -169,7 +169,6 @@ public class EventResource {
         }
         //}
     }
-
     //Get Event with ID
     @GET
     @Path("/{uId}/{eId}")
