@@ -107,6 +107,22 @@ public class ItinerarySession implements ItinerarySessionLocal {
         u.getItineraryList().add(i);
         return i.getUsersList();
     }
+    
+    @Override
+    public List<Users> deleteUserFromItinerary(Long uId, Long iId){
+        Itinerary i = em.find(Itinerary.class, iId);
+        Users u = em.find(Users.class, uId);
+        
+        List<Users> uList = i.getUsersList();
+        uList.remove(u);
+        i.setUsersList(uList);
+        
+        List<Itinerary> iList = u.getItineraryList();
+        iList.remove(i);
+        u.setItineraryList(iList);
+        
+        return uList;
+    }
 
 //    @Override
 //    public void deleteUser(Users User, Itinerary i) {
@@ -127,6 +143,11 @@ public class ItinerarySession implements ItinerarySessionLocal {
         return q.getResultList();
     }
 
+    @Override
+    public Itinerary getItineraryById(Long iId){
+        return em.find(Itinerary.class, iId);
+    }
+    
     @Override
     public List<Itinerary> searchItineraryByUser(String username) {
         Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.usersList.userName LIKE :username");
@@ -213,7 +234,15 @@ public class ItinerarySession implements ItinerarySessionLocal {
     public Event updateEvent(Event e){
         Event oldE = em.find(Event.class, e.getId());
         
-        ///add todo
+        oldE.setCost(e.getCost());
+        oldE.setDuration(e.getDuration());
+        oldE.setEndDate(e.getEndDate());
+        oldE.setLocation1(e.getLocation1());
+        oldE.setLocation2(e.getLocation2());
+        oldE.setName(e.getName());
+        oldE.setNotes(e.getNotes());
+        oldE.setStartDate(e.getStartDate());
+        oldE.setType(e.getType());
         
         return oldE;
     }

@@ -105,6 +105,7 @@ public class EventSession implements EventSessionLocal {
         return p;
     }
 
+    @Override
     public List<Photo> removePhoto(Long pId, Long eId){
         Event e = em.find(Event.class, eId);
         Photo p = em.find(Photo.class, pId);
@@ -112,7 +113,8 @@ public class EventSession implements EventSessionLocal {
         em.remove(p);
         return e.getPhotoList();
     }
-
+    
+    @Override
     public List<Photo> retrieveAllPhoto(Long eId){
         Event e = em.find(Event.class, eId);
         return e.getPhotoList();
