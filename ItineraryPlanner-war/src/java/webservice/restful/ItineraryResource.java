@@ -108,7 +108,6 @@ public class ItineraryResource {
     @GET
     //@Secured
     @Path("/{uId}/users/{iId}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserInItinerary(
             @PathParam("uId") Long uId,
