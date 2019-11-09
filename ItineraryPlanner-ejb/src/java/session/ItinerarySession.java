@@ -142,7 +142,7 @@ public class ItinerarySession implements ItinerarySessionLocal {
         Query q = em.createQuery("SELECT i FROM Itinerary i");
         return q.getResultList();
     }
-
+    
     @Override
     public Itinerary getItineraryById(Long iId){
         return em.find(Itinerary.class, iId);
@@ -226,7 +226,10 @@ public class ItinerarySession implements ItinerarySessionLocal {
     public Event addEvent(Event e, Long iId) {
         em.persist(e);
         Itinerary i = em.find(Itinerary.class, iId);
-        i.getEventList().add(e);
+        List<Event> eList = i.getEventList();
+        eList.add(e);
+        i.setEventList(eList);
+        e.setItinerary(i);
         return e;
     }
     
@@ -251,18 +254,20 @@ public class ItinerarySession implements ItinerarySessionLocal {
     public List<Event> removeEvent(Long eId, Long iId) {
        Event e = em.find(Event.class, eId);
        Itinerary i = em.find(Itinerary.class, iId);
-     
+       
        List<Comment> commentList = e.getCommentList();
        for(Comment c : commentList){
            em.remove(c);
        }
-       commentList.clear();
+       e.setCommentList(null);
        
        List<Photo> photoList = e.getPhotoList();
        for(Photo p : photoList){
            em.remove(p);
        }
-       commentList.clear();
+       e.setPhotoList(null);
+       em.remove(e);
+       
        return i.getEventList();
     }
     
