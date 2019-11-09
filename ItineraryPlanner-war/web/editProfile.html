@@ -70,7 +70,7 @@ $('#myform').submit(function() {
 
     $.ajax({
         type: "PUT",
-        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/editProfile',
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId,
         data: body,
         contentType: "application/json; charset=utf-8",
         success: function(data, textStatus, xhr)
