@@ -46,11 +46,11 @@ public class UsersSession implements UsersSessionLocal {
     }
 
     @Override
-    public List<Users> searchUser(String userName) {
+    public List<Users> searchUserByUsername(String userName) {
         Query q;
         if (!"".equals(userName)) {
-            q = em.createQuery("SELECT u FROM Users u WHERE LOWER(u.name) LIKE :name");
-            q.setParameter("name", "%" + userName.toLowerCase() + "%");
+            q = em.createQuery("SELECT u FROM Users u WHERE u.userName LIKE :name");
+            q.setParameter("name", "%" + userName + "%");
         } else {
             //if no name, display list of Users instead
             q = em.createQuery("SELECT u FROM Users u");
@@ -59,7 +59,7 @@ public class UsersSession implements UsersSessionLocal {
     }
 
     @Override
-    public Users getUser(Long uId) {
+    public Users searchUserById(Long uId) {
         Users u = em.find(Users.class, uId);
         System.out.println(u.getUserName());
         return u;

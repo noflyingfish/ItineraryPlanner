@@ -20,12 +20,6 @@ public class EventSession implements EventSessionLocal {
     private EntityManager em;
 
     @Override
-    public void updateEvent(Event e) {
-        em.merge(e);
-        em.flush();
-    }
-
-    @Override
     public List<Event> searchEventByName(String name) {
         Query q = em.createQuery("SELECT e FROM Event e WHERE e.name LIKE :name");
         q.setParameter("name", "%" + name + "%");

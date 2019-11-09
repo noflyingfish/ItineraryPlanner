@@ -165,6 +165,7 @@ public class ItinerarySession implements ItinerarySessionLocal {
         return q.getResultList(); 
     }
     
+    @Override
     public List<Event> retrieveAllEvent(Long iId){
         Itinerary i = em.find(Itinerary.class, iId);
         return i.getEventList();
@@ -177,7 +178,8 @@ public class ItinerarySession implements ItinerarySessionLocal {
         i.getCommentList().add(c);
         return c;
     }
-
+    
+    @Override
     public Comment updateComment(Comment c){
         Comment oldC = em.find(Comment.class, c.getId());
         oldC.setComment(c.getComment());
@@ -200,17 +202,26 @@ public class ItinerarySession implements ItinerarySessionLocal {
     }
 
     @Override
-    public void addEvent(Event e, Long iId) {
+    public Event addEvent(Event e, Long iId) {
         em.persist(e);
         Itinerary i = em.find(Itinerary.class, iId);
         i.getEventList().add(e);
+        return e;
+    }
+    
+    @Override
+    public Event updateEvent(Event e){
+        Event oldE = em.find(Event.class, e.getId());
+        
+        ///add todo
+        
+        return oldE;
     }
 
     @Override
-    public void removeEvent(Long eId, Long iId) {
+    public List<Event> removeEvent(Long eId, Long iId) {
        Event e = em.find(Event.class, eId);
        Itinerary i = em.find(Itinerary.class, iId);
-       
      
        List<Comment> commentList = e.getCommentList();
        for(Comment c : commentList){
@@ -223,8 +234,10 @@ public class ItinerarySession implements ItinerarySessionLocal {
            em.remove(p);
        }
        commentList.clear();
+       return i.getEventList();
     }
     
+    @Override
     public Photo addPhoto(Photo p, Long iId){
         em.persist(p);
         Itinerary i = em.find(Itinerary.class, iId);
@@ -232,6 +245,7 @@ public class ItinerarySession implements ItinerarySessionLocal {
         return p;
     }
     
+    @Override
     public List<Photo> removePhoto(Long pId, Long iId){
         Itinerary i = em.find(Itinerary.class, iId);
         Photo p = em.find(Photo.class, pId);
@@ -240,6 +254,7 @@ public class ItinerarySession implements ItinerarySessionLocal {
         return i.getPhotoList();
     }
     
+    @Override
     public List<Photo> retrieveAllPhoto(Long iId){
         Itinerary i = em.find(Itinerary.class, iId);
         return i.getPhotoList();
