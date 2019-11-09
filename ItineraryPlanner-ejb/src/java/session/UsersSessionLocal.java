@@ -17,9 +17,9 @@ public interface UsersSessionLocal {
 
     public Users updateUser(Users u);
 
-    public List<Users> searchUser(String userName);
-
-    public Users getUser(Long uId);
+    public List<Users> searchUserByUsername(String userName);
+    
+    public Users searchUserById (Long uId);
 
     public List<Users> retrieveAllUser();
 

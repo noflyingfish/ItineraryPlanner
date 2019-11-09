@@ -110,9 +110,12 @@ public class UsersResource {
 //        } else {
         try {
             Users newU = usersSessionLocal.updateUser(u);
-            
-            for (Itinerary i : newU.getItineraryList()){
+
+            for (Itinerary i : newU.getItineraryList()) {
                 i.setUsersList(null);
+                for (Event e : i.getEventList()) {
+                    e.setItinerary(null);
+                }
             }
             return Response.status(200)
                     .entity(newU)
@@ -267,6 +270,9 @@ public class UsersResource {
             for (Users u : uList) {
                 for (Itinerary i1 : u.getItineraryList()) {
                     i.setUsersList(null);
+                    for (Event e : i1.getEventList()) {
+                        e.setItinerary(null);
+                    }
                 }
             }
             GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
@@ -298,6 +304,13 @@ public class UsersResource {
 //        } else {
         try {
             List<Itinerary> list = usersSessionLocal.getAllItineray(uId);
+
+            for (Itinerary i1 : list) {
+                i1.setUsersList(null);
+                for (Event e : i1.getEventList()) {
+                    e.setItinerary(null);
+                }
+            }
             GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(list) {
             };
             return Response.status(200)
@@ -355,6 +368,7 @@ public class UsersResource {
         }
         //}
     }
+
     //search user by username
     @GET
     //@Secured
@@ -367,10 +381,14 @@ public class UsersResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            List<Users> list = usersSessionLocal.searchUser(search);
+            List<Users> list = usersSessionLocal.searchUserByUsername(search);
+            System.out.println(search);
             for (Users u : list) {
                 for (Itinerary i1 : u.getItineraryList()) {
                     i1.setUsersList(null);
+                    for (Event e : i1.getEventList()) {
+                        e.setItinerary(null);
+                    }
                 }
             }
 
@@ -390,6 +408,41 @@ public class UsersResource {
 //    }    
     }
 
+    //search user by id
+    @GET
+    //@Secured
+    @Path("/id/{uId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchUserById(
+            @PathParam("uId") Long uId,
+            @Context HttpHeaders headers) {
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            Users u = usersSessionLocal.searchUserById(uId);
+
+            for (Itinerary i : u.getItineraryList()) {
+                i.setUsersList(null);
+                for (Event e : i.getEventList()) {
+                    e.setItinerary(null);
+                }
+            }
+
+            return Response.status(200)
+                    .entity(u)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to search for user")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+//    }    
+    }
+
     @Path("/getallusers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
@@ -397,6 +450,9 @@ public class UsersResource {
         for (Users u : list) {
             for (Itinerary i : u.getItineraryList()) {
                 i.setUsersList(null);
+                for (Event e : i.getEventList()) {
+                    e.setItinerary(null);
+                }
             }
         }
         GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(list) {
