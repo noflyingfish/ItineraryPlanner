@@ -2,6 +2,7 @@ package webservice.restful;
 
 import entity.Comment;
 import entity.Event;
+import entity.Itinerary;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import java.util.Date;
@@ -52,6 +53,8 @@ public class EventResource {
 //        } else {
         try {
             Event e1 = itinerarySessionLocal.addEvent(e, iId);
+            e1.setItinerary(null);
+            
             return Response.status(200)
                     .entity(e1)
                     .type(MediaType.APPLICATION_JSON)
@@ -83,6 +86,8 @@ public class EventResource {
 //      } else {
             try {
                 Event e1 = itinerarySessionLocal.updateEvent(e);
+                e1.setItinerary(null);
+                
                 return Response.status(200)
                         .entity(e1)
                         .build();
@@ -101,24 +106,27 @@ public class EventResource {
     //Remove event
     @DELETE
     //@Secured
-    @Path("/{uId}/{iId}")
+    @Path("/{uId}/{iId}/{eId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteEvent(
             @PathParam("uId") Long uId,
             @PathParam("iId") Long iId,
-            @Context HttpHeaders headers,
-            Event e) {
+            @PathParam("eId") Long eId,
+            @Context HttpHeaders headers) {
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            List<Event> list = itinerarySessionLocal.removeEvent(e.getId(), iId);
-            GenericEntity<List<Event>> entity = new GenericEntity<List<Event>>(list) {
+            List<Event> eList = itinerarySessionLocal.removeEvent(eId, iId);
+            for(Event e : eList){
+                e.setItinerary(null);
+            }
+            GenericEntity<List<Event>> entity = new GenericEntity<List<Event>>(eList) {
             };
             
             return Response.status(200)
-                    .entity(list)
+                    .entity(entity)
                     .build();
         } catch (Exception ex) {
             JsonObject exception = Json.createObjectBuilder()
@@ -131,12 +139,12 @@ public class EventResource {
         //}
     }
     
-    //retrieve all event
+    //retrieve all event in itinerary
     @GET
     //@Secured
-    @Path("/{uId}/all/{iId}")
+    @Path("/{uId}/itinerary/{iId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItineraryEvent(
+    public Response getEventInIntinerary(
             @PathParam("uId") Long uId,
             @PathParam("iId") Long iId,
             @Context HttpHeaders headers) {
@@ -144,15 +152,20 @@ public class EventResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            List<Event> list = itinerarySessionLocal.retrieveAllEvent(iId);
-            GenericEntity<List<Event>> entity = new GenericEntity<List<Event>>(list) {
+            List<Event> eList = itinerarySessionLocal.retrieveAllEvent(iId);
+            for(Event e: eList){
+                Itinerary i = e.getItinerary();
+                i.setEventList(null);
+                i.setUsersList(null);
+            }
+            GenericEntity<List<Event>> entity = new GenericEntity<List<Event>>(eList) {
             };
             return Response.status(200)
                     .entity(entity)
                     .build();
         } catch (Exception ex) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to create new event in itinerary")
+                    .add("error", "Unable to get event in Itinerary")
                     .build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(exception)
@@ -161,85 +174,12 @@ public class EventResource {
         //}
     }
     
-    //Tested API (Dates format is wrong)
-    //Search Event
-    @GET
-    @Path("/searchEvent")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response searchEvent(
-            @QueryParam("name") String name,
-            @QueryParam("createdDate") Date createdDate,
-            @QueryParam("startDate") Date startDate,
-            @QueryParam("endDate") Date endDate,
-            @QueryParam("duration") String duration) {
-        
-        if (name != null) {
-            List<Event> results = eventSessionLocal.searchEventByName(name);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
-
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        }
-
-        else if (createdDate != null) {
-            List<Event> results = eventSessionLocal.searchEventByCreatedDate(createdDate);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
-
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        }
-
-        else if (startDate != null) {
-            List<Event> results = eventSessionLocal.searchEventByStartDate(startDate);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
-
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        }
-
-        else if (endDate != null) {
-            List<Event> results = eventSessionLocal.searchEventByEndDate(endDate);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
-
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        }
-
-        else if (duration != null) {
-            List<Event> results = eventSessionLocal.searchEventByDuration(duration);
-            GenericEntity<List<Event>> entity = new 
-            GenericEntity<List<Event>>(results){};
-
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        }
-
-        else {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "No query condition")
-                    .build();
-
-            return Response.status(400)
-                    .entity(exception)
-                    .build();
-        }
-    }
-    
     //Get Event with ID
     @GET
     @Path("/{uId}/{eId}")
     //@Secured
     @Produces (MediaType.APPLICATION_JSON)
-    public Response getEvent(
+    public Response getEventById(
 	@PathParam("uId") Long uId,
         @PathParam("eId") Long eId,
         @Context HttpHeaders headers) {
@@ -248,6 +188,7 @@ public class EventResource {
 //        } else {
 	try {
             Event e = eventSessionLocal.getEvent(eId);
+            e.setItinerary(null);
             return Response.status(200)
                     .entity(e)
                     .type(MediaType.APPLICATION_JSON)

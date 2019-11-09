@@ -220,20 +220,18 @@ public class UsersResource {
     }
 
     @DELETE
-    @Path("/{uId}/comment")
+    @Path("/{uId}/comment/{cId}")
     //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeComment(@PathParam("uId") Long uId,
-            @Context HttpHeaders headers,
-            Comment c) {
-        System.out.println("vfdbggfsbgf");
+            @PathParam("cId") Long cId,
+            @Context HttpHeaders headers) {
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            System.out.println("asdsadsadsa");
-            List<Comment> list = usersSessionLocal.removeComment(uId, c.getId());
+            List<Comment> list = usersSessionLocal.removeComment(uId, cId);
             GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {
             };
             return Response.status(200)
@@ -266,19 +264,9 @@ public class UsersResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            List<Users> uList = itinerarySessionLocal.addUser(new_uId, i.getId());
-            for (Users u : uList) {
-                for (Itinerary i1 : u.getItineraryList()) {
-                    i.setUsersList(null);
-                    for (Event e : i1.getEventList()) {
-                        e.setItinerary(null);
-                    }
-                }
-            }
-            GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
-            };
-            return Response.status(200)
-                    .entity(entity)
+            itinerarySessionLocal.addUser(new_uId, i.getId());
+
+            return Response.status(204)
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
@@ -329,27 +317,27 @@ public class UsersResource {
 
     @DELETE
     //@Secured
-    @Path("/{uId}/itinerary")
+    @Path("/{uId}/itinerary/{iId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteItinerary(
             @PathParam("uId") Long uId,
-            @Context HttpHeaders headers,
-            Itinerary i) {
+            @PathParam("iId") Long iId,
+            @Context HttpHeaders headers) {
 
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            List<Itinerary> iList = usersSessionLocal.deleteItinerary(uId, i.getId());
+            List<Itinerary> iList = usersSessionLocal.deleteItinerary(uId, iId);
             // for all the itinerary
             for (Itinerary i1 : iList) {
                 //break the itinerary ---> user -/-> itinerary
-                for (Users u : i.getUsersList()) {
+                for (Users u : i1.getUsersList()) {
                     u.setItineraryList(null);
                 }
                 //break the itinerary ---> event -/-> itinerary    
-                for (Event e : i.getEventList()) {
+                for (Event e : i1.getEventList()) {
                     e.setItinerary(null);
                 }
             }
@@ -360,7 +348,7 @@ public class UsersResource {
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to create new itinerary")
+                    .add("error", "Unable to delete user from itinerary")
                     .build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(exception)
@@ -411,24 +399,23 @@ public class UsersResource {
     //search user by id
     @GET
     //@Secured
-    @Path("/id/{uId}")
+    @Path("/{uId}/{uId_2}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchUserById(
             @PathParam("uId") Long uId,
+            @PathParam("uId_2") Long uId_2,
             @Context HttpHeaders headers) {
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            Users u = usersSessionLocal.searchUserById(uId);
-
+            Users u = usersSessionLocal.searchUserById(uId_2);
             for (Itinerary i : u.getItineraryList()) {
                 i.setUsersList(null);
                 for (Event e : i.getEventList()) {
                     e.setItinerary(null);
                 }
             }
-
             return Response.status(200)
                     .entity(u)
                     .build();

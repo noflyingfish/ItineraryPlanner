@@ -19,8 +19,8 @@ public interface ItinerarySessionLocal {
     public List<Users> addUser(Long uId, Long iId);
 
     public List<Itinerary> retrieveAllItinerary();
-
-    public List<Itinerary> searchItineraryByUser(String username);
+    
+    public Itinerary searchItineraryById(Long id);
 
     public List<Itinerary> searchItineraryByTitle(String title);
 

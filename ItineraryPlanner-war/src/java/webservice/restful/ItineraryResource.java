@@ -52,8 +52,18 @@ public class ItineraryResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            itinerarySessionLocal.createItinerary(i, uId);
+            Itinerary i1 = itinerarySessionLocal.createItinerary(i, uId);
+            //break the itinerary ---> user -/-> itinerary
+            for (Users u : i1.getUsersList()) {
+                u.setItineraryList(null);
+            }
+            //break the itinerary ---> event -/-> itinerary    
+            for (Event e : i1.getEventList()) {
+                e.setItinerary(null);
+            }
             return Response.status(200)
+                    .entity(i1)
+                    .type(MediaType.APPLICATION_JSON)
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
@@ -64,6 +74,121 @@ public class ItineraryResource {
                     .build();
         }
         //}
+    }
+
+    @PUT
+    //@Secured
+    @Path("/{uId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editItinerary(
+            @PathParam("uId") Long uId,
+            @Context HttpHeaders headers,
+            Itinerary i) {
+
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            Itinerary i1 = itinerarySessionLocal.updateItinerary(i);
+            //break the itinerary ---> user -/-> itinerary
+            for (Users u : i1.getUsersList()) {
+                u.setItineraryList(null);
+            }
+            //break the itinerary ---> event -/-> itinerary    
+            for (Event e : i1.getEventList()) {
+                e.setItinerary(null);
+            }
+            return Response.status(200)
+                    .entity(i1)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //}
+    }
+
+    //view all user in itinerary
+    @GET
+    //@Secured
+    @Path("/{uId}/users/{iId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserInItinerary(
+            @PathParam("uId") Long uId,
+            @PathParam("iId") Long iId,
+            @Context HttpHeaders headers) {
+
+//        if (!isAuthorized(headers, uId)) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        } else {
+        try {
+            Itinerary i = itinerarySessionLocal.searchItineraryById(iId);
+            List<Users> uList = i.getUsersList();
+
+            for (Users u : uList) {
+                u.setItineraryList(null);
+                u.setCommentList(null);
+            }
+
+            GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
+            };
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
+        //}
+    }
+
+    //remove user in itinerary
+    @DELETE
+    //@Secured
+    @Path("/{uId}/{iId}/{uId_del}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUserInItinerary(
+            @PathParam("uId") Long uId,
+            @PathParam("iId") Long iId,
+            @PathParam("uId_del") Long uId_del,
+            @Context HttpHeaders headers) {
+        try {
+            List<Itinerary> iList = usersSessionLocal.deleteItinerary(uId_del, iId);
+            // for all the itinerary
+            for (Itinerary i : iList) {
+                //break the itinerary ---> user -/-> itinerary
+                for (Users u : i.getUsersList()) {
+                    u.setItineraryList(null);
+                }
+                //break the itinerary ---> event -/-> itinerary    
+                for (Event e : i.getEventList()) {
+                    e.setItinerary(null);
+                }
+            }
+            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {
+            };
+            return Response.status(200)
+                    .entity(entity)
+                    .build();
+        } catch (Exception e) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", "Unable to create new itinerary")
+                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exception)
+                    .build();
+        }
     }
 
     //get all itinerary
@@ -80,7 +205,6 @@ public class ItineraryResource {
                 for (Users u : i.getUsersList()) {
                     u.setItineraryList(null);
                 }
-
                 //break the itinerary ---> event -/-> itinerary    
                 for (Event e : i.getEventList()) {
                     e.setItinerary(null);
@@ -99,49 +223,6 @@ public class ItineraryResource {
                     .entity(exception)
                     .build();
         }
-    }
-
-    //get itinerary by user
-    @GET
-    //@Secured
-    @Path("/{uId}/iti_by_user/{uId_get}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getItineraryByUser(
-            @PathParam("uId") Long uId,
-            @PathParam("uId_get") Long uId_get,
-            @Context HttpHeaders headers) {
-
-//        if (!isAuthorized(headers, uId)) {
-//            return Response.status(Response.Status.UNAUTHORIZED).build();
-//        } else {
-        try {
-            Users u = usersSessionLocal.searchUserById(uId_get);
-            List<Itinerary> iList = itinerarySessionLocal.searchItineraryByUser(u.getUserName());
-            // for all the itinerary
-            for (Itinerary i : iList) {
-                //break the itinerary ---> user -/-> itinerary
-                for (Users u1 : i.getUsersList()) {
-                    u1.setItineraryList(null);
-                }
-                //break the itinerary ---> event -/-> itinerary    
-                for (Event e : i.getEventList()) {
-                    e.setItinerary(null);
-                }
-            }
-            GenericEntity<List<Itinerary>> entity = new GenericEntity<List<Itinerary>>(iList) {
-            };
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        } catch (Exception e) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to create new itinerary")
-                    .build();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(exception)
-                    .build();
-        }
-        //}
     }
 
 //    //get itinerary by location
@@ -176,8 +257,6 @@ public class ItineraryResource {
 //                    .build();
 //        }
 //    }
-    
-    
     //add comments
     @POST
     @Path("/{uId}/{iId}/comment")
@@ -252,7 +331,8 @@ public class ItineraryResource {
 //        } else {
         try {
             List<Comment> list = itinerarySessionLocal.retrieveAllComment(iId);
-            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
+            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {
+            };
             return Response.status(200)
                     .entity(entity)
                     .build();
@@ -266,30 +346,28 @@ public class ItineraryResource {
         }
         //} 
     }
-    
+
     @DELETE
-    @Path("/{uId}/{iId}/comment")
+    @Path("/{uId}/{iId}/comment/{cId}")
     //@Secured
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeComment(@PathParam("uId") Long uId,
             @PathParam("iId") Long iId,
-            @Context HttpHeaders headers,
-            Comment c) {
-           System.out.println("vfdbggfsbgf");
+            @PathParam("cId")Long cId,
+            @Context HttpHeaders headers) {
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            System.out.println("asdsadsadsa");
-            List<Comment> list = itinerarySessionLocal.removeComment(uId, c.getId());
-            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
+            List<Comment> list = itinerarySessionLocal.removeComment(uId, cId);
+            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {
+            };
             return Response.status(200)
                     .entity(entity)
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to retreive comments")
+                    .add("error", "Unable to delete comment")
                     .build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(exception)

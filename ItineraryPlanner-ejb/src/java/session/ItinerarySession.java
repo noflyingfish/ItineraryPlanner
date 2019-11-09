@@ -126,12 +126,11 @@ public class ItinerarySession implements ItinerarySessionLocal {
         Query q = em.createQuery("SELECT i FROM Itinerary i");
         return q.getResultList();
     }
-
+    
     @Override
-    public List<Itinerary> searchItineraryByUser(String username) {
-        Query q = em.createQuery("SELECT i FROM Itinerary i WHERE i.usersList.userName LIKE :username");
-        q.setParameter("username", "%"+ username + "%");
-        return q.getResultList();
+    public Itinerary searchItineraryById(Long id){
+        Itinerary i = em.find(Itinerary.class, id);
+        return i;
     }
 
     @Override
@@ -205,7 +204,10 @@ public class ItinerarySession implements ItinerarySessionLocal {
     public Event addEvent(Event e, Long iId) {
         em.persist(e);
         Itinerary i = em.find(Itinerary.class, iId);
-        i.getEventList().add(e);
+        List<Event> eList = i.getEventList();
+        eList.add(e);
+        i.setEventList(eList);
+        e.setItinerary(i);
         return e;
     }
     
@@ -213,7 +215,15 @@ public class ItinerarySession implements ItinerarySessionLocal {
     public Event updateEvent(Event e){
         Event oldE = em.find(Event.class, e.getId());
         
-        ///add todo
+        oldE.setName(e.getName());
+        oldE.setStartDate(e.getStartDate());
+        oldE.setEndDate(e.getEndDate());
+        oldE.setDuration(e.getDuration());
+        oldE.setCost(e.getCost());
+        oldE.setType(e.getType());
+        oldE.setNotes(e.getNotes());
+        oldE.setLocation1(e.getLocation1());
+        oldE.setLocation2(e.getLocation2());
         
         return oldE;
     }
@@ -222,18 +232,20 @@ public class ItinerarySession implements ItinerarySessionLocal {
     public List<Event> removeEvent(Long eId, Long iId) {
        Event e = em.find(Event.class, eId);
        Itinerary i = em.find(Itinerary.class, iId);
-     
+       
        List<Comment> commentList = e.getCommentList();
        for(Comment c : commentList){
            em.remove(c);
        }
-       commentList.clear();
+       e.setCommentList(null);
        
        List<Photo> photoList = e.getPhotoList();
        for(Photo p : photoList){
            em.remove(p);
        }
-       commentList.clear();
+       e.setPhotoList(null);
+       em.remove(e);
+       
        return i.getEventList();
     }
     
