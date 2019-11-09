@@ -48,7 +48,7 @@ $('#myform').submit(function() {
 
     $.ajax({
         type: "POST",
-        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/'+ uId +'/create',
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/'+ uId,
         data: body,
         contentType: "application/json; charset=utf-8",
         
