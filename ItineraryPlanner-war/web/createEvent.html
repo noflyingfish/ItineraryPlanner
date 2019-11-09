@@ -1,0 +1,79 @@
+<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+
+<form id="myform">
+
+        <label for="name">Event Name</label>
+        <input type="text" id="name" placeholder="Caption" />
+        <br>
+        <label for="duration">Duration</label>
+        <input type="text" id="duration" placeholder="Duration" />
+        <br>
+        <label for="type">Type</label>
+        <select name="type" id="type">
+            <option value="transport">Transport</option>
+            <option value="attraction">Attraction</option>
+            <option value="food">Food</option>
+        </select>
+        <br>
+        <label for="cost">Cost</label>
+        <input type="date" id="cost" placeholder="Cost" />                
+        <br>
+        <label for="notes">Notes</label>
+        <input type="text" id="notes" placeholder="Notes" />                
+        <br>
+        <label for="location1">Location 1</label>
+        <input type="text" id="notes" placeholder="Title" />                
+        <br>
+        <label for="location2">Location 2</label>
+        <input type="text" id="notes" placeholder="Title" />                
+        <br>                
+        <input type="submit" id="create" value="Create Event"/>
+
+        </form>
+
+<script>
+uId = sessionStorage.getItem('uId')
+userName = sessionStorage.getItem('userName')
+token = sessionStorage.getItem('token')
+console.log(uId)
+
+$(document).ready(function() {
+
+$('#myform').submit(function() {
+
+    var currentDate = new Date();
+    
+    var body = JSON.stringify({
+
+        "name": $("#name").val(),
+        "duration": $("#duration").val(),
+        "type": new Date($("#type").val()),
+        "cost": new Date($("#cost").val()),
+        "notes": $("#notes").val(),
+        "location1": $("#location1").val(),
+        "location2": $("#location2").val(),
+    })
+    console.log(body)
+
+    $.ajax({
+        type: "POST",
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/'+ uId + '/' + iId,
+        data: body,
+        contentType: "application/json; charset=utf-8",
+        
+        success: function(data, textStatus, xhr)
+        {
+            console.log("Response: ", data)
+            console.log(textStatus)
+        },
+        error: function(xhr, error, errorType) {
+            console.log(error);
+        }
+    });
+    return false;
+});
+
+});
+</script>
