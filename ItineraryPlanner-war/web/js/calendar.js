@@ -125,7 +125,8 @@ var newEvent = function (start) {
                 title: title,
                 start: start,
                 end: end,
-                activityType: activityType
+                activityType: activityType,
+                duration: durationInMinutes
             };
             $cal.fullCalendar('renderEvent', eventData, true);
             $('#newEvent').modal('hide');
@@ -137,7 +138,8 @@ var newEvent = function (start) {
                 start: start,
                 end: end,
                 activityType: activityType,
-                notes: notes
+                notes: notes,
+                duration: durationInMinutes
             };
             $cal.fullCalendar('renderEvent', eventData, true);
             $('#newEvent').modal('hide');
@@ -150,6 +152,7 @@ var newEvent = function (start) {
                 activityType: activityType,
                 notes: notes,
                 imageUrl: imageUrl,
+                duration: durationInMinutes
             };
             $cal.fullCalendar('renderEvent', eventData, true);
             $('#newEvent').modal('hide');
