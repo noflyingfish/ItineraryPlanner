@@ -21,6 +21,30 @@
         <script src='js/calendar.js'></script>
 
         <script>
+            uId = sessionStorage.getItem('uId')
+
+            function itinerary() {
+                
+                $.ajax({
+                        type: "POST",
+                        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/' + uId,
+                        data: body,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data, textStatus, xhr)
+                        {
+                            console.log("Response: ", data)
+                            console.log(textStatus)
+                        },
+                        error: function (xhr, error, errorType) {
+                            console.log(error);
+                        }
+                    });
+
+                    iId = sessionStorage.setItem(data.id)
+
+
+            }
+
             function save() {
                 var currentDate = new Date();
                 var events = $('#calendar2').fullCalendar('clientEvents');
@@ -62,6 +86,22 @@
                 }
                 }
             }
+
+$(document).ready(function() {
+
+    var uId = 1
+    var iId = 151
+    $.get('http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/itinerary/' + iId, function(data) {
+
+    var result = data
+
+    console.log(data[0])
+    console.log(data[1])
+
+        console.log(result)
+    });
+
+});
         </script>
 
         <title>Create Itinerary</title>
