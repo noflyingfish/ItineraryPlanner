@@ -115,7 +115,7 @@ public class ItineraryResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            Users u = usersSessionLocal.getUser(uId_get);
+            Users u = usersSessionLocal.searchUserById(uId_get);
             List<Itinerary> iList = itinerarySessionLocal.searchItineraryByUser(u.getUserName());
             // for all the itinerary
             for (Itinerary i : iList) {
