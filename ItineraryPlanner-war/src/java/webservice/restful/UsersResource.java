@@ -193,7 +193,6 @@ public class UsersResource {
     @GET
     @Path("/{uId}/comment")
     //@Secured
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserComment(@PathParam("uId") Long uId,
             @Context HttpHeaders headers) {
@@ -220,20 +219,18 @@ public class UsersResource {
     }
 
     @DELETE
-    @Path("/{uId}/comment")
+    @Path("/{uId}/comment/{cId}")
     //@Secured
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeComment(@PathParam("uId") Long uId,
-            @Context HttpHeaders headers,
-            Comment c) {
-        System.out.println("vfdbggfsbgf");
+            @PathParam("cId") Long cId,
+            @Context HttpHeaders headers) {
+
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            System.out.println("asdsadsadsa");
-            List<Comment> list = usersSessionLocal.removeComment(uId, c.getId());
+            List<Comment> list = usersSessionLocal.removeComment(uId, cId);
             GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {
             };
             return Response.status(200)
@@ -294,7 +291,6 @@ public class UsersResource {
     @GET
     @Path("/{uId}/itinerary")
     //@Secured
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserItinerary(@PathParam("uId") Long uId,
             @Context HttpHeaders headers) {
@@ -329,8 +325,7 @@ public class UsersResource {
 
     @DELETE
     //@Secured
-    @Path("/{uId}/itinerary")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{uId}/itinerary/{iId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteItinerary(
             @PathParam("uId") Long uId,
@@ -386,12 +381,9 @@ public class UsersResource {
             for (Users u : list) {
                 for (Itinerary i1 : u.getItineraryList()) {
                     i1.setUsersList(null);
-                    for (Event e : i1.getEventList()) {
-                        e.setItinerary(null);
-                    }
+                    i1.setEventList(null);
                 }
             }
-
             GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(list) {
             };
             return Response.status(200)
@@ -408,13 +400,14 @@ public class UsersResource {
 //    }    
     }
 
-    //search user by id
+    //get user by id
     @GET
     //@Secured
-    @Path("/id/{uId}")
+    @Path("/{uid}/{uId_get}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response searchUserById(
+    public Response getUserById(
             @PathParam("uId") Long uId,
+            @PathParam("uId_get") Long uId_get,
             @Context HttpHeaders headers) {
 //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();

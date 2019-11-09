@@ -17,8 +17,12 @@ public interface ItinerarySessionLocal {
 
     //public void exportItinerary(Itinerary i, Users u);
     public List<Users> addUser(Long uId, Long iId);
+    
+    public List<Users> deleteUserFromItinerary(Long uId, Long iId);
 
     public List<Itinerary> retrieveAllItinerary();
+    
+     public Itinerary getItineraryById(Long iId);
 
     public List<Itinerary> searchItineraryByUser(String username);
 
