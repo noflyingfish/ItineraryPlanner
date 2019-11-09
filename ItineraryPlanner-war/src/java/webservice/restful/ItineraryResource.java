@@ -119,7 +119,7 @@ public class ItineraryResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            Itinerary i = itinerarySessionLocal.searchItineraryById(iId);
+            Itinerary i = itinerarySessionLocal.getItineraryById(iId);
             List<Users> uList = i.getUsersList();
 
             for (Users u : uList) {
@@ -214,7 +214,7 @@ public class ItineraryResource {
                     .build();
         }
     }
-    
+
     //get all users in itinerary
     @GET
     //@Secured
@@ -225,52 +225,16 @@ public class ItineraryResource {
             @PathParam("uId") Long uId,
             @PathParam("iId") Long iId,
             @Context HttpHeaders headers) {
-    //        if (!isAuthorized(headers, uId)) {
+        //        if (!isAuthorized(headers, uId)) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
             Itinerary i = itinerarySessionLocal.getItineraryById(iId);
             List<Users> uList = i.getUsersList();
-            for(Users u : uList){
+            for (Users u : uList) {
                 u.setItineraryList(null);
             }
-            
-            GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
-            };
-            return Response.status(200)
-                    .entity(entity)
-                    .build();
-        } catch (Exception e) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to create new itinerary")
-                    .build();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(exception)
-                    .build();
-        }
-        //}
-    }
-    
-    //delete user in itinerary
-    @DELETE
-    //@Secured
-    @Path("/{uId}/{iId}/{uId_del}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteUserInItinerary(
-            @PathParam("uId") Long uId,
-            @PathParam("iId") Long iId,
-            @PathParam("uId_del") Long uId_del,
-            @Context HttpHeaders headers){
-//        if (!isAuthorized(headers, uId)) {
-//            return Response.status(Response.Status.UNAUTHORIZED).build();
-//        } else {
-        try {
-            List<Users> uList = itinerarySessionLocal.deleteUserFromItinerary(uId_del, iId);
 
-            for(Users u : uList){
-                u.setItineraryList(null);
-            }
-            
             GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {
             };
             return Response.status(200)
@@ -420,7 +384,8 @@ public class ItineraryResource {
 //        } else {
         try {
             List<Comment> list = itinerarySessionLocal.removeComment(uId, cId);
-            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {};
+            GenericEntity<List<Comment>> entity = new GenericEntity<List<Comment>>(list) {
+            };
             return Response.status(200)
                     .entity(entity)
                     .build();
