@@ -105,7 +105,6 @@ public class EventResource {
     @DELETE
     //@Secured
     @Path("/{uId}/{iId}/{eId}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteEvent(
             @PathParam("uId") Long uId,
@@ -140,7 +139,7 @@ public class EventResource {
     //retrieve all event
     @GET
     //@Secured
-    @Path("/{uId}/{iId}")
+    @Path("/{uId}/itinerary/{iId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEventInIntinerary(
             @PathParam("uId") Long uId,
@@ -267,7 +266,6 @@ public class EventResource {
     @DELETE
     @Path("/{uId}/{eId}/comment?{cId}")
     //@Secured
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeComment(@PathParam("uId") Long uId,
             @PathParam("eId") Long eId,
