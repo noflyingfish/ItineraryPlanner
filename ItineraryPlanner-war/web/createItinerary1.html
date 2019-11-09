@@ -122,9 +122,17 @@
 <script>
         iId = 151
         uId = 1
+
+        var calender = new Calender(calenderEl, {
+            events: {
+                url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + "/itinerary/" + iId,
+                method: 'POST'
+            }
+        })
+
         
         $(document).ready(function() {
-            $.get('http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + "/" + iId, function(data) {
+            $.get('http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + "/itinerary/" + iId, function(data) {
         
                 console.log("ASDKAKAKDA")
                 console.log(data)
