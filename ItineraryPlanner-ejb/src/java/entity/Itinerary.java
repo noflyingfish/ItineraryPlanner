@@ -31,7 +31,7 @@ public class Itinerary implements Serializable {
     private String creator;
     private String title;
     private String caption;
-    private List<String> placeList = new ArrayList<>();
+    private String places;
     
     @ManyToMany(mappedBy = "itineraryList")
     private List<Users> usersList = new ArrayList<>();
@@ -107,14 +107,6 @@ public class Itinerary implements Serializable {
     public void setCaption(String caption) {
         this.caption = caption;
     }
-
-    public List<String> getPlaceList() {
-        return placeList;
-    }
-
-    public void setPlaceList(List<String> placeList) {
-        this.placeList = placeList;
-    }
     
     public List<Users> getUsersList() {
         return usersList;
@@ -154,6 +146,14 @@ public class Itinerary implements Serializable {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(String places) {
+        this.places = places;
     }
     
     @Override
