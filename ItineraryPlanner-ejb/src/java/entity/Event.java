@@ -72,20 +72,20 @@ public class Event implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Date getStartDate() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStartDate(Date startDate) {
-        this.start = startDate;
+    public void setStart(Date start) {
+        this.start = start;
     }
 
-    public Date getEndDate() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEndDate(Date endDate) {
-        this.end = endDate;
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public String getDuration() {
