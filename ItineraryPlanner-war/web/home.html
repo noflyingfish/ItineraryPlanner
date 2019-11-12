@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>Travellab. Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="WEB-INF/css/navbarSidebarModal.css">
+</head>
+
+<body>
+    <div class="topnav">
+        <img src="./WEB-INF/css/logo.jpg" width="175">
+        <div class="topnav-btn" style="float:right; padding-right:150px; display: flex; align-items: center">
+            <img src="WEB-INF/css/icon.jpg">
+            <span style="margin-right: 20px;">username</span>
+        </div>
+        <button class="dropdown-btn">Settings<i class="fa fa-caret-down" style="float:right;"></i></button>
+        <div class="topnav-dropdown-list">
+            <a href="#">Edit Profile</a>
+            <a href="#">Log Out</a>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <span id="selected"><a href="#">Home</a></span>
+        <a href="#">function 1</a>
+        <a href="#">function 2</a>
+        <a href="#">function 3</a>
+        <span id="selected"><a href="#">function 4</a></span>
+        <a href="#">function 5</a>
+        <a href="#">function 6</a>
+    </div>
+
+    <script>
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

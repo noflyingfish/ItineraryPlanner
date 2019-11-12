@@ -1,236 +1,125 @@
-    <head>
-        <title>Register Page</title>
+<head>
+    <title>Travellab. Registration</title>
 
-        <!-- Tell the browser to be responsive to screen width -->
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-        <!--Bootsrap 4 CDN-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
 
-        <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="WEB-INF/css/registration.css">
+    <link rel="stylesheet" href="WEB-INF/css/navbarSidebarModal.css">
+</head>
 
-        <style>
-            @import url('https://fonts.googleapis.com/css?family=Numans');
-
-            html,body{
-                background-image: url('https://gratisography.com/wp-content/uploads/2019/10/gratisography-scenic-mountain-view-600x400.jpg');
-                background-size: cover;
-                background-repeat: no-repeat;
-                height: 100%;
-                font-family: 'Numans', sans-serif;
-            }
-
-            .container{
-                height: 100%;
-                align-content: center;
-            }
-
-            .card{
-                height: 700px;
-                margin-top: auto;
-                margin-bottom: auto;
-                width: 400px;
-                background-color: rgba(0,0,0,0.5) !important;
-            }
-
-            .card-header h3{
-                color: white;
-            }
-
-            .card-body{
-            }
-
-            .input-group-prepend span{
-                width: 50px;
-                background-color: #FFC312;
-                color: black;
-                border:0 !important;
-            }
-
-            input:focus{
-                outline: 0 0 0 0  !important;
-                box-shadow: 0 0 0 0 !important;
-
-            }
-
-            .login_btn{
-                color: black;
-                background-color: #FFC312;
-                width: 100px;
-
-            }
-
-            .login_btn:hover{
-                color: black;
-                background-color: white;
-            }
-
-            .links{
-                color: white;
-            }
-
-            .links a{
-                margin-left: 4px;
-            }
+<body>
+    <div class="topnav">
+        <img src="./WEB-INF/css/logo.jpg" width="175">
+        <div class="topnav-btn" style="float:right; padding-right:150px">
+            <a href="index.html">Home</a> 
+        </div>
+    </div>
 
 
+    <div class="d-flex justify-content-center h-30">
+        <div class="card">
 
-        </style>
-    </head>
+            <div class="card-header">
+                <h3>Register</h3>
+            </div>
 
-    <body>
+            <div class="card-body">
+                <form id="registerForm">
 
-        <div class="container">
-            <div class="d-flex justify-content-center h-100">
-                <div class="card">
-
-                    <div class="card-header">
-                        <h3>Register</h3>
-                    </div>
-
-                    <div class="card-body">
-                        <form id="registerForm">
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input id="inputUsername" placeholder="Username" class="form-control"
-                                       required="true" requiredMessage="Username is required"/>
-                                <h:message for="inputUsername"/>
-                            </div>
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input id="inputFirstName" placeholder="First Name" class="form-control"
-                                       required="true" requiredMessage="First Name is required"/>
-                                <h:message for="inputFirstName"/>
-                            </div>
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input id="inputLastName" placeholder="Last Name" class="form-control"
-                                       required="true" requiredMessage="Last Name is required"/>
-                                <h:message for="inputLastName"/>
-                            </div>
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
-                                </div>
-                                <input id="inputEmail" placeholder="Email" class="form-control"
-                                       required="true" requiredMessage="Email is required"/>
-                                <h:message for="inputEmail"/>
-                            </div>
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
-                                </div>
-                                <input id="inputDescription" placeholder="Description" class="form-control" 
-                                       required="true" requiredMessage="Description is required"/>
-                                <h:message for="inputDescription"/>
-
-                            </div>
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                </div>
-                                <input type="date" id="inputBirthday" placeholder="Birthday" class="form-control" 
-                                       required="true" requiredMessage="Birthday is required"/>
-                                <h:message for="inputBirthday"/>
-
-                            </div>           
-                            
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-link"></i></span>
-                                </div>
-                                <input id="inputInstaURL" placeholder="Insta URL" class="form-control"/>
-
-                            </div>           
-                            
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-link"></i></span>
-                                </div>
-                                <input id="inputBlogURL" placeholder="Blog URL" class="form-control"/>
-
-                            </div>                                       
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                                </div>
-                                <input type="password" id="inputPassword" placeholder="Password"
-                                       class="form-control" required="true" requiredMessage="Password is required"/>
-                                <h:message for="inputPassword"/>
-
-                            </div>                            
-
-                            <div class="form-group">
-                                <button type="submit" class="btn float-right login_btn" >Register</button>
-                            </div>
-
-                        </form>
-                    </div>
-
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-center links">
-                            Already have an account?<a href="login.html">Login</a>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
+                        <input id="inputUsername" placeholder="Username" class="form-control"
+                               required="true" requiredMessage="Username is required"/>
+                        <h:message for="inputUsername"/>
                     </div>
 
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+                        </div>
+                        <input id="inputEmail" placeholder="Email" class="form-control"
+                               required="true" requiredMessage="Email is required"/>
+                        <h:message for="inputEmail"/>
+                    </div>                                        
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" id="inputPassword" placeholder="Password"
+                               class="form-control" required="true" requiredMessage="Password is required"/>
+                        <h:message for="inputPassword"/>
+                    </div>       
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" id="inputPassword" placeholder="Confirm Password"
+                               class="form-control" required="true" requiredMessage="Password is required"/>
+                        <h:message for="inputPassword"/>
+                    </div>                            
+
+                    <div class="form-group">
+                        <button type="submit" class="btn float-right login_btn" >Register</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="card-footer">
+                <div class="d-flex justify-content-center links">
+                    Already have an account?<a href='index.html'>Login</a>
                 </div>
             </div>
+
         </div>
-    </body>
+    </div>
 
-        <script>
-            $(document).ready(function () {
+</body>
 
-                $('#registerForm').submit(function () {
+<script>
+    $(document).ready(function () {
 
-                    var currentDate = new Date();
-                    
-                    var body = JSON.stringify({
-                        "userName": $("#inputUsername").val(),
-                        "password": $("#inputPassword").val(),
-                        "firstName": $("#inputFirstName").val(),
-                        "lastName": $("#inputLastName").val(),
-                        "email": $("#inputEmail").val(),
-                        "description": $("#inputDescription").val(),
-                        "birthday": new Date($("#inputBirthday").val()),
-                        "instaURL": $("#inputInstaURL").val(),
-                        "blogURL": $("#inputBlogURL").val(),
-                        "createdDate": currentDate
-                    })
-                    console.log(body)
+        $('#registerForm').submit(function () {
 
-                    $.ajax({
-                        type: "POST",
-                        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/register',
-                        data: body,
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data, textStatus, xhr)
-                        {
-                            console.log("Response: ", data)
-                            console.log(textStatus)
-                        },
-                        error: function (xhr, error, errorType) {
-                            console.log(error);
-                        }
-                    });
-                    return false;
-                });
+            var currentDate = new Date();
 
+            var body = JSON.stringify({
+                "userName": $("#inputUsername").val(),
+                "password": $("#inputPassword").val(),
+                "email": $("#inputEmail").val(),
+                "createdDate": currentDate
+            })
+            console.log(body)
+
+            $.ajax({
+                type: "POST",
+                url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/register',
+                data: body,
+                contentType: "application/json; charset=utf-8",
+                success: function (data, textStatus, xhr)
+                {
+                    console.log("Response: ", data)
+                    console.log(textStatus)
+                },
+                error: function (xhr, error, errorType) {
+                    console.log(error);
+                }
             });
-        </script>
+            return false;
+        });
+
+    });
+</script>
