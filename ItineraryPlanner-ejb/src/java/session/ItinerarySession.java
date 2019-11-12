@@ -36,7 +36,7 @@ public class ItinerarySession implements ItinerarySessionLocal {
         oldI.setEndDate(i.getEndDate());
         oldI.setTitle(i.getTitle());
         oldI.setCaption(i.getCaption());
-        oldI.setPlaceList(i.getPlaceList());
+        oldI.setPlaces(i.getPlaces());
         
         return oldI;
     }
