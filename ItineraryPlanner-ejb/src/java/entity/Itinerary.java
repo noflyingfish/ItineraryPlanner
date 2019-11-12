@@ -28,6 +28,7 @@ public class Itinerary implements Serializable {
     private Date startDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
+    private String creator;
     private String title;
     private String caption;
     private List<String> placeList = new ArrayList<>();
@@ -147,6 +148,14 @@ public class Itinerary implements Serializable {
         this.photoList = photoList;
     }
 
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
