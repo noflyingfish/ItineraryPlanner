@@ -8,8 +8,9 @@ and open the template in the editor.
         /* Style The Dropdown Button */
         .dropbtn {
           background-color: #4CAF50;
-          color: white;
+          color: black;
           padding: 16px;
+          border-radius: 12px;
           font-size: 16px;
           border: none;
           cursor: pointer;
@@ -66,19 +67,18 @@ and open the template in the editor.
 
 <body>
     <div class="topnav">
-            <div class="dropdown" style="float:right; padding-right:100px">
+            <div class="dropdown" style="float:right; padding-top:20px; padding-right:300px">
                     <button class="dropbtn">Settings</button>
                     <div class="dropdown-content">
-                      <a href="ww.google.com">Link 1</a>
-                      <a href="#">Link 2</a>
-                      <a href="#">Link 3</a>
+                      <a href="#">Edit Profile</a>
+                      <a href="#">Log Out</a>
                     </div>
             </div>
 
         <img src="./WEB-INF/css/logo.jpg" width="175">
-        <div class="topnav-btn" style="float:right; padding-right:150px; display: flex; align-items: center">
+        <div class="topnav-btn" style="float:right; display: flex; align-items: center">
             <img src="WEB-INF/css/icon.jpg">
-            <span style="margin-right: 20px;">username</span>
+            <span>username</span>
         </div>
         <div style="float: right; align-items: center">
     </div>
@@ -86,12 +86,8 @@ and open the template in the editor.
 
     <div class="sidenav">
         <span id="selected"><a href="#">Home</a></span>
-        <a href="#">function 1</a>
-        <a href="#">function 2</a>
-        <a href="#">function 3</a>
-        <span id="selected"><a href="#">function 4</a></span>
-        <a href="#">function 5</a>
-        <a href="#">function 6</a>
+        <a href="#">Create Itinerary</a>
+        <a href="#">Search Itinerary</a></span>
     </div>
 
     <script>
