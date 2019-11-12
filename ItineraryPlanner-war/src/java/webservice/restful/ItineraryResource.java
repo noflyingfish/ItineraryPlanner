@@ -52,9 +52,11 @@ public class ItineraryResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            itinerarySessionLocal.createItinerary(i, uId);
-            
-            return Response.status(204)
+            Itinerary newI = itinerarySessionLocal.createItinerary(i, uId);
+            newI.setEventList(null);
+            newI.setUsersList(null);
+            return Response.status(200)
+                    .entity(newI)
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
