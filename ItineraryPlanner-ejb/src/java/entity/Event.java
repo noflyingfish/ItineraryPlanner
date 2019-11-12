@@ -21,7 +21,7 @@ public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+    private String title;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,12 +56,12 @@ public class Event implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getCreatedDate() {
@@ -86,6 +86,22 @@ public class Event implements Serializable {
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+    
+    public Date getStartDate() {
+        return start;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.start = startDate;
+    }
+
+    public Date getEndDate() {
+        return end;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.end = endDate;
     }
 
     public String getDuration() {
@@ -200,5 +216,4 @@ public class Event implements Serializable {
     public String toString() {
         return "entity.Event[ id=" + id + " ]";
     }
-
 }

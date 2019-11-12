@@ -1,0 +1,54 @@
+<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+
+<form id="myform">
+
+        <label for="comment">Comment</label>
+        <input type="text" id="comment" placeholder="Comment" />
+        <br>
+        <input type="submit" id="create" value="Create"/>
+
+        </form>
+
+<script>
+uId = sessionStorage.getItem('uId')
+userName = sessionStorage.getItem('userName')
+token = sessionStorage.getItem('token')
+iId = sessionStorage.getItem('iId')
+console.log(uId)
+
+$(document).ready(function() {
+
+$('#myform').submit(function() {
+
+    var currentDate = new Date();
+    
+    var body = JSON.stringify({
+
+        "caption": $("#caption").val(),
+        "username": userName,
+        "createdDate": currentDate
+    })
+    console.log(body)
+
+    $.ajax({
+        type: "POST",
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/'+ uId + '/' + iId + '/comment',
+        data: body,
+        contentType: "application/json; charset=utf-8",
+        
+        success: function(data, textStatus, xhr)
+        {
+            console.log("Response: ", data)
+            console.log(textStatus)
+        },
+        error: function(xhr, error, errorType) {
+            console.log(error);
+        }
+    });
+    return false;
+});
+
+});
+</script>

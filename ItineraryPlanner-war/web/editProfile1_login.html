@@ -65,7 +65,7 @@
                         <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a class="d-block">Alexander Pierce</a>
+                        <a class="d-block" id="userName"></a>
                     </div>
                 </div>
 
@@ -231,8 +231,10 @@
 </body>
 
 <script>
-        uId = sessionStorage.getItem('uId')
-
+    uId = sessionStorage.getItem('uId')
+    userName = sessionStorage.getItem("userName")
+    document.getElementById("userName").textContent = userName;
+        
         $('#form').submit(function () {
             console.log("sadsa")
             var u = $("#username").val()
