@@ -72,6 +72,7 @@ public class Event implements Serializable {
         this.createdDate = createdDate;
     }
 
+<<<<<<< HEAD
     public Date getStart() {
         return start;
     }
@@ -86,6 +87,22 @@ public class Event implements Serializable {
 
     public void setEnd(Date end) {
         this.end = end;
+=======
+    public Date getStartDate() {
+        return start;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.start = startDate;
+    }
+
+    public Date getEndDate() {
+        return end;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.end = endDate;
+>>>>>>> origin/feiyu1
     }
 
     public String getDuration() {

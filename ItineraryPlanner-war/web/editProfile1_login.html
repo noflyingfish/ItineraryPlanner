@@ -122,85 +122,65 @@
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">View Profile</a>
+                    <a class="nav-link" href="viewProfile1.html">View Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="editProfile1_details.html">Edit Details</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="editProfile1_login.html">Edit Login</a>
+                    <a class="nav-link active" href="#">Edit Login</a>
                 </li>
             </ul>
 
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-
-                    <div class="form-row">
-                        <div class="form-group col-md-3"><br>
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="username" disabled>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="pic">Profile Picture</label> <br>
-                            <img id="pic" src="./WEB-INF/icon.jpg" width ="100">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="You didn't set your email" disabled>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="description">Description</label>
-                            <div class="md-form">
-                                <textarea id="description" class="md-textarea form-control" rows="3" placeholder="You don't have a description yet..." disabled=""></textarea>
+                    <br>
+                    <form id="form">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" placeholder="Username">
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="firstname">First Name</label>
-                            <input type="text" class="form-control" id="firstname" placeholder="-" disabled>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Current Password">
+                            </div>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="lastname">Last Name</label>
-                            <input type="text" class="form-control" id="lastname" placeholder="-" disabled>
+                        <hr>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="username1">New Username</label>
+                                <input type="text" class="form-control" id="username1" placeholder="Username">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="birthday">Birthday</label>
-                            <input type="text" class="form-control" id="birthday" placeholder="You didnt set your birthday yet..." disabled>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="password1">New Password</label>
+                                <input type="password" class="form-control" id="password1" placeholder="New Password">
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="blog">Blog</label>
-                            <input type="text" class="form-control" id="blog" placeholder="empty" disabled>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="password2">Confirm Password</label>
+                                <input type="password" class="form-control" id="password2" placeholder="Confirm Password">
+                            </div>
                         </div>
-                        <div class="form-group col-md-4">
-                           <label for="ig">Instagram</label>
-                            <input type="text" class="form-control" id="ig" placeholder="empty" disabled>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Update Change</button>
+                            </div>
                         </div>
-                    </div>
-
+                    </form>
                 </div><!-- /.container-fluid -->
             </section>
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            NUS AY2019/2020 SEM1 IS3106 Group 2
+            footer here
         </footer>
 
         <!-- Control Sidebar -->
@@ -244,35 +224,39 @@
 
 <script>
         uId = sessionStorage.getItem('uId')
-
-        $(document).ready(function () {
-            $.get('http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/' + uId, function (data) {
-                $("#firstname").val(data.firstName);
-                $("#lastname").val(data.lastName);
-                $("#username").val(data.userName);
-                $("#email").val(data.email);
-                $("#description").val(data.description);
-                $("#birthday").val(data.description);
-                $("#ig").val(data.instaURL);
-                $("#blog").val(data.blogURL);
-                $("#fb").val(data.blogURL);
-            });
-
-            $('#myform').submit(function () {
-                var currentDate = new Date();
-                // if("#password_1".val() === "#password_2".val()){
+        
+        $('#form').submit(function () {
+            console.log("sadsa")
+            var u = $("#username").val()
+            var p = $("#password").val()
+            
+            $.ajax({
+                    type: "GET",
+                    url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/'+ uId,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data, textStatus, xhr)
+                    {
+                        console.log("Response: ", data)
+                        console.log(data.userName)
+                        console.log(textStatus)
+                        if(u != data.userName && p != data.password){
+                            alert("Wrong password")
+                        }
+                    },
+                    error: function (xhr, error, errorType) {
+                        console.log(body)
+                        console.log(error);
+                    }
+                });
+            
+            var p1 = $("#password1").val()
+            var p2 = $("#password2").val()
+            
+            if (p1 === p2) {
                 var body = JSON.stringify({
                     "id": uId,
-                    "firstName": $("#firstName").val(),
-                    "lastName": $("#lastName").val(),
-                    "userName": $("#userName").val(),
+                    "userName": $("#username").val(),
                     "password": $("#password_1").val(),
-                    "email": $("#email").val(),
-                    "description": $("#description").val(),
-                    "birthday": new Date($("#birthday").val()),
-                    "instaURL": $("#instaURL").val(),
-                    "blogURL": $("#blogURL").val(),
-                    "createdDate": currentDate
                 })
                 console.log(body)
 
@@ -287,17 +271,14 @@
                         console.log(textStatus)
                     },
                     error: function (xhr, error, errorType) {
-                        console.log(body)
-                        console.log(error);
+                        alert("Username already taken!")
                     }
                 });
 
-                //} else {
-                console.log("AA")
-                //alert("Password mismatch!")
-                // }    
-                return false;
-            });
-
+            } else {
+                alert("Password mismatch!")
+            }
+            return false;
         });
+
 </script>
