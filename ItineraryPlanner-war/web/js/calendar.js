@@ -5,9 +5,9 @@ $(function () {
     initializeCalendar();
     getCalendars();
     initializeRightCalendar();
+    initializeEditCalendar();
     disableEnter();
 });
-
 /* --------------------------initialize timepicker-------------------------- */
 var initialiseTimePicker = function () {
     $('#duration').datetimepicker({
@@ -21,26 +21,25 @@ var initializeCalendar = function () {
         editable: true,
         eventLimit: true, // allow "more" link when too many events
         eventOverlap: false, //cannot overlap events
-        eventDurationEditable: false, //cannot resize objects to change the duration. duration can only be changed through edit event modal
         //append activity type to title of event
         //set duration for calendar view
         eventRender: function (event, element) {
             if (event.activityType == "Food") {
                 element.css('background-color', '#ffbaba');
-            } 
+            }
             if (event.activityType == "Attraction") {
                 element.css('background-color', '#ffff9f');
-            } 
+            }
             if (event.activityType == "Events") {
                 element.css('background-color', '#a5ffa5');
-            } 
+            }
             if (event.activityType == "Accomodation") {
                 element.css('background-color', '#ffdaa1');
             }
             if (event.imageUrl) {
                 //element.find(".fc-title").prepend(event.activityType);
                 //element.find('.fc-event-title').html('<p>Ingen migræne idag</p><img src="icons/kalender_glad_smiley.png"/>');
-                element.find(".fc-title").prepend("<img src='" + event.imageUrl +"' width='16' height='16'>");
+                element.find(".fc-title").prepend("<img src='" + event.imageUrl + "' width='16' height='16'>");
             }
         },
         height: screen.height - 160,
@@ -51,6 +50,7 @@ var initializeCalendar = function () {
 var getCalendars = function () {
     $cal = $('.calendar');
     $cal2 = $('#calendar2');
+    $cal3 = $('#calendar3');
 }
 
 /* -------------------manage cal2 (right pane)------------------- */
@@ -67,14 +67,31 @@ var initializeRightCalendar = function () {
         select: function (start, end) {
             newEvent(start);
         },
-        //display tooltip
-
+        eventClick: function (calEvent, jsEvent, view) {
+            editEvent(calEvent);
+        },
     });
 }
-
-
+/* -------------------edit calendar------------------- */
+var initializeEditCalendar = function () {
+    $cal3.fullCalendar('changeView', 'agendaDay');
+    $cal3.fullCalendar('option', {
+        slotEventOverlap: false,
+        allDaySlot: false,
+        header: {
+            right: 'prev,next today'
+        },
+        selectable: true,
+        selectHelper: true,
+        select: function (start, end) {
+            newEvent(start);
+        },
+        eventClick: function (calEvent, jsEvent, view) {
+            editEvent(calEvent);
+        },
+    });
+}
 /* -------------------moves right pane to date------------------- */
-//when ever 
 var loadEvents = function () {
     $.getScript("js/events.js", function () {
     });
@@ -82,77 +99,36 @@ var loadEvents = function () {
 
 
 var newEvent = function (start) {
-    //clear values from previous event
-    $('input#title').val(""); 
-    $("#duration").find("input").val(""); 
+//clear values from previous event
+    $('input#title').val("");
     $('textarea#notes').val("");
-    $("#activityType :selected").text("");
-    
+    $("#activityType").val('default');
     $('#newEvent').modal('show');
     $('#submit').unbind();
     $('#submit').on('click', function () {
         var title = $('input#title').val();
         var activityType = $("#activityType :selected").text();
-        var duration = $("#duration").find("input").val();
+        console.log(activityType);
+        //var duration = $("#duration").find("input").val();
         var notes = $('textarea#notes').val();
-        var imageUrl = $('input#image').val();
-        console.log(imageUrl);
-        //split the duration into hours and minutes
-        var hours = duration.split(":")[0];
-        var mins = duration.split(":")[1];
-        //convert hours to mins
-        if (hours != "0") {
-            var hoursInMins = parseInt(hours) * 60;
-            var durationInMinutes = hoursInMins + parseInt(mins);
-            var end = moment(start).add(durationInMinutes, 'minutes');
-        } else {
-            var durationInMinutes = hoursInMins + parseInt(mins);
-            var end = moment(start).add(durationInMinutes, 'minutes');
-        }
-        //check
-        if (!title && duration) {
-            alert("Title of activity is required.")
-        } 
-        if (title && !duration) {
-            alert("Duration for activity is required.")
-        }
-        if (!title && !duration) {
-            alert("Title and duration required.")
-        }
-        //user did not type any notes
-        if (title && duration && !notes && !imageUrl) {
+//check
+//user did not type any notes
+        if (title && !notes) {
             var eventData = {
                 title: title,
                 start: start,
-                end: end,
-                activityType: activityType,
-                duration: durationInMinutes
+                activityType: activityType
             };
             $cal.fullCalendar('renderEvent', eventData, true);
             $('#newEvent').modal('hide');
         }
-        //user did not upload image
-        if (title && duration && notes && !imageUrl) {
+//user did not upload image
+        if (title && notes) {
             var eventData = {
                 title: title,
                 start: start,
-                end: end,
                 activityType: activityType,
-                notes: notes,
-                duration: durationInMinutes
-            };
-            $cal.fullCalendar('renderEvent', eventData, true);
-            $('#newEvent').modal('hide');
-        }
-        if (title && duration && notes && imageUrl) {
-            var eventData = {
-                title: title,
-                start: start,
-                end: end,
-                activityType: activityType,
-                notes: notes,
-                imageUrl: imageUrl,
-                duration: durationInMinutes
+                notes: notes
             };
             $cal.fullCalendar('renderEvent', eventData, true);
             $('#newEvent').modal('hide');
@@ -162,23 +138,42 @@ var newEvent = function (start) {
 
 var editEvent = function (calEvent) {
     $('input#editTitle').val(calEvent.title);
+    $("#editActivityType :selected").text(calEvent.activityType);
+    console.log(calEvent.title);
+    console.log(calEvent.activityType);
+    if (calEvent.notes) {
+        $('textarea#editNotes').val(calEvent.notes);
+    }
     $('#editEvent').modal('show');
     $('#update').unbind();
     $('#update').on('click', function () {
         var title = $('input#editTitle').val();
+        var notes = $('textarea#editNotes').val();
+        console.log(title);
+        var activityType = $("#editActivityType :selected").text();
+        console.log(activityType);
         $('#editEvent').modal('hide');
-        var eventData;
-        if (title) {
-            calEvent.title = title
+
+        //user did not type any notes
+        if (title && !notes) {
+            calEvent.title = title;
+            calEvent.activityType = activityType;
+            //calEvent.start = calEvent.start;
+            //calEvent.end = end;
+            //calEvent.activityType = activityType;
             $cal.fullCalendar('updateEvent', calEvent);
-        } else {
-            alert("Title can't be blank. Please try again.")
+        }
+//user did not upload image
+        if (title && notes) {
+            calEvent.title = title;
+            calEvent.activityType = activityType;
+            calEvent.notes = notes;
+            $cal.fullCalendar('updateEvent', calEvent);
         }
     });
     $('#delete').on('click', function () {
         $('#delete').unbind();
         if (calEvent._id.includes("_fc")) {
-            $cal1.fullCalendar('removeEvents', [getCal1Id(calEvent._id)]);
             $cal2.fullCalendar('removeEvents', [calEvent._id]);
         } else {
             $cal.fullCalendar('removeEvents', [calEvent._id]);

@@ -23,7 +23,7 @@
             uId = sessionStorage.getItem('uId')
             function save() {
                 var currentDate = new Date();
-                var events = $('#calendar2').fullCalendar('clientEvents');
+                var events = $('#calendar3').fullCalendar('clientEvents');
                 if (events) {
                     //create new itinerary
 
@@ -95,7 +95,7 @@
 
 
 
-        <div id='calendar2' class='calendar'></div>
+        <div id='calendar3' class='calendar'></div>
 
         <div class="modal fade" id="newEvent" role="dialog" aria-labelledby="eventFormLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
