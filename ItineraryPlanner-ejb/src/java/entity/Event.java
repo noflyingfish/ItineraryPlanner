@@ -25,9 +25,9 @@ public class Event implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    private Date start;
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private Date end;
     private String duration;
     private String type;
     private String cost;
@@ -73,19 +73,19 @@ public class Event implements Serializable {
     }
 
     public Date getStartDate() {
-        return startDate;
+        return start;
     }
 
     public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+        this.start = startDate;
     }
 
     public Date getEndDate() {
-        return endDate;
+        return end;
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        this.end = endDate;
     }
 
     public String getDuration() {
