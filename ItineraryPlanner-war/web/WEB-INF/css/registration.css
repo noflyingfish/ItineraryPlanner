@@ -7,7 +7,6 @@ html,body{
     font-family: 'Numans', sans-serif;
 }
 
-
 .card{
     height: 420px;
     margin-top: auto;
@@ -18,9 +17,6 @@ html,body{
 
 .card-header h3{
     color: white;
-}
-
-.card-body{
 }
 
 .input-group-prepend span{

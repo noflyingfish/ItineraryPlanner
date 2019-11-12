@@ -20,7 +20,7 @@
             <button type="submit"><i class="fa fa-search"></i></button>
 
             <div class="topnav-btn" style="float:right; padding-right:150px">
-                <a id="login-btn" style="margin-right: 50px">Login</a> 
+                <a href="javascript:void(0)" id="login-btn">Login</a> 
                 <a href="registration.html">Register</a> 
             </div>
         </div>
@@ -84,7 +84,7 @@
                             sessionStorage.setItem('userName', userName);
                             sessionStorage.setItem('token', data.accessToken);
                             alert("You have successful logged in")
-                            window.location.href = "viewProfile.html";
+                            window.location.href = "home.html";
                             console.log(data)
                             console.log("User ID: ", sessionStorage.getItem('uId'))
                             console.log("Username: ", sessionStorage.getItem('userName'))
