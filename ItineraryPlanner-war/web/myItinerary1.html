@@ -52,7 +52,7 @@
         <script src="plugins/fastclick/fastclick.js"></script>
         <!-- AdminLTE App -->
         <script src="dist/js/adminlte.js"></script>
-        
+
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -73,59 +73,59 @@
         </link>
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.jqueryui.min.css">
         </link>
-    
+
         <!-- Our Custom CSS -->
         <link rel="stylesheet" href="WEB-INF/css/navbarSidebarModal.css">
     </head>
 
-<style>
-    .cards tbody tr {
-        float: left;
-        width: 20rem;
-        margin: 0.5rem;
-        border: 0.0625rem solid rgba(0, 0, 0, .125);
-        border-radius: .25rem;
-        box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
-    }
+    <style>
+        .cards tbody tr {
+            float: left;
+            width: 20rem;
+            margin: 0.5rem;
+            border: 0.0625rem solid rgba(0, 0, 0, .125);
+            border-radius: .25rem;
+            box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+        }
 
-    .cards tbody td {
-        display: block;
-    }
+        .cards tbody td {
+            display: block;
+        }
 
-    .table tbody label {
-        display: none;
-    }
+        .table tbody label {
+            display: none;
+        }
 
-    .cards tbody label {
-        display: inline;
-        position: relative;
-        font-size: 85%;
-        top: -0.5rem;
-        float: left;
-        color: #808080;
-        min-width: 4rem;
-        margin-left: 0;
-        margin-right: 1rem;
-        text-align: left;
-    }
+        .cards tbody label {
+            display: inline;
+            position: relative;
+            font-size: 85%;
+            top: -0.5rem;
+            float: left;
+            color: #808080;
+            min-width: 4rem;
+            margin-left: 0;
+            margin-right: 1rem;
+            text-align: left;
+        }
 
-    tr.selected label {
-        color: #404040;
-    }
+        tr.selected label {
+            color: #404040;
+        }
 
-    .table .fa {
-        font-size: 2.5rem;
-        text-align: center;
-    }
+        .table .fa {
+            font-size: 2.5rem;
+            text-align: center;
+        }
 
-    .cards .fa {
-        font-size: 7.5rem;
-    }
+        .cards .fa {
+            font-size: 7.5rem;
+        }
 
-    form {
-        margin-right: -500px;
-    }
-</style>
+        form {
+            margin-right: -500px;
+        }
+    </style>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper">
 
@@ -189,6 +189,14 @@
                                 <a href="pages/widgets.html" class="nav-link">
                                     <i class="nav-icon fa fa-search"></i>
                                     <p>
+                                        Create Itinerary
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/widgets.html" class="nav-link">
+                                    <i class="nav-icon fa fa-search"></i>
+                                    <p>
                                         Search Itinerary
                                     </p>
                                 </a>
@@ -215,11 +223,11 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Home</h1>
+                                <h1 class="m-0 text-dark">My Itinerary</h1>
                                 <form id="myform" style="float:right; padding-right: -500px;">
-                                        <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
-                                        
-                                        <table id="itineraryTable" class="table table-sm table-hover"></table>
+                                    <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
+
+                                    <table id="itineraryTable" class="table table-sm table-hover"></table>
                                 </form>
                             </div><!-- /.col -->
 
@@ -252,10 +260,10 @@
 
 <script>
     userName = sessionStorage.getItem("userName")
+    uId = sessionStorage.getItem('uId')
     document.getElementById("userName").textContent = userName;
 
     var itineraryTable = $('#itineraryTable').DataTable({
-
         'ajax': {
             "type": "GET",
             "url": "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/getallitinerary",
@@ -263,7 +271,7 @@
         },
         'columns': [
             {
-                "width" : "10px",
+                "width": "10px",
                 title: "Caption", "data": "caption", name: "caption", visible: true,
                 render: function (data, type, full, meta) {
                     var title = $('#itineraryTable').DataTable().column(meta.col).header();
@@ -271,7 +279,7 @@
                 }
             },
             {
-                "width" : "10px",
+                "width": "10px",
                 title: "Title", "data": "title", name: "title", visible: true,
                 render: function (data, type, full, meta) {
                     var title = $('#itineraryTable').DataTable().column(meta.col).header();
@@ -279,7 +287,7 @@
                 }
             },
             {
-                "width" : "10px",              
+                "width": "10px",
                 title: "Duration", "data": "duration", name: "title", visible: true,
                 render: function (data, type, full, meta) {
                     var title = $('#itineraryTable').DataTable().column(meta.col).header();
@@ -287,7 +295,7 @@
                 }
             },
             {
-                "width" : "10px",              
+                "width": "10px",
                 title: "Place", "data": "places", name: "title", visible: true,
                 render: function (data, type, full, meta) {
                     var title = $('#itineraryTable').DataTable().column(meta.col).header();
@@ -295,7 +303,7 @@
                 }
             },
             {
-                "width" : "10px",               
+                "width": "10px",
                 title: "Start Date", "data": "startDate", name: "startDate", visible: true,
                 render: function (data, type, full, meta) {
                     var title = $('#itineraryTable').DataTable().column(meta.col).header();
@@ -303,7 +311,7 @@
                 }
             },
             {
-                "width" : "10px",              
+                "width": "10px",
                 title: "End Date", "data": "endDate", name: "endDate", visible: true,
                 render: function (data, type, full, meta) {
                     var title = $('#itineraryTable').DataTable().column(meta.col).header();
@@ -311,7 +319,7 @@
                 },
             },
             {
-                "width" : "10px",               
+                "width": "10px",
                 title: "Created Date", "data": "createdDate", name: "createdDate", visible: true,
                 render: function (data, type, full, meta) {
                     var title = $('#itineraryTable').DataTable().column(meta.col).header();
@@ -319,34 +327,33 @@
                 },
             },
             {
-                title: "View Itinerary", "data" : null
+                title: "View Itinerary", "data": null
             },
-            
         ],
         "columnDefs": [
             {
-                'targets' : -1,
-                'data' : null,
-                'defaultContent' : '<button type="button" data-type="view">View Itinerary</button></div>'
+                'targets': -1,
+                'data': null,
+                'defaultContent': '<button type="button" data-type="view">View Itinerary</button></div>'
             }
         ]
     });
 
-function displayCard() {
+    function displayCard() {
         $("#itineraryTable").toggleClass('cards')
         $("#itineraryTable thead").toggle()
     }
 
-$('#itineraryTable tbody').on('click', 'button', function () {
-    var button = $(this);
-    var type = button.attr('data-type');
-    var data = itineraryTable.row($(this).parents('tr')).data();
-    var iId = data.id;
+    $('#itineraryTable tbody').on('click', 'button', function () {
+        var button = $(this);
+        var type = button.attr('data-type');
+        var data = itineraryTable.row($(this).parents('tr')).data();
+        var iId = data.id;
 
-    if (type == 'view') {
-        sessionStorage.setItem("iId", data.id)
-        window.location.href = "viewItineraryById1.html";
-    }
-})
+        if (type == 'view') {
+            sessionStorage.setItem("iId", data.id)
+            window.location.href = "viewItineraryById1.html";
+        }
+    })
 //itineraryTable.ajax.reload()    
 </script>

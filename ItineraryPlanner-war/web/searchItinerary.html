@@ -1,7 +1,27 @@
 <!DOCTYPE html>
-<html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 
+<html>
     <head>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.jqueryui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.colVis.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css"></link>
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.jqueryui.min.css"></link>
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Travellab. Home</title>
@@ -67,7 +87,7 @@
                             <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a class="d-block" id="userName"></a>
+                            <a class="d-block">Alexander Pierce</a>
                         </div>
                     </div>
 
@@ -77,7 +97,7 @@
                             <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="myItinerary1.html" class="nav-link">
+                                <a href="myItinerary.html" class="nav-link">
                                     <i class="nav-icon fa fa-th"></i>
                                     <p>
                                         My Itinerary
@@ -85,7 +105,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="createItinerary.html" class="nav-link">
+                                <a href="#" class="nav-link">
                                     <i class="nav-icon fa fa-pencil"></i>
                                     <p>
                                         Create Itinerary
@@ -93,7 +113,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="searchItinerary.html" class="nav-link">
+                                <a href="#" class="nav-link active">
                                     <i class="nav-icon fa fa-search"></i>
                                     <p>
                                         Search Itinerary
@@ -122,9 +142,29 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Home</h1>
+                                <h1 class="m-0 text-dark">Search Itinerary</h1>
                             </div><!-- /.col -->
-
+                            <div class="col-sm-6">
+                                <form class="form-inline ml-3 float-sm-right">
+                                    <div class="input-group ">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                                Filter
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-item"><a href="#" style="color: black">Place</a></li>
+                                                <li class="dropdown-item"><a href="#" style="color: black">Duration</a></li>
+                                            </ul>
+                                        </div>
+                                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-navbar" type="submit">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
                 </div>
@@ -133,7 +173,10 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
-
+                        <script>
+                            userName = sessionStorage.getItem("userName")
+                            document.getElementById("userName").textContent = userName;
+                        </script>
                     </div><!-- /.container-fluid -->
                 </section>
                 <!-- /.content -->
@@ -157,7 +200,7 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script>
-            $.widget.bridge('uibutton', $.ui.button)
+                            $.widget.bridge('uibutton', $.ui.button)
         </script>
         <!-- Bootstrap 4 -->
         <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -183,8 +226,3 @@
     </body>
 
 </html>
-
-<script>
-            userName = sessionStorage.getItem("userName")
-            document.getElementById("userName").textContent = userName;
-</script>

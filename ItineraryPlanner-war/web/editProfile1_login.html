@@ -75,7 +75,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                            with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="myItinerary1.html" class="nav-link">
                                 <i class="nav-icon fa fa-th"></i>
                                 <p>
                                     My Itinerary
@@ -83,7 +83,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-pencil"></i>
+                                <p>
+                                    Create Itinerary
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="searchItinerary.html" class="nav-link">
                                 <i class="nav-icon fa fa-search"></i>
                                 <p>
                                     Search Itinerary
@@ -91,7 +99,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-user-circle"></i>
                                 <p>
                                     Profile
@@ -112,7 +120,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">View Profile</h1>
+                            <h1 class="m-0 text-dark">Profile</h1>
                         </div><!-- /.col -->
 
                     </div><!-- /.row -->
@@ -224,35 +232,35 @@
 
 <script>
         uId = sessionStorage.getItem('uId')
-        
+
         $('#form').submit(function () {
             console.log("sadsa")
             var u = $("#username").val()
             var p = $("#password").val()
-            
+
             $.ajax({
-                    type: "GET",
-                    url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/'+ uId,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data, textStatus, xhr)
-                    {
-                        console.log("Response: ", data)
-                        console.log(data.userName)
-                        console.log(textStatus)
-                        if(u != data.userName && p != data.password){
-                            alert("Wrong password")
-                        }
-                    },
-                    error: function (xhr, error, errorType) {
-                        console.log(body)
-                        console.log(error);
+                type: "GET",
+                url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/' + uId,
+                contentType: "application/json; charset=utf-8",
+                success: function (data, textStatus, xhr)
+                {
+                    console.log("Response: ", data)
+                    console.log(data.userName)
+                    console.log(textStatus)
+                    if (u != data.userName && p != data.password) {
+                        alert("Wrong password")
                     }
-                });
-            
+                },
+                error: function (xhr, error, errorType) {
+                    console.log(body)
+                    console.log(error);
+                }
+            });
+
             var p1 = $("#password1").val()
             var p2 = $("#password2").val()
-            
-            if (p1 === p2) {
+
+            if (p1 === p2 && u!== "") {
                 var body = JSON.stringify({
                     "id": uId,
                     "userName": $("#username").val(),
