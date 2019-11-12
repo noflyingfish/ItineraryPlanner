@@ -22,6 +22,8 @@
         <script>
             uId = sessionStorage.getItem('uId')
             function save() {
+                var sd = sessionStorage.getItem('sd');
+                var ed = sessionStorage.getItem('ed');
                 var currentDate = new Date();
                 var events = $('#calendar2').fullCalendar('clientEvents');
                 if (events) {
@@ -41,8 +43,9 @@
                         console.log(body)
 
                         var uId = 1
-                        var iId = sessionStorage.getItem(iId);
-
+                        //var iId = sessionStorage.getItem('iId');
+                        //console.log(iId);
+                        var iId = 101
                         $.ajax({
                             type: "POST",
                             url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/' + iId,

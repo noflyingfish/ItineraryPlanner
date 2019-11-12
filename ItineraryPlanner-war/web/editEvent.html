@@ -60,22 +60,6 @@
                     }
                 }
             }
-
-            $(document).ready(function () {
-
-                var uId = 1
-                var iId = 151
-                $.get('http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/itinerary/' + iId, function (data) {
-
-                    var result = data
-
-                    console.log(data[0])
-                    console.log(data[1])
-
-                    console.log(result)
-                });
-
-            });
         </script>
 
         <title>Create Itinerary</title>

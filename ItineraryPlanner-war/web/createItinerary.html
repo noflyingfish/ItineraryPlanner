@@ -51,14 +51,18 @@
                     {
                         console.log("Response: ", data)
                         console.log(textStatus)
-                        var iId = sessionStorage.setItem(data.id)
-                        var sd = new Date($("#startDate").val())
-                        var ed = new Date($("#endDate").val())
+                        console.log(data.id)
+                        sessionStorage.setItem("iId", data.id)
+                        var iId = sessionStorage.getItem("iId");
+                        console.log(iId);
+                        sessionStorage.setItem("sd", new Date($("#startDate").val()))
+                        sessionStorage.setItem("ed", new Date($("#endDate").val()))
                     },
                     error: function (xhr, error, errorType) {
                         console.log(error);
                     }
                 });
+                //location.href = "createItinerary1.html";
             }
         </script>
 
@@ -140,7 +144,7 @@
                         <label for="duration" class="form-control-label">End Date: </label>
                         <input type="date" id="endDate" placeholder="End Date" />      
                     </div>
-                    <button type="button" class="btn btn-default" onclick="createItinerary()">Create Itinerary</button>
+                    <button type="button" class="btn btn-default" onclick="createItinerary()" >Create Itinerary</button>
                 </form>
 
             </div>

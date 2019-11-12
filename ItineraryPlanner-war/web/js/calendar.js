@@ -5,7 +5,7 @@ $(function () {
     initializeCalendar();
     getCalendars();
     initializeRightCalendar();
-    initializeEditCalendar();
+    //initializeEditCalendar();
     disableEnter();
 });
 /* --------------------------initialize timepicker-------------------------- */
@@ -35,11 +35,6 @@ var initializeCalendar = function () {
             }
             if (event.activityType == "Accomodation") {
                 element.css('background-color', '#ffdaa1');
-            }
-            if (event.imageUrl) {
-                //element.find(".fc-title").prepend(event.activityType);
-                //element.find('.fc-event-title').html('<p>Ingen migræne idag</p><img src="icons/kalender_glad_smiley.png"/>');
-                element.find(".fc-title").prepend("<img src='" + event.imageUrl + "' width='16' height='16'>");
             }
         },
         height: screen.height - 160,
@@ -73,24 +68,7 @@ var initializeRightCalendar = function () {
     });
 }
 /* -------------------edit calendar------------------- */
-var initializeEditCalendar = function () {
-    $cal3.fullCalendar('changeView', 'agendaDay');
-    $cal3.fullCalendar('option', {
-        slotEventOverlap: false,
-        allDaySlot: false,
-        header: {
-            right: 'prev,next today'
-        },
-        selectable: true,
-        selectHelper: true,
-        select: function (start, end) {
-            newEvent(start);
-        },
-        eventClick: function (calEvent, jsEvent, view) {
-            editEvent(calEvent);
-        },
-    });
-}
+
 /* -------------------moves right pane to date------------------- */
 var loadEvents = function () {
     $.getScript("js/events.js", function () {
