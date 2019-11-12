@@ -67,7 +67,7 @@
                             <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a class="d-block">Alexander Pierce</a>
+                            <a class="d-block" id="userName"></a>
                         </div>
                     </div>
 
@@ -175,3 +175,8 @@
     </body>
 
 </html>
+
+<script>
+    userName = sessionStorage.getItem("userName")
+    document.getElementById("userName").textContent = userName;
+</script>
