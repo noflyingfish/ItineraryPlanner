@@ -83,6 +83,11 @@ body {
     font-size: 1.1em;
     background: #fafafa;
 }
+
+.main {
+    margin-top : 15px;
+    margin-left: 175px;
+}
 /* ---------------------------------------------------
     MODAL STYLE
 ----------------------------------------------------- */
