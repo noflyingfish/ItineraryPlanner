@@ -4,6 +4,56 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<style>
+        /* Style The Dropdown Button */
+        .dropbtn {
+          background-color: #4CAF50;
+          color: black;
+          padding: 16px;
+          border-radius: 12px;
+          font-size: 16px;
+          border: none;
+          cursor: pointer;
+        }
+        
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+        
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+        
+        /* Links inside the dropdown */
+        .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+        
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #f1f1f1}
+        
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+        
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+          background-color: #3e8e41;
+        }
+        </style>
+
 <html>
 
 <head>
@@ -17,42 +67,30 @@ and open the template in the editor.
 
 <body>
     <div class="topnav">
+            <div class="dropdown" style="float:right; padding-top:20px; padding-right:300px">
+                    <button class="dropbtn">Settings</button>
+                    <div class="dropdown-content">
+                      <a href="#">Edit Profile</a>
+                      <a href="#">Log Out</a>
+                    </div>
+            </div>
+
         <img src="./WEB-INF/css/logo.jpg" width="175">
-        <div class="topnav-btn" style="float:right; padding-right:150px; display: flex; align-items: center">
+        <div class="topnav-btn" style="float:right; display: flex; align-items: center">
             <img src="WEB-INF/css/icon.jpg">
-            <span style="margin-right: 20px;">username</span>
+            <span>username</span>
         </div>
-        <button class="dropdown-btn">Settings<i class="fa fa-caret-down" style="float:right;"></i></button>
-        <div class="topnav-dropdown-list">
-            <a href="#">Edit Profile</a>
-            <a href="#">Log Out</a>
-        </div>
+        <div style="float: right; align-items: center">
+    </div>
     </div>
 
     <div class="sidenav">
         <span id="selected"><a href="#">Home</a></span>
-        <a href="#">function 1</a>
-        <a href="#">function 2</a>
-        <a href="#">function 3</a>
-        <span id="selected"><a href="#">function 4</a></span>
-        <a href="#">function 5</a>
-        <a href="#">function 6</a>
+        <a href="#">Create Itinerary</a>
+        <a href="#">Search Itinerary</a></span>
     </div>
 
     <script>
-        var dropdown = document.getElementsByClassName("dropdown-btn");
-        var i;
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                }
-            });
-        }
     </script>
 </body>
 
