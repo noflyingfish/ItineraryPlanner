@@ -209,7 +209,7 @@ public class ItineraryResource {
                     .build();
         } catch (Exception e) {
             JsonObject exception = Json.createObjectBuilder()
-                    .add("error", "Unable to create new itinerary")
+                    .add("error", "Unable to retireve all itinerary")
                     .build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(exception)
