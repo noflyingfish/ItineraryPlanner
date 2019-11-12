@@ -13,14 +13,46 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css"></link>
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.jqueryui.min.css"></link>
+
+        <!-- Our Custom CSS -->
+        <link rel="stylesheet" href="WEB-INF/css/setting.css">
+        <link rel="stylesheet" href="WEB-INF/css/navbarSidebarModal.css">
 </head>
 
-<form id="myform">
+<body>
+        <div class="topnav">
+                <div class="dropdown" style="float:right; padding-top:20px; padding-right:300px">
+                        <button class="dropbtn">Settings</button>
+                        <div class="dropdown-content">
+                          <a href="#">Edit Profile</a>
+                          <a href="#">Log Out</a>
+                        </div>
+                </div>
+    
+            <img src="./WEB-INF/css/logo.jpg" width="175">
+            <div class="topnav-btn" style="float:right; display: flex; align-items: center">
+                <img src="WEB-INF/css/icon.jpg">
+                <span id="userName"></span>
+            </div>
+            <div style="float: right; align-items: center">
+        </div>
+        </div>
+    
+        <div class="sidenav">
+            <a href="#">Home</a>
+            <span id="selected"><a href="#">My Itinerary</a></span>
+            <a href="#">Search Itinerary</a></span>
 
-    <table id="itineraryTable" class="display" style="width:100%"></table>
-    </form>
+            </div>
+            <form id="myform" style="float:right; padding-right:205px;">
+                <table id="itineraryTable" class="display" style="width:100%"></table>
+            </form>        
+    </body>
 
 <script>
+userName = sessionStorage.getItem("userName")
+document.getElementById("userName").textContent = userName;
+
 var itineraryTable = $('#itineraryTable').dataTable({
     'ajax': {
         "type" : "GET",
@@ -31,6 +63,7 @@ var itineraryTable = $('#itineraryTable').dataTable({
         {title : "Caption", "data" : "caption"},
         {title : "Title", "data" : "title"},
         {title : "Duration", "data" : "duration"},
+        {title : "Place",  "data" : "places"},
         {title : "Start Date", "data" : "startDate", "render" : function(data) {
             var date = new Date(data);
             var month = date.getMonth() + 1;
