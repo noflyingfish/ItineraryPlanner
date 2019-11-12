@@ -53,6 +53,7 @@ public class ItineraryResource {
 //        } else {
         try {
             itinerarySessionLocal.createItinerary(i, uId);
+            
             return Response.status(204)
                     .build();
         } catch (Exception e) {

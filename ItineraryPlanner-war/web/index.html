@@ -1,16 +1,104 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Travellab. Welcome</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+        <!-- Our Custom CSS -->
+        <link rel="stylesheet" href="WEB-INF/css/navbarSidebarModal.css">
+        <!-- Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" ></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" ></script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div class="topnav">
+
+            <img src="./WEB-INF/css/logo.jpg" width="175">
+            <input type="text" placeholder="Itinerary for.....">
+            <button type="submit"><i class="fa fa-search"></i></button>
+
+            <div class="topnav-btn" style="float:right; padding-right:150px">
+                <a id="login-btn" style="margin-right: 50px">Login</a> 
+                <a href="registration.html">Register</a> 
+            </div>
+        </div>
+
+        <div id="login-modal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form id="myform">
+                    <label for="userName">Username</label>
+                    <input type="text" id="userName" placeholder="Username" />
+                    <br>
+                    <label for="password">Password</label>
+                    <input type="text" id="password" placeholder="Password" />
+                    <br>
+                    <input type="submit" id="login" value="Login"/>
+                    <br>
+                    No account yet? 
+                    <a href="registration.html">Click Here to sign up</a>
+                </form>
+            </div>
+        </div>
+        <script>
+            // login modal operation
+            var modal = document.getElementById("login-modal");
+            var btn = document.getElementById("login-btn");
+            var span = document.getElementsByClassName("close")[0];
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            // login operation
+            $(document).ready(function () {
+
+                $('#myform').submit(function () {
+
+                    var userName = $("#userName").val()
+                    var password = $("#password").val()
+
+                    var body = JSON.stringify({
+                        "userName": userName,
+                        "password": password
+                    })
+
+                    $.ajax({
+                        type: "POST",
+                        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/login',
+                        data: body,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data, textStatus, xhr)
+                        {
+                            sessionStorage.setItem('uId', data.uId);
+                            sessionStorage.setItem('userName', userName);
+                            sessionStorage.setItem('token', data.accessToken);
+                            alert("You have successful logged in")
+                            window.location.href = "viewProfile.html";
+                            console.log(data)
+                            console.log("User ID: ", sessionStorage.getItem('uId'))
+                            console.log("Username: ", sessionStorage.getItem('userName'))
+                            console.log("Token: ", sessionStorage.getItem('token'))
+                            console.log(textStatus)
+                        },
+                        error: function (xhr, error, errorType) {
+                            alert("Error logging in...")
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
     </body>
 </html>
