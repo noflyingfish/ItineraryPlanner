@@ -4,20 +4,8 @@
 
 <form id="myform">
 
-        <label for="caption">Caption</label>
-        <input type="text" id="caption" placeholder="Caption" />
-        <br>
-        <label for="duration">Duration</label>
-        <input type="text" id="duration" placeholder="Duration" />
-        <br>
-        <label for="startDate">Start Date</label>
-        <input type="date" id="startDate" placeholder="Start Date" />                
-        <br>
-        <label for="endDate">End Date</label>
-        <input type="date" id="endDate" placeholder="End Date" />                
-        <br>
-        <label for="title">Title</label>
-        <input type="text" id="title" placeholder="Title" />                
+        <label for="comment">Comment</label>
+        <input type="text" id="comment" placeholder="Comment" />
         <br>
         <input type="submit" id="create" value="Create"/>
 
@@ -38,17 +26,14 @@ $('#myform').submit(function() {
     var body = JSON.stringify({
 
         "caption": $("#caption").val(),
-        "duration": $("#duration").val(),
-        "startDate": new Date($("#startDate").val()),
-        "endDate": new Date($("#endDate").val()),
-        "title": $("#title").val(),
+        "username": userName,
         "createdDate": currentDate
     })
     console.log(body)
 
     $.ajax({
         type: "POST",
-        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/'+ uId +'/create',
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/'+ uId +'/comment',
         data: body,
         contentType: "application/json; charset=utf-8",
         

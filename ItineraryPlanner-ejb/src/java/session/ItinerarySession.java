@@ -242,7 +242,7 @@ public class ItinerarySession implements ItinerarySessionLocal {
         oldE.setEnd(e.getEnd());
         oldE.setLocation1(e.getLocation1());
         oldE.setLocation2(e.getLocation2());
-        oldE.setName(e.getName());
+        oldE.setTitle(e.getTitle());
         oldE.setNotes(e.getNotes());
         oldE.setStart(e.getStart());
         oldE.setType(e.getType());
