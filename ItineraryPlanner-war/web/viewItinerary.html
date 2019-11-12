@@ -32,25 +32,27 @@
             <img src="./WEB-INF/css/logo.jpg" width="175">
             <div class="topnav-btn" style="float:right; display: flex; align-items: center">
                 <img src="WEB-INF/css/icon.jpg">
-                <span>username</span>
+                <span id="userName"></span>
             </div>
             <div style="float: right; align-items: center">
         </div>
         </div>
     
         <div class="sidenav">
-            <span id="selected"><a href="#">Home</a></span>
-            <a href="#">My Itinerary</a>
+            <a href="#">Home</a>
+            <span id="selected"><a href="#">My Itinerary</a></span>
             <a href="#">Search Itinerary</a></span>
 
             </div>
-            <form id="myform" style="float:right;">
-
-                    <table id="itineraryTable" class="display" style="width:100%"></table>
-                    </form>        
+            <form id="myform" style="float:right; padding-right:205px;">
+                <table id="itineraryTable" class="display" style="width:100%"></table>
+            </form>        
     </body>
 
 <script>
+userName = sessionStorage.getItem("userName")
+document.getElementById("userName").textContent = userName;
+
 var itineraryTable = $('#itineraryTable').dataTable({
     'ajax': {
         "type" : "GET",
