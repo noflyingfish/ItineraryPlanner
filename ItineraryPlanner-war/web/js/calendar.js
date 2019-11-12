@@ -1,11 +1,11 @@
 $(function () {
-    loadEvents();
+    //loadEvents();
     showTodaysDate();
     initialiseTimePicker();
     initializeCalendar();
     getCalendars();
     initializeRightCalendar();
-    //initializeEditCalendar();
+    initializeEditCalendar();
     disableEnter();
 });
 /* --------------------------initialize timepicker-------------------------- */
@@ -68,14 +68,46 @@ var initializeRightCalendar = function () {
     });
 }
 /* -------------------edit calendar------------------- */
-
-/* -------------------moves right pane to date------------------- */
-var loadEvents = function () {
-    $.getScript("js/events.js", function () {
+var initializeEditCalendar = function () {
+    var uId = 1
+    var iId = 101
+    $.ajax({
+        type: "GET",
+        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/itinerary/' + iId,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, textStatus, xhr)
+        {
+            console.log("Response: ", data)
+            console.log(textStatus)
+            console.log(data)
+            //console.log(iId);
+            //sessionStorage.setItem("sd", new Date($("#startDate").val()))
+            //sessionStorage.setItem("ed", new Date($("#endDate").val()))
+            $cal3.fullCalendar('addEventSource', data);
+            //$cal3.fullCalendar('addEventSource', data);
+            $cal3.fullCalendar('changeView', 'agendaDay');
+            $cal3.fullCalendar('option', {
+                slotEventOverlap: false,
+                allDaySlot: false,
+                header: {
+                    right: 'prev,next today'
+                },
+                selectable: true,
+                selectHelper: true,
+                select: function (start, end) {
+                    newEvent(start);
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    editEvent(calEvent);
+                },
+            });
+        },
+        error: function (xhr, error, errorType) {
+            console.log(error);
+        }
     });
 }
-
-
+/* -------------------moves right pane to date------------------- */
 var newEvent = function (start) {
 //clear values from previous event
     $('input#title').val("");

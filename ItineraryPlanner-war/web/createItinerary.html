@@ -24,6 +24,7 @@
             //token = sessionStorage.getItem('token')
             //console.log(uId)
             function createItinerary() {
+                sessionStorage.removeItem('iId');
                 var currentDate = new Date();
                 console.log($("#caption").val());
                 console.log(new Date($("#startDate").val()));
@@ -54,15 +55,16 @@
                         console.log(data.id)
                         sessionStorage.setItem("iId", data.id)
                         var iId = sessionStorage.getItem("iId");
-                        console.log(iId);
-                        sessionStorage.setItem("sd", new Date($("#startDate").val()))
-                        sessionStorage.setItem("ed", new Date($("#endDate").val()))
+                        //console.log(iId);
+                        //sessionStorage.setItem("sd", new Date($("#startDate").val()))
+                        //sessionStorage.setItem("ed", new Date($("#endDate").val()))
+                        window.location.href = "createItinerary1.html";
                     },
                     error: function (xhr, error, errorType) {
                         console.log(error);
                     }
                 });
-                //location.href = "createItinerary1.html";
+                
             }
         </script>
 
