@@ -39,7 +39,7 @@
 uId = sessionStorage.getItem('uId')
 
 $(document).ready(function() {
-    $.get('http://localhost:8080/ItineraryPlanner-war/webresources/users/id/' + uId, function(data) {
+    $.get('http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/' + uId, function(data) {
         $("#firstName").val(data.firstName);
         $("#lastName").val(data.lastName);
         $("#userName").val(data.userName);
