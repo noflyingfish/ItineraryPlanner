@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Travellab. Home</title>
+        <title>Travellab. Itinerary</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -52,7 +52,7 @@
         <script src="plugins/fastclick/fastclick.js"></script>
         <!-- AdminLTE App -->
         <script src="dist/js/adminlte.js"></script>
-
+        
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -73,59 +73,59 @@
         </link>
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.jqueryui.min.css">
         </link>
-
+    
         <!-- Our Custom CSS -->
         <link rel="stylesheet" href="WEB-INF/css/navbarSidebarModal.css">
     </head>
 
-    <style>
-        .cards tbody tr {
-            float: left;
-            width: 20rem;
-            margin: 0.5rem;
-            border: 0.0625rem solid rgba(0, 0, 0, .125);
-            border-radius: .25rem;
-            box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
-        }
+<style>
+    .cards tbody tr {
+        float: left;
+        width: 20rem;
+        margin: 0.5rem;
+        border: 0.0625rem solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+        box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+    }
 
-        .cards tbody td {
-            display: block;
-        }
+    .cards tbody td {
+        display: block;
+    }
 
-        .table tbody label {
-            display: none;
-        }
+    .table tbody label {
+        display: none;
+    }
 
-        .cards tbody label {
-            display: inline;
-            position: relative;
-            font-size: 85%;
-            top: -0.5rem;
-            float: left;
-            color: #808080;
-            min-width: 4rem;
-            margin-left: 0;
-            margin-right: 1rem;
-            text-align: left;
-        }
+    .cards tbody label {
+        display: inline;
+        position: relative;
+        font-size: 85%;
+        top: -0.5rem;
+        float: left;
+        color: #808080;
+        min-width: 4rem;
+        margin-left: 0;
+        margin-right: 1rem;
+        text-align: left;
+    }
 
-        tr.selected label {
-            color: #404040;
-        }
+    tr.selected label {
+        color: #404040;
+    }
 
-        .table .fa {
-            font-size: 2.5rem;
-            text-align: center;
-        }
+    .table .fa {
+        font-size: 2.5rem;
+        text-align: center;
+    }
 
-        .cards .fa {
-            font-size: 7.5rem;
-        }
+    .cards .fa {
+        font-size: 7.5rem;
+    }
 
-        form {
-            margin-right: -500px;
-        }
-    </style>
+    form {
+        margin-right: -500px;
+    }
+</style>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper">
 
@@ -167,7 +167,7 @@
                         <div class="image">
                             <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
-                        <div class="info">
+                        <div class="info" id="userName">
                             <a class="d-block" id="userName"></a>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                             <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
+                                <a href="viewUserItinerary.html" class="nav-link">
                                     <i class="nav-icon fa fa-th"></i>
                                     <p>
                                         My Itinerary
@@ -186,15 +186,15 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
-                                    <i class="nav-icon fa fa-search"></i>
-                                    <p>
-                                        Create Itinerary
-                                    </p>
-                                </a>
-                            </li>
+                            <a href="createItinerary.html" class="nav-link">
+                                <i class="nav-icon fa fa-pencil"></i>
+                                <p>
+                                    Create Itinerary
+                                </p>
+                            </a>
+                        </li>
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
+                                <a href="searchItinerary_1.html" class="nav-link">
                                     <i class="nav-icon fa fa-search"></i>
                                     <p>
                                         Search Itinerary
@@ -202,7 +202,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="editProfile1_1view.html" class="nav-link">
+                                <a href="editProfile1_1.html" class="nav-link">
                                     <i class="nav-icon fa fa-user-circle"></i>
                                     <p>
                                         Profile
@@ -223,11 +223,11 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">My Itinerary</h1>
+                                <h1 class="m-0 text-dark">Choose User To Add To Itinerary</h1>
                                 <form id="myform" style="float:right; padding-right: -500px;">
-                                    <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
-
-                                    <table id="itineraryTable" class="table table-sm table-hover"></table>
+                                        <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
+                                        
+                                        <table id="usersTable" class="table table-sm table-hover"></table>
                                 </form>
                             </div><!-- /.col -->
 
@@ -259,101 +259,122 @@
 </html>
 
 <script>
-    userName = sessionStorage.getItem("userName");
-    uId = sessionStorage.getItem('uId');
+    userName = sessionStorage.getItem("userName")
+    uId = sessionStorage.getItem("uId") 
+    console.log(uId)
     document.getElementById("userName").textContent = userName;
 
-    var itineraryTable = $('#itineraryTable').DataTable({
+    var usersTable = $('#usersTable').DataTable({
+
+        autoWidth : false,
+
         'ajax': {
             "type": "GET",
-            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/"+ uId +"/users/" + uId,
+            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/users/getallusers",
             "dataSrc": ""
         },
         'columns': [
             {
-                "width": "10px",
-                title: "Caption", "data": "caption", name: "caption", visible: true,
+                "width" : "100px",
+                title: "User ID", "data": "id", name: "id", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + data;
                 }
             },
             {
-                "width": "10px",
-                title: "Title", "data": "title", name: "title", visible: true,
+                "width" : "100px",
+                title: "Username", "data": "userName", name: "userName", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + data;
                 }
             },
             {
-                "width": "10px",
-                title: "Duration", "data": "duration", name: "title", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + data;
-                }
-            },
-            {
-                "width": "10px",
-                title: "Place", "data": "places", name: "title", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + data;
-                }
-            },
-            {
-                "width": "10px",
-                title: "Start Date", "data": "startDate", name: "startDate", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + moment(data).format('Do MMMM YYYY');
-                }
-            },
-            {
-                "width": "10px",
-                title: "End Date", "data": "endDate", name: "endDate", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + moment(data).format('Do MMMM YYYY');
-                },
-            },
-            {
-                "width": "10px",
+                "width" : "100px",               
                 title: "Created Date", "data": "createdDate", name: "createdDate", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + moment(data).format('Do MMMM YYYY');
-                },
+                }
             },
             {
-                title: "View Itinerary", "data": null
+                title: "Add User To Itinerary", "data" : null
             },
+            {
+                title: "Remove User From Itinerary", "data" : null
+            },
+            
         ],
         "columnDefs": [
             {
-                'targets': -1,
-                'data': null,
-                'defaultContent': '<button type="button" data-type="view">View Itinerary</button></div>'
+                'targets' : -2,
+                'data' : null,
+                'defaultContent' : '<button type="button" data-type="add">Add User To Itinerary</button></div>'
+            },
+            {
+                'targets' : -1,
+                'data' : null,
+                'defaultContent' : '<button type="button" data-type="remove">Remove User From Itinerary</button></div>'
             }
         ]
     });
 
-    function displayCard() {
-        $("#itineraryTable").toggleClass('cards')
-        $("#itineraryTable thead").toggle()
+function displayCard() {
+        $("#usersTable").toggleClass('cards')
+        $("#usersTable thead").toggle()
     }
 
-    $('#itineraryTable tbody').on('click', 'button', function () {
-        var button = $(this);
-        var type = button.attr('data-type');
-        var data = itineraryTable.row($(this).parents('tr')).data();
-        var iId = data.id;
-
-        if (type == 'view') {
-            sessionStorage.setItem("iId", data.id)
-            window.location.href = "viewItineraryById1.html";
-        }
+$('#usersTable tbody').on('click', 'button', function () {
+    var button = $(this);
+    var type = button.attr('data-type');
+    var data = usersTable.row($(this).parents('tr')).data();
+    var userId = data.id;
+    var uId = sessionStorage.getItem("uId")
+    var iId = sessionStorage.getItem('iId')
+    var body = JSON.stringify({
+        "id" : iId
     })
+    console.log(uId)
+    console.log(userId)
+    console.log(iId)
+
+    if (type == 'add') {
+        $.ajax({
+        type: "POST",
+        data: body,
+        url: "http://localhost:8080/ItineraryPlanner-war/webresources/users/" + uId + "/itinerary/" + userId,
+        contentType: "application/json; charset=utf-8",
+        success: function(data, textStatus, xhr)
+        {
+            alert("You have successfully add the user to the itinerary")
+            window.location.href = "viewUserItinerary1.html";
+            console.log(data)
+            console.log(textStatus)
+        },
+        error: function(xhr, error, errorType) {
+            alert("Invalid request, you have already added this user to the itinerary.")
+        }
+    });        
+    }
+
+    if (type == 'remove') {
+        $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/" + uId + "/" + iId + "/" + userId,
+        contentType: "application/json; charset=utf-8",
+        success: function(data, textStatus, xhr)
+        {
+            alert("You have successfully remove the user from the itinerary")
+            window.location.href = "viewUserItinerary1.html";
+            console.log(data)
+            console.log(textStatus)
+        },
+        error: function(xhr, error, errorType) {
+            alert("Invalid request, you have already remove this user from the itinerary.")
+        }
+    });        
+    }
+})
 //itineraryTable.ajax.reload()    
 </script>

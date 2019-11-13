@@ -51,8 +51,8 @@
         <!-- FastClick -->
         <script src="plugins/fastclick/fastclick.js"></script>
         <!-- AdminLTE App -->
-        <script src="dist/js/adminlte.js"></script>       
-
+        <script src="dist/js/adminlte.js"></script>
+        
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -73,60 +73,59 @@
         </link>
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.jqueryui.min.css">
         </link>
-
+    
         <!-- Our Custom CSS -->
         <link rel="stylesheet" href="WEB-INF/css/navbarSidebarModal.css">
-        <style>
-            .cards tbody tr {
-                float: left;
-                width: 20rem;
-                margin: 0.5rem;
-                border: 0.0625rem solid rgba(0, 0, 0, .125);
-                border-radius: .25rem;
-                box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
-            }
-
-            .cards tbody td {
-                display: block;
-            }
-
-            .table tbody label {
-                display: none;
-            }
-
-            .cards tbody label {
-                display: inline;
-                position: relative;
-                font-size: 85%;
-                top: -0.5rem;
-                float: left;
-                color: #808080;
-                min-width: 4rem;
-                margin-left: 0;
-                margin-right: 1rem;
-                text-align: left;
-            }
-
-            tr.selected label {
-                color: #404040;
-            }
-
-            .table .fa {
-                font-size: 2.5rem;
-                text-align: center;
-            }
-
-            .cards .fa {
-                font-size: 7.5rem;
-            }
-
-            form {
-                margin-right: -50px;
-            }
-        </style>
     </head>
 
+<style>
+    .cards tbody tr {
+        float: left;
+        width: 20rem;
+        margin: 0.5rem;
+        border: 0.0625rem solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+        box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+    }
 
+    .cards tbody td {
+        display: block;
+    }
+
+    .table tbody label {
+        display: none;
+    }
+
+    .cards tbody label {
+        display: inline;
+        position: relative;
+        font-size: 85%;
+        top: -0.5rem;
+        float: left;
+        color: #808080;
+        min-width: 4rem;
+        margin-left: 0;
+        margin-right: 1rem;
+        text-align: left;
+    }
+
+    tr.selected label {
+        color: #404040;
+    }
+
+    .table .fa {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .cards .fa {
+        font-size: 7.5rem;
+    }
+
+    form {
+        margin-right: -500px;
+    }
+</style>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper">
 
@@ -168,7 +167,7 @@
                         <div class="image">
                             <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
-                        <div class="info">
+                        <div class="info" id="userName">
                             <a class="d-block" id="userName" style="font-weight: bolder; font-size: 20px;"></a>
                         </div>
                     </div>
@@ -179,7 +178,7 @@
                             <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="myItinerary1.html" class="nav-link">
+                                <a href="viewUserInitinerary.html" class="nav-link">
                                     <i class="nav-icon fa fa-th"></i>
                                     <p>
                                         My Itinerary
@@ -195,7 +194,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="searchItinerary1.html" class="nav-link">
+                                <a href="pages/widgets.html" class="nav-link">
                                     <i class="nav-icon fa fa-search"></i>
                                     <p>
                                         Search Itinerary
@@ -203,7 +202,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="viewProfile1.html" class="nav-link">
+                                <a href="editProfile1_1.html" class="nav-link">
                                     <i class="nav-icon fa fa-user-circle"></i>
                                     <p>
                                         Profile
@@ -224,7 +223,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Events in Itinerary</h1>
+                                <h1 class="m-0 text-dark">Users In Itinerary</h1>
+                                <form id="myform" style="float:right; padding-right: -500px;">
+                                        <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
+                                        
+                                        <table id="usersTable" class="table table-sm table-hover"></table>
+                                </form>
                             </div><!-- /.col -->
 
                         </div><!-- /.row -->
@@ -235,17 +239,13 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
-                        <form id="myform" style="float:right; padding-right: 200px;">
-                            <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
-                            <table id="eventTable" class="table table-sm table-hover"></table>
-                        </form>
                     </div><!-- /.container-fluid -->
                 </section>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
             <footer class="main-footer">
-                AY2019/20 S1 IS3106-02
+                footer here
             </footer>
 
             <!-- Control Sidebar -->
@@ -260,75 +260,52 @@
 
 <script>
     userName = sessionStorage.getItem("userName")
-    uId = sessionStorage.getItem("uId")
+    uId = sessionStorage.getItem("uId") 
     iId = sessionStorage.getItem("iId")
+    console.log(uId)
     document.getElementById("userName").textContent = userName;
 
-    var eventTable = $('#eventTable').DataTable({
-        autoWidth: true,
+    var usersTable = $('#usersTable').DataTable({
+
+        autoWidth : false,
+
         'ajax': {
             "type": "GET",
-            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/events/" + uId + "/itinerary/" + iId,
+            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/" + uId + "/users/" + iId,
             "dataSrc": ""
         },
         'columns': [
             {
-                //width : "10%",
-                title: "Name", "data": "name", name: "name", visible: true,
+                "width" : "100px",
+                title: "User ID", "data": "id", name: "id", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#eventTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + data;
                 }
             },
             {
-                //width : "5%",
-                title: "Start Date", "data": "start", name: "start", visible: true,
+                "width" : "100px",
+                title: "Username", "data": "userName", name: "userName", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#eventTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + moment(data).format('LLLL');
-                }
-            },
-            {
-                //width : "5%",              
-                title: "End Date", "data": "end", name: "end", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#eventTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + moment(data).format('LLLL');
-                }
-            },
-            {
-                //width : "1%",              
-                title: "Type", "data": "type", name: "t", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#eventTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + data;
                 }
             },
             {
-                //width : "1%",              
-                title: "Notes", "data": "notes", name: "notes", visible: true,
+                "width" : "100px",               
+                title: "Created Date", "data": "createdDate", name: "createdDate", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#eventTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + data;
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
+                    return '<label>' + $(title).html() + '</label>' + moment(data).format('Do MMMM YYYY');
                 }
             },
+            
         ],
     });
 
-    function displayCard() {
-        $("#eventTable").toggleClass('cards')
-        $("#eventTable thead").toggle()
+function displayCard() {
+        $("#usersTable").toggleClass('cards')
+        $("#usersTable thead").toggle()
     }
-
-    $('#itineraryTable tbody').on('click', 'button', function () {
-        var button = $(this);
-        var type = button.attr('data-type');
-        var data = itineraryTable.row($(this).parents('tr')).data();
-        var iId = data.id;
-
-        if (type == 'view') {
-            window.location.href = "viewItineraryById.html";
-        }
-    })
 //itineraryTable.ajax.reload()    
 </script>

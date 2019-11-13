@@ -78,7 +78,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                            with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="myItinerary1.html" class="nav-link">
+                            <a href="viewUserItinerary.html" class="nav-link">
                                 <i class="nav-icon fa fa-th"></i>
                                 <p>
                                     My Itinerary
@@ -94,7 +94,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="searchItinerary1.html" class="nav-link">
+                            <a href="searchItinerary1_1.html" class="nav-link">
                                 <i class="nav-icon fa fa-search"></i>
                                 <p>
                                     Search Itinerary
@@ -102,7 +102,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="viewProfile1.html" class="nav-link">
+                            <a href="editProfile1_1view.html" class="nav-link">
                                 <i class="nav-icon fa fa-user-circle"></i>
                                 <p>
                                     Profile
@@ -258,11 +258,12 @@
                             var currentDate = new Date();
 
                             var body = JSON.stringify({
-                                "caption": $("#caption").val(),
+                                "caption": $("#description").val(),
                                 "duration": $("#duration").val(),
-                                "startDate": new Date($("#startDate").val()),
-                                "endDate": new Date($("#endDate").val()),
+                                "startDate": new Date($("#startdate").val()),
+                                "endDate": new Date($("#enddate").val()),
                                 "duration":$("#duration").val(),
+                                "places" : $("#places").val(),
                                 "creator":$("creator").val(),
                                 "title": $("#title").val(),
                                 "createdDate": currentDate
@@ -278,7 +279,8 @@
                                 {
                                     console.log("Response: ", data)
                                     console.log(textStatus)
-                                    window.location.href = "#";
+                                    sessionStorage.setItem("iId", data.id)
+                                    window.location.href = "createItinerary1.html";
                                 },
                                 error: function (xhr, error, errorType) {
                                     console.log(error);
