@@ -324,6 +324,9 @@ $('#usersTable tbody').on('click', 'button', function () {
     var userId = data.id;
     var uId = sessionStorage.getItem("uId")
     var iId = sessionStorage.getItem('iId')
+    var body = JSON.stringify({
+        "id" : iId
+    })
     console.log(uId)
     console.log(userId)
     console.log(iId)
@@ -331,7 +334,7 @@ $('#usersTable tbody').on('click', 'button', function () {
     if (type == 'add') {
         $.ajax({
         type: "POST",
-        body: iId,
+        data: body,
         url: "http://localhost:8080/ItineraryPlanner-war/webresources/users/" + uId + "/itinerary/" + userId,
         contentType: "application/json; charset=utf-8",
         success: function(data, textStatus, xhr)
