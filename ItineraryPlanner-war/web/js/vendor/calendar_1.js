@@ -69,10 +69,10 @@ var initializeRightCalendar = function () {
 }
 /* -------------------edit calendar------------------- */
 var initializeEditCalendar = function () {
-    var uId = 2
-    //var uId = sessionStorage.getItem('uId')
-    var iId = 451 //id of itinerary being clicked
-    //var iId = sessionStorage.getItem('iId')
+    //var uId = 2
+    var uId = sessionStorage.getItem('uId')
+    //var iId = 451 //id of itinerary being clicked
+    var iId = sessionStorage.getItem('iId')
     $.ajax({
         type: "GET",
         url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/itinerary/' + iId,
