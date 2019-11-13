@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>AdminLTE 3 | Log in</title>
+        <title>Travellab. Login</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -25,7 +25,6 @@
             #intro {
                 height: 100%;
             }
-
             body{
                 background: url("https://images.unsplash.com/photo-1558879177-69cde6b279c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80")no-repeat center center fixed;
                 -webkit-background-size: cover;
@@ -52,14 +51,14 @@
                 <div class="card-body login-card-body">
                     <h3 class="login-box-msg">LOGIN</h3>
 
-                    <form action="home1.html" method="post">
+                    <form id="form">
                         <div class="form-group has-feedback">
                             <h6 style="text-align: center"><b>Username</b></h6>
                             <input type="text" id="userName" class="form-control" placeholder="Username" />
                         </div>
                         <div class="form-group has-feedback">
                             <h6 style="text-align: center"><b>Password</b></h6>
-                            <input type="text" id="password" class="form-control" placeholder="Password" />
+                            <input type="password" id="password" class="form-control" placeholder="Password" />
                         </div>
                         <div class="row">
                             <div class="col-4 mx-auto">
@@ -71,7 +70,6 @@
 
                     <p class="mb-0" style="text-align: center">
                         <a href="register.html">Have not signed up?</a>
-                        
                     </p>
                 </div>
                 <!-- /.login-card-body -->
@@ -96,17 +94,13 @@
         </script>
         <script>
             $(document).ready(function () {
-
-                $('#myform').submit(function () {
-
+                $('#form').submit(function () {
                     var userName = $("#userName").val()
                     var password = $("#password").val()
-
                     var body = JSON.stringify({
                         "userName": userName,
                         "password": password
                     })
-
                     $.ajax({
                         type: "POST",
                         url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/login',
@@ -118,7 +112,7 @@
                             sessionStorage.setItem('userName', userName);
                             sessionStorage.setItem('token', data.accessToken);
                             alert("You have successful logged in")
-                            //window.location.href = "viewProfile.html";
+                            window.location.href = "home1.html";
                             console.log(data)
                             console.log("User ID: ", sessionStorage.getItem('uId'))
                             console.log("Username: ", sessionStorage.getItem('userName'))
@@ -131,7 +125,6 @@
                     });
                     return false;
                 });
-
             });
         </script>
     </body>

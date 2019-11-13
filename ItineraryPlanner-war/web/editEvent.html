@@ -4,15 +4,15 @@
     <head>
         <meta charset='utf-8'/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Travellab. Event</title>
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
         <link href='css/vendor/fullcalendar.css' rel='stylesheet' />
         <link href='css/style.css' rel='stylesheet' />
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
@@ -21,21 +21,14 @@
 
         <script>
             uId = sessionStorage.getItem('uId')
-            
-            function back() {
-                window.location.href = "viewUserItinerary.html";
-            }
-            
             function save() {
-                //var sd = sessionStorage.getItem('sd');
-                //var ed = sessionStorage.getItem('ed');
                 var currentDate = new Date();
-                var events = $('#calendar2').fullCalendar('clientEvents');
+                var events = $('#calendar3').fullCalendar('clientEvents');
                 if (events) {
                     //create new itinerary
+
                     for (var i in events) {
-                        //var start = events[i].start._d;
-                        //var end = events[i].end._d;
+                        console.log(events[i]);
                         var body = JSON.stringify({
                             "title": events[i].title,
                             "start": events[i].start._d,
@@ -45,10 +38,11 @@
                             "duration": events[i].duration,
                             "createdDate": currentDate,
                         })
-                        console.log(body);
-                        var uId = sessionStorage.getItem('uId');
-                        var iId = sessionStorage.getItem('iId');
-                        console.log(iId);
+                        console.log(body)
+
+                        var uId = sessionStorage.getItem("uId")
+                        var iId = sessionStorage.getItem("iId");
+
                         $.ajax({
                             type: "POST",
                             url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/' + iId,
@@ -58,7 +52,7 @@
                             {
                                 console.log("Response: ", data)
                                 console.log(textStatus)
-                                window.location.href = "viewUserItinerary.html";
+                                window.location.href = "home1.html"
                             },
                             error: function (xhr, error, errorType) {
                                 console.log(error);
@@ -68,6 +62,8 @@
                 }
             }
         </script>
+
+        <title>Create Itinerary</title>
     </head>
 
     <body>
@@ -78,11 +74,13 @@
         </nav>
 
         <div class="col-md-4 text-center"> 
-            <button type="button" id="backButton" class="btn btn-primary" onclick="back()">Back</button>  
             <button type="button" id="saveButton" class="btn btn-primary" onclick="save()">Save Itinerary</button>  
         </div>
 
-        <div id='calendar2' class='calendar'></div>
+
+
+
+        <div id='calendar3' class='calendar'></div>
 
         <div class="modal fade" id="newEvent" role="dialog" aria-labelledby="eventFormLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

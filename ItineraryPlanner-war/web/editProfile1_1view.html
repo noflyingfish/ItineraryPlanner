@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Travellab. Home</title>
+    <title>Travellab. Profile</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -41,8 +41,8 @@
                 <!-- Messages Dropdown Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                            class="fa fa-sign-out"></i> Logout</a>
+                    <a class="nav-link" href="index1.html">
+                        <i class="fa fa-sign-out"></i> Logout</a>
                 </li>
             </ul>
         </nav>
@@ -65,7 +65,7 @@
                         <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a class="d-block">Alexander Pierce</a>
+                        <a class="d-block" id="userName" style="font-weight: bolder; font-size: 20px;"></a>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                            with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="viewUserItinerary.html" class="nav-link">
                                 <i class="nav-icon fa fa-th"></i>
                                 <p>
                                     My Itinerary
@@ -83,7 +83,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="createItinerary.html" class="nav-link">
+                                <i class="nav-icon fa fa-pencil"></i>
+                                <p>
+                                    Create Itinerary
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="searchItinerary1_1.html" class="nav-link">
                                 <i class="nav-icon fa fa-search"></i>
                                 <p>
                                     Search Itinerary
@@ -91,7 +99,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-user-circle"></i>
                                 <p>
                                     Profile
@@ -112,7 +120,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Home</h1>
+                            <h1 class="m-0 text-dark">Profile</h1>
                         </div><!-- /.col -->
 
                     </div><!-- /.row -->
@@ -120,9 +128,79 @@
             </div>
             <!-- /.content-header -->
 
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">View Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="editProfile1_2details.html">Edit Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="editProfile1_3login.html">Edit Login</a>
+                </li>
+            </ul>
+
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3"><br>
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="username" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="pic">Profile Picture</label> <br>
+                            <img id="pic" src="./WEB-INF/icon.jpg" width ="100">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" placeholder="You didn't set your email" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="description">Description</label>
+                            <div class="md-form">
+                                <textarea id="description" class="md-textarea form-control" rows="3" placeholder="You don't have a description yet..." disabled=""></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="firstname">First Name</label>
+                            <input type="text" class="form-control" id="firstname" placeholder="-" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="lastname">Last Name</label>
+                            <input type="text" class="form-control" id="lastname" placeholder="-" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="birthday">Birthday</label>
+                            <input type="text" class="form-control" id="birthday" placeholder="You didnt set your birthday yet..." disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="blog">Blog</label>
+                            <input type="text" class="form-control" id="blog" placeholder="empty" disabled>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="ig">Instagram</label>
+                            <input type="text" class="form-control" id="ig" placeholder="empty" disabled>
+                        </div>
+                    </div>
 
                 </div><!-- /.container-fluid -->
             </section>
@@ -130,7 +208,7 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            footer here
+           AY2019/20 S1 IS3106-02
         </footer>
 
         <!-- Control Sidebar -->
@@ -173,17 +251,21 @@
 </body>
 
 <script>
-        uId = sessionStorage.getItem('uId')
+    uId = sessionStorage.getItem('uId')
+    userName = sessionStorage.getItem("userName")
+    document.getElementById("userName").textContent = userName;
 
         $(document).ready(function () {
             $.get('http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/' + uId, function (data) {
-                $("#firstName").val(data.firstName);
-                $("#lastName").val(data.lastName);
-                $("#userName").val(data.userName);
+                $("#firstname").val(data.firstName);
+                $("#lastname").val(data.lastName);
+                $("#username").val(data.userName);
                 $("#email").val(data.email);
                 $("#description").val(data.description);
-                $("#instaURL").val(data.instaURL);
-                $("#blogURL").val(data.blogURL);
+                $("#birthday").val(data.description);
+                $("#ig").val(data.instaURL);
+                $("#blog").val(data.blogURL);
+                $("#fb").val(data.blogURL);
             });
 
             $('#myform').submit(function () {
