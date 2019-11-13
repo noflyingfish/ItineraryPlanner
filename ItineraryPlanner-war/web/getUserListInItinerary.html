@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Travellab. Home</title>
+        <title>Travellab. Itinerary</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -126,7 +126,6 @@
         margin-right: -500px;
     }
 </style>
-sessionStorage.clear
     <body class="hold-transition sidebar-mini">
         <div class="wrapper">
 
@@ -145,7 +144,7 @@ sessionStorage.clear
                     <!-- Messages Dropdown Menu -->
 
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                        <a class="nav-link" href="index1.html"><i
                                 class="fa fa-sign-out"></i> Logout</a>
                     </li>
                 </ul>
@@ -168,8 +167,8 @@ sessionStorage.clear
                         <div class="image">
                             <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
-                        <div class="info">
-                            <a class="d-block" id="userName"></a>
+                        <div class="info" id="userName">
+                            <a class="d-block" id="userName" style="font-weight: bolder; font-size: 20px;"></a>
                         </div>
                     </div>
 
@@ -179,10 +178,18 @@ sessionStorage.clear
                             <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
+                                <a href="viewUserInitinerary.html" class="nav-link">
                                     <i class="nav-icon fa fa-th"></i>
                                     <p>
                                         My Itinerary
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="createItinerary.html" class="nav-link">
+                                    <i class="nav-icon fa fa-pencil"></i>
+                                    <p>
+                                        Create Itinerary
                                     </p>
                                 </a>
                             </li>
@@ -195,7 +202,7 @@ sessionStorage.clear
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="viewProfile1.html" class="nav-link">
+                                <a href="editProfile1_1.html" class="nav-link">
                                     <i class="nav-icon fa fa-user-circle"></i>
                                     <p>
                                         Profile
@@ -216,11 +223,11 @@ sessionStorage.clear
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Home</h1>
+                                <h1 class="m-0 text-dark">Users In Itinerary</h1>
                                 <form id="myform" style="float:right; padding-right: -500px;">
                                         <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
                                         
-                                        <table id="itineraryTable" class="table table-sm table-hover"></table>
+                                        <table id="usersTable" class="table table-sm table-hover"></table>
                                 </form>
                             </div><!-- /.col -->
 
@@ -253,101 +260,52 @@ sessionStorage.clear
 
 <script>
     userName = sessionStorage.getItem("userName")
+    uId = sessionStorage.getItem("uId") 
+    iId = sessionStorage.getItem("iId")
+    console.log(uId)
     document.getElementById("userName").textContent = userName;
 
-    var itineraryTable = $('#itineraryTable').DataTable({
+    var usersTable = $('#usersTable').DataTable({
+
+        autoWidth : false,
 
         'ajax': {
             "type": "GET",
-            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/getallitinerary",
+            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/" + uId + "/users/" + iId,
             "dataSrc": ""
         },
         'columns': [
             {
-                "width" : "10px",
-                title: "Caption", "data": "caption", name: "caption", visible: true,
+                "width" : "100px",
+                title: "User ID", "data": "id", name: "id", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + data;
                 }
             },
             {
-                "width" : "10px",
-                title: "Title", "data": "title", name: "title", visible: true,
+                "width" : "100px",
+                title: "Username", "data": "userName", name: "userName", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + data;
                 }
             },
             {
-                "width" : "10px",              
-                title: "Duration", "data": "duration", name: "title", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + data;
-                }
-            },
-            {
-                "width" : "10px",              
-                title: "Place", "data": "places", name: "title", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + data;
-                }
-            },
-            {
-                "width" : "10px",               
-                title: "Start Date", "data": "startDate", name: "startDate", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + moment(data).format('Do MMMM YYYY');
-                }
-            },
-            {
-                "width" : "10px",              
-                title: "End Date", "data": "endDate", name: "endDate", visible: true,
-                render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
-                    return '<label>' + $(title).html() + '</label>' + moment(data).format('Do MMMM YYYY');
-                },
-            },
-            {
-                "width" : "10px",               
+                "width" : "100px",               
                 title: "Created Date", "data": "createdDate", name: "createdDate", visible: true,
                 render: function (data, type, full, meta) {
-                    var title = $('#itineraryTable').DataTable().column(meta.col).header();
+                    var title = $('#usersTable').DataTable().column(meta.col).header();
                     return '<label>' + $(title).html() + '</label>' + moment(data).format('Do MMMM YYYY');
-                },
-            },
-            {
-                title: "View Itinerary", "data" : null
+                }
             },
             
         ],
-        "columnDefs": [
-            {
-                'targets' : -1,
-                'data' : null,
-                'defaultContent' : '<button type="button" data-type="view">View Itinerary</button></div>'
-            }
-        ]
     });
 
 function displayCard() {
-        $("#itineraryTable").toggleClass('cards')
-        $("#itineraryTable thead").toggle()
+        $("#usersTable").toggleClass('cards')
+        $("#usersTable thead").toggle()
     }
-
-$('#itineraryTable tbody').on('click', 'button', function () {
-    var button = $(this);
-    var type = button.attr('data-type');
-    var data = itineraryTable.row($(this).parents('tr')).data();
-    var iId = data.id;
-
-    if (type == 'view') {
-        sessionStorage.setItem("iId", data.id)
-        window.location.href = "viewItineraryById1.html";
-    }
-})
 //itineraryTable.ajax.reload()    
 </script>

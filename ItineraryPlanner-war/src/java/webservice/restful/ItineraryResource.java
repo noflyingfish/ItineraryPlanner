@@ -126,7 +126,6 @@ public class ItineraryResource {
 
             for (Users u : uList) {
                 u.setItineraryList(null);
-                u.setCommentList(null);
             }
 
             GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {

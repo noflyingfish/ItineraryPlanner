@@ -89,6 +89,22 @@ public class Event implements Serializable {
 
         this.end = end;
     }
+    
+    public Date getStartDate() {
+        return start;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.start = startDate;
+    }
+
+    public Date getEndDate() {
+        return end;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.end = endDate;
+    }
 
     public String getDuration() {
         return duration;
@@ -202,5 +218,4 @@ public class Event implements Serializable {
     public String toString() {
         return "entity.Event[ id=" + id + " ]";
     }
-
 }

@@ -266,10 +266,8 @@ public class UsersResource {
             List<Users> uList = itinerarySessionLocal.addUser(new_uId, i.getId());
             for (Users u : uList) {
                 for (Itinerary i1 : u.getItineraryList()) {
-                    i.setUsersList(null);
-                    for (Event e : i1.getEventList()) {
-                        e.setItinerary(null);
-                    }
+                    i1.setUsersList(null);
+                    i1.setEventList(null);
                 }
             }
             GenericEntity<List<Users>> entity = new GenericEntity<List<Users>>(uList) {

@@ -4,7 +4,7 @@
     <head>
         <meta charset='utf-8'/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <title>Travellab. Event</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
         <link href='css/vendor/fullcalendar.css' rel='stylesheet' />
@@ -21,6 +21,14 @@
 
         <script>
             uId = sessionStorage.getItem('uId')
+<<<<<<< HEAD
+=======
+            
+            function back() {
+                window.location.href = "viewUserItinerary.html";
+            }
+            
+>>>>>>> feiyu1
             function save() {
                 //var sd = sessionStorage.getItem('sd');
                 //var ed = sessionStorage.getItem('ed');
@@ -29,20 +37,33 @@
                 if (events) {
                     //create new itinerary
                     for (var i in events) {
+<<<<<<< HEAD
                         var start = events[i].start._d;
                         var end = events[i].end._d;
                         var body = JSON.stringify({
                             "title": events[i].title,
                             "start": (moment(events[i].start._d).add(-(moment().utcOffset()), 'm')),
                             "end": (moment(events[i].end._d).add(-(moment().utcOffset()), 'm')),
+=======
+                        //var start = events[i].start._d;
+                        //var end = events[i].end._d;
+                        var body = JSON.stringify({
+                            "title": events[i].title,
+                            "start": events[i].start._d,
+                            "end": events[i].end._d,
+>>>>>>> feiyu1
                             "type": events[i].activityType,
                             "notes": events[i].notes,
                             "duration": events[i].duration,
                             "createdDate": currentDate,
                         })
                         console.log(body);
+<<<<<<< HEAD
                         var uId = 2;
                         //var uId = sessionStorage.getItem('uId');
+=======
+                        var uId = sessionStorage.getItem('uId');
+>>>>>>> feiyu1
                         var iId = sessionStorage.getItem('iId');
                         console.log(iId);
                         $.ajax({
@@ -54,6 +75,10 @@
                             {
                                 console.log("Response: ", data)
                                 console.log(textStatus)
+<<<<<<< HEAD
+=======
+                                window.location.href = "viewUserItinerary.html";
+>>>>>>> feiyu1
                             },
                             error: function (xhr, error, errorType) {
                                 console.log(error);
@@ -63,8 +88,6 @@
                 }
             }
         </script>
-
-        <title>Create Itinerary</title>
     </head>
 
     <body>
@@ -75,11 +98,9 @@
         </nav>
 
         <div class="col-md-4 text-center"> 
+            <button type="button" id="backButton" class="btn btn-primary" onclick="back()">Back</button>  
             <button type="button" id="saveButton" class="btn btn-primary" onclick="save()">Save Itinerary</button>  
         </div>
-
-
-
 
         <div id='calendar2' class='calendar'></div>
 
@@ -146,11 +167,19 @@
                                     <option>Attraction</option>
                                     <option>Events</option>
                                 </select>
+<<<<<<< HEAD
                             </div>
                             <div class="form-group">
                                 <label for="notes" class="form-control-label">Notes</label>
                                 <textarea class="form-control" rows="5" id="editNotes"></textarea>
                             </div>
+=======
+                            </div>
+                            <div class="form-group">
+                                <label for="notes" class="form-control-label">Notes</label>
+                                <textarea class="form-control" rows="5" id="editNotes"></textarea>
+                            </div>
+>>>>>>> feiyu1
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger left" id="delete">Delete Event</button>

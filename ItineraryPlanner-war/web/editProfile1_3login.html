@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Travellab. Home</title>
+    <title>Travellab. Profile</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -34,7 +34,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
                 </li>
             </ul>
-
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -75,7 +74,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                            with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="viewUserItinerary.html" class="nav-link">
+                            <a href="myItinerary1.html" class="nav-link">
                                 <i class="nav-icon fa fa-th"></i>
                                 <p>
                                     My Itinerary
@@ -120,7 +119,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Home</h1>
+                            <h1 class="m-0 text-dark">Profile</h1>
                         </div><!-- /.col -->
 
                     </div><!-- /.row -->
@@ -128,10 +127,60 @@
             </div>
             <!-- /.content-header -->
 
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="editProfile1_1view.html">View Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="editProfile1_2details.html">Edit Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Edit Login</a>
+                </li>
+            </ul>
+
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-
+                    <br>
+                    <form id="form">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Current Password">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="username1">New Username</label>
+                                <input type="text" class="form-control" id="username1" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="password1">New Password</label>
+                                <input type="password" class="form-control" id="password1" placeholder="New Password">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="password2">Confirm Password</label>
+                                <input type="password" class="form-control" id="password2" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Update Change</button>
+                            </div>
+                        </div>
+                    </form>
                 </div><!-- /.container-fluid -->
             </section>
             <!-- /.content -->
@@ -181,6 +230,64 @@
 </body>
 
 <script>
-        userName = sessionStorage.getItem("userName")
-        document.getElementById("userName").textContent = userName;
+    uId = sessionStorage.getItem('uId')
+    userName = sessionStorage.getItem("userName")
+    document.getElementById("userName").textContent = userName;
+        
+        $('#form').submit(function () {
+            console.log("sadsa")
+            var u = $("#username").val()
+            var p = $("#password").val()
+
+            $.ajax({
+                type: "GET",
+                url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId + '/' + uId,
+                contentType: "application/json; charset=utf-8",
+                success: function (data, textStatus, xhr)
+                {
+                    console.log("Response: ", data)
+                    console.log(data.userName)
+                    console.log(textStatus)
+                    if (u != data.userName && p != data.password) {
+                        alert("Wrong password")
+                    }
+                },
+                error: function (xhr, error, errorType) {
+                    console.log(body)
+                    console.log(error);
+                }
+            });
+
+            var p1 = $("#password1").val()
+            var p2 = $("#password2").val()
+
+            if (p1 === p2 && u!== "") {
+                var body = JSON.stringify({
+                    "id": uId,
+                    "userName": $("#username").val(),
+                    "password": $("#password_1").val(),
+                })
+                console.log(body)
+
+                $.ajax({
+                    type: "PUT",
+                    url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/' + uId,
+                    data: body,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data, textStatus, xhr)
+                    {
+                        console.log("Response: ", data)
+                        console.log(textStatus)
+                    },
+                    error: function (xhr, error, errorType) {
+                        alert("Username already taken!")
+                    }
+                });
+
+            } else {
+                alert("Password mismatch!")
+            }
+            return false;
+        });
+
 </script>
