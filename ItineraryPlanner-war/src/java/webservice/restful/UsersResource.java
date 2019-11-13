@@ -403,7 +403,7 @@ public class UsersResource {
     //get user by id
     @GET
     //@Secured
-    @Path("/{uid}/{uId_get}")
+    @Path("/{uId}/{uId_get}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(
             @PathParam("uId") Long uId,
@@ -413,7 +413,7 @@ public class UsersResource {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
 //        } else {
         try {
-            Users u = usersSessionLocal.searchUserById(uId);
+            Users u = usersSessionLocal.searchUserById(uId_get);
 
             for (Itinerary i : u.getItineraryList()) {
                 i.setUsersList(null);

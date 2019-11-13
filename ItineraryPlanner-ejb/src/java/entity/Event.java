@@ -15,13 +15,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@SuppressWarnings("ValidAttributes")
 public class Event implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+    private String title;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,12 +57,12 @@ public class Event implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getCreatedDate() {
@@ -72,19 +73,20 @@ public class Event implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Date getStartDate() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStartDate(Date start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public Date getEndDate() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEndDate(Date end) {
+    public void setEnd(Date end) {
+
         this.end = end;
     }
 

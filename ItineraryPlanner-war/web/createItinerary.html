@@ -29,7 +29,6 @@
                 console.log($("#caption").val());
                 console.log(new Date($("#startDate").val()));
                 console.log(new Date($("#endDate").val()));
-                console.log($("#duration").val());
                 console.log($("#title").val());
                 var body = JSON.stringify({
                     "caption": $("#caption").val(),
@@ -41,8 +40,8 @@
                 })
                 console.log(body);
                 
-                var uId = 1
-                        
+                var uId = 2
+                //var uId = sessionStorage.getItem('uId');        
                 $.ajax({
                     type: "POST",
                     url: 'http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/' + uId,
@@ -55,9 +54,15 @@
                         console.log(data.id)
                         sessionStorage.setItem("iId", data.id)
                         var iId = sessionStorage.getItem("iId");
-                        //console.log(iId);
+                        console.log(iId);
+                        //sessionStorage.setItem("sd", Date.UTC($("#startDate").val()))
                         //sessionStorage.setItem("sd", new Date($("#startDate").val()))
+                        //var sd = sessionStorage.getItem('sd');
+                        //console.log(sd);
+                        //sessionStorage.setItem("ed", Date.UTC($("#endDate").val()))
                         //sessionStorage.setItem("ed", new Date($("#endDate").val()))
+                        //var ed = sessionStorage.getItem('ed');
+                        //console.log(ed);
                         window.location.href = "createItinerary1.html";
                     },
                     error: function (xhr, error, errorType) {

@@ -30,9 +30,9 @@
                     for (var i in events) {
                         console.log(events[i]);
                         var body = JSON.stringify({
-                            "name": events[i].title,
-                            "startDate": events[i].start._d,
-                            "endDate": events[i].end._d,
+                            "title": events[i].title,
+                            "start": events[i].start._d,
+                            "end": events[i].end._d,
                             "type": events[i].activityType,
                             "notes": events[i].notes,
                             "duration": events[i].duration,
@@ -40,8 +40,8 @@
                         })
                         console.log(body)
 
-                        var uId = 1
-                        var iId = sessionStorage.getItem(iId);
+                        var uId = sessionStorage.getItem("uId")
+                        var iId = sessionStorage.getItem("iId");
 
                         $.ajax({
                             type: "POST",

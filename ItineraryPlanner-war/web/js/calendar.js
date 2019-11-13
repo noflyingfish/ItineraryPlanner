@@ -64,13 +64,15 @@ var initializeRightCalendar = function () {
         },
         eventClick: function (calEvent, jsEvent, view) {
             editEvent(calEvent);
-        },
+        }
     });
 }
 /* -------------------edit calendar------------------- */
 var initializeEditCalendar = function () {
-    var uId = 1
-    var iId = 101
+    var uId = 2
+    //var uId = sessionStorage.getItem('uId')
+    var iId = 451 //id of itinerary being clicked
+    //var iId = sessionStorage.getItem('iId')
     $.ajax({
         type: "GET",
         url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/itinerary/' + iId,
@@ -80,11 +82,7 @@ var initializeEditCalendar = function () {
             console.log("Response: ", data)
             console.log(textStatus)
             console.log(data)
-            //console.log(iId);
-            //sessionStorage.setItem("sd", new Date($("#startDate").val()))
-            //sessionStorage.setItem("ed", new Date($("#endDate").val()))
             $cal3.fullCalendar('addEventSource', data);
-            //$cal3.fullCalendar('addEventSource', data);
             $cal3.fullCalendar('changeView', 'agendaDay');
             $cal3.fullCalendar('option', {
                 slotEventOverlap: false,
@@ -99,6 +97,20 @@ var initializeEditCalendar = function () {
                 },
                 eventClick: function (calEvent, jsEvent, view) {
                     editEvent(calEvent);
+                },
+                eventRender: function (event, element) {
+                    if (event.activityType == "Food") {
+                        element.css('background-color', '#ffbaba');
+                    }
+                    if (event.activityType == "Attraction") {
+                        element.css('background-color', '#ffff9f');
+                    }
+                    if (event.activityType == "Events") {
+                        element.css('background-color', '#a5ffa5');
+                    }
+                    if (event.activityType == "Accomodation") {
+                        element.css('background-color', '#ffdaa1');
+                    }
                 },
             });
         },

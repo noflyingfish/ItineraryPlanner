@@ -11,8 +11,8 @@
         <link href='css/style.css' rel='stylesheet' />
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
@@ -29,20 +29,20 @@
                 if (events) {
                     //create new itinerary
                     for (var i in events) {
-                        console.log(events[i]);
+                        var start = events[i].start._d;
+                        var end = events[i].end._d;
                         var body = JSON.stringify({
-                            "name": events[i].title,
-                            "start": events[i].start._d,
-                            "end": events[i].end._d,
+                            "title": events[i].title,
+                            "start": (moment(events[i].start._d).add(-(moment().utcOffset()), 'm')),
+                            "end": (moment(events[i].end._d).add(-(moment().utcOffset()), 'm')),
                             "type": events[i].activityType,
                             "notes": events[i].notes,
                             "duration": events[i].duration,
                             "createdDate": currentDate,
                         })
-                        console.log(body)
-                        console.log(events[0].start._d)
-                        console.log(events[0].end._d)
-                        var uId = 1
+                        console.log(body);
+                        var uId = 2;
+                        //var uId = sessionStorage.getItem('uId');
                         var iId = sessionStorage.getItem('iId');
                         console.log(iId);
                         $.ajax({
