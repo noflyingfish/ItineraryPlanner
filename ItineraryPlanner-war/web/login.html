@@ -51,14 +51,14 @@
                 <div class="card-body login-card-body">
                     <h3 class="login-box-msg">LOGIN</h3>
 
-                    <form action="home1.html" method="post">
+                    <form id="form">
                         <div class="form-group has-feedback">
                             <h6 style="text-align: center"><b>Username</b></h6>
                             <input type="text" id="userName" class="form-control" placeholder="Username" />
                         </div>
                         <div class="form-group has-feedback">
                             <h6 style="text-align: center"><b>Password</b></h6>
-                            <input type="text" id="password" class="form-control" placeholder="Password" />
+                            <input type="password" id="password" class="form-control" placeholder="Password" />
                         </div>
                         <div class="row">
                             <div class="col-4 mx-auto">
@@ -95,7 +95,7 @@
         </script>
         <script>
             $(document).ready(function () {
-                $('#myform').submit(function () {
+                $('#form').submit(function () {
                     var userName = $("#userName").val()
                     var password = $("#password").val()
                     var body = JSON.stringify({
@@ -113,7 +113,7 @@
                             sessionStorage.setItem('userName', userName);
                             sessionStorage.setItem('token', data.accessToken);
                             alert("You have successful logged in")
-                            //window.location.href = "viewProfile.html";
+                            window.location.href = "home1.html";
                             console.log(data)
                             console.log("User ID: ", sessionStorage.getItem('uId'))
                             console.log("Username: ", sessionStorage.getItem('userName'))

@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Travellab. Home</title>
+        <title>Travellab. Search</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -144,8 +144,8 @@
                     <!-- Messages Dropdown Menu -->
 
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                                class="fa fa-sign-out"></i> Logout</a>
+                        <a class="nav-link" href="index1.html">
+                            <i class="fa fa-sign-out"></i> Logout</a>
                     </li>
                 </ul>
             </nav>
@@ -168,7 +168,7 @@
                             <img src="./WEB-INF/icon.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a class="d-block" id="userName"></a>
+                            <a class="d-block" id="userName" style="font-weight: bolder; font-size: 20px;"></a>
                         </div>
                     </div>
 
@@ -178,7 +178,7 @@
                             <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
+                                <a href="myItinerary1.html" class="nav-link">
                                     <i class="nav-icon fa fa-th"></i>
                                     <p>
                                         My Itinerary
@@ -186,15 +186,15 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
-                                    <i class="nav-icon fa fa-search"></i>
+                                <a href="createItinerary1.html" class="nav-link">
+                                    <i class="nav-icon fa fa-pencil"></i>
                                     <p>
                                         Create Itinerary
                                     </p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
+                                <a href="searchItinerary1.html" class="nav-link">
                                     <i class="nav-icon fa fa-search"></i>
                                     <p>
                                         Search Itinerary
@@ -223,7 +223,7 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">My Itinerary</h1>
+                                <h1 class="m-0 text-dark">Search Itinerary</h1>
                                 <form id="myform" style="float:right; padding-right: -500px;">
                                     <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
 
@@ -245,7 +245,7 @@
             </div>
             <!-- /.content-wrapper -->
             <footer class="main-footer">
-                footer here
+                AY2019/20 S1 IS3106-02
             </footer>
 
             <!-- Control Sidebar -->
@@ -259,14 +259,14 @@
 </html>
 
 <script>
-    userName = sessionStorage.getItem("userName");
-    uId = sessionStorage.getItem('uId');
+    userName = sessionStorage.getItem("userName")
+    uId = sessionStorage.getItem('uId')
     document.getElementById("userName").textContent = userName;
 
     var itineraryTable = $('#itineraryTable').DataTable({
         'ajax': {
             "type": "GET",
-            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/"+ uId +"/users/" + uId,
+            "url": "http://localhost:8080/ItineraryPlanner-war/webresources/itinerary/getallitinerary",
             "dataSrc": ""
         },
         'columns': [
