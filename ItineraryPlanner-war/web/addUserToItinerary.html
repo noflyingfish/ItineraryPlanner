@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Travellab. Home</title>
+        <title>Travellab. Itinerary</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -144,7 +144,7 @@
                     <!-- Messages Dropdown Menu -->
 
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                        <a class="nav-link" href="index1.html"><i
                                 class="fa fa-sign-out"></i> Logout</a>
                     </li>
                 </ul>
@@ -178,7 +178,7 @@
                             <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
+                                <a href="viewUserItinerary.html" class="nav-link">
                                     <i class="nav-icon fa fa-th"></i>
                                     <p>
                                         My Itinerary
@@ -186,7 +186,15 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/widgets.html" class="nav-link">
+                            <a href="createItinerary.html" class="nav-link">
+                                <i class="nav-icon fa fa-pencil"></i>
+                                <p>
+                                    Create Itinerary
+                                </p>
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a href="searchItinerary_1.html" class="nav-link">
                                     <i class="nav-icon fa fa-search"></i>
                                     <p>
                                         Search Itinerary
@@ -194,7 +202,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="viewProfile1.html" class="nav-link">
+                                <a href="editProfile1_1.html" class="nav-link">
                                     <i class="nav-icon fa fa-user-circle"></i>
                                     <p>
                                         Profile
@@ -215,7 +223,7 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Home</h1>
+                                <h1 class="m-0 text-dark">Choose User To Add To Itinerary</h1>
                                 <form id="myform" style="float:right; padding-right: -500px;">
                                         <button type="button" onclick="displayCard()" class="btn btn-primary">Card View</button>
                                         
@@ -237,7 +245,7 @@
             </div>
             <!-- /.content-wrapper -->
             <footer class="main-footer">
-                footer here
+                AY2019/20 S1 IS3106-02
             </footer>
 
             <!-- Control Sidebar -->
@@ -291,10 +299,10 @@
                 }
             },
             {
-                title: "Add User", "data" : null
+                title: "Add User To Itinerary", "data" : null
             },
             {
-                title: "Remove User", "data" : null
+                title: "Remove User From Itinerary", "data" : null
             },
             
         ],
@@ -302,12 +310,12 @@
             {
                 'targets' : -2,
                 'data' : null,
-                'defaultContent' : '<button type="button" data-type="add">Add User</button></div>'
+                'defaultContent' : '<button type="button" data-type="add">Add User To Itinerary</button></div>'
             },
             {
                 'targets' : -1,
                 'data' : null,
-                'defaultContent' : '<button type="button" data-type="remove">Remove User</button></div>'
+                'defaultContent' : '<button type="button" data-type="remove">Remove User From Itinerary</button></div>'
             }
         ]
     });

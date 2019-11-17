@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Travellab. Login</title>
+        <title>Tavellab. Sign Up</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -49,27 +49,35 @@
             <!-- /.login-logo -->
             <div class="card">
                 <div class="card-body login-card-body">
-                    <h3 class="login-box-msg">LOGIN</h3>
+                    <h3 class="login-box-msg">SIGN UP</h3>
 
-                    <form id="form">
+                    <form id="register" method="post">
                         <div class="form-group has-feedback">
                             <h6 style="text-align: center"><b>Username</b></h6>
                             <input type="text" id="userName" class="form-control" placeholder="Username" />
                         </div>
                         <div class="form-group has-feedback">
+                            <h6 style="text-align: center"><b>Email</b></h6>
+                            <input type="text" id="email" class="form-control" placeholder="Email" />
+                        </div>
+                        <div class="form-group has-feedback">
                             <h6 style="text-align: center"><b>Password</b></h6>
-                            <input type="password" id="password" class="form-control" placeholder="Password" />
+                            <input type="password" id="password1" class="form-control" placeholder="Password" />
+                        </div>
+                        <div class="form-group has-feedback">
+                            <h6 style="text-align: center"><b>Confirm Password</b></h6>
+                            <input type="password" id="password2" class="form-control" placeholder="Confirm Password" />
                         </div>
                         <div class="row">
                             <div class="col-4 mx-auto">
-                                <input type="submit" id="login" class="btn btn-primary btn-block btn-flat " value="Login"/>
+                                <input type="submit" id="login" class="btn btn-primary btn-block btn-flat " value="Sign Up"/>
                             </div>
                             <!-- /.col -->
                         </div>
                     </form>
 
                     <p class="mb-0" style="text-align: center">
-                        <a href="register.html">Have not signed up?</a>
+                        <a href="login.html">Have an account?</a>
                     </p>
                 </div>
                 <!-- /.login-card-body -->
@@ -91,39 +99,46 @@
                     increaseArea: '20%' // optional
                 })
             })
-        </script>
-        <script>
+
             $(document).ready(function () {
-                $('#form').submit(function () {
-                    var userName = $("#userName").val()
-                    var password = $("#password").val()
+                
+                $('#register').submit(function () {
+                    var currentDate = new Date();
+                    var n = $("userName").val()
+                    var p1 = $("#password1").val()
+                    var p2 = $("#password2").val()
+                    console.log(p1)
+                if (p1 === p2) {
                     var body = JSON.stringify({
-                        "userName": userName,
-                        "password": password
+                        "userName": $("#userName").val(),
+                        "password": $("#password1").val(),
+                        "email": $("#email").val(),
+                        "createdDate": currentDate
                     })
+                    console.log(body)
                     $.ajax({
                         type: "POST",
-                        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users/login',
+                        url: 'http://localhost:8080/ItineraryPlanner-war/webresources/users',
                         data: body,
                         contentType: "application/json; charset=utf-8",
                         success: function (data, textStatus, xhr)
                         {
-                            sessionStorage.setItem('uId', data.uId);
-                            sessionStorage.setItem('userName', userName);
-                            sessionStorage.setItem('token', data.accessToken);
-                            alert("You have successful logged in")
-                            window.location.href = "home1.html";
-                            console.log(data)
+                            console.log("Response: ", data)
+                            console.log(textStatus)
                             console.log("User ID: ", sessionStorage.getItem('uId'))
                             console.log("Username: ", sessionStorage.getItem('userName'))
                             console.log("Token: ", sessionStorage.getItem('token'))
-                            console.log(textStatus)
+                            window.location.href = "index1.html"
                         },
                         error: function (xhr, error, errorType) {
-                            alert("Error logging in...")
+                            console.log(error);
+                            alert("Username already taken!")
                         }
                     });
                     return false;
+                } else {
+                    alert("Password mismatch!")
+                }
                 });
             });
         </script>

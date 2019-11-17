@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset='utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+        <link href='css/vendor/fullcalendar.css' rel='stylesheet' />
+        <link href='css/style.css' rel='stylesheet' />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+        <script src='js/vendor/fullcalendar.js'></script>
+        <script src='js/calendar.js'></script>
+
+        <script>
+            uId = sessionStorage.getItem('uId')
+            function save() {
+                //var sd = sessionStorage.getItem('sd');
+                //var ed = sessionStorage.getItem('ed');
+                var currentDate = new Date();
+                var events = $('#calendar2').fullCalendar('clientEvents');
+                if (events) {
+                    //create new itinerary
+                    for (var i in events) {
+                        var start = events[i].start._d;
+                        var end = events[i].end._d;
+                        var body = JSON.stringify({
+                            "title": events[i].title,
+                            "start": moment.utc(start).format(),
+                            "end": moment.utc(end).format(),
+                            "type": events[i].activityType,
+                            "notes": events[i].notes,
+                            "duration": events[i].duration,
+                            "createdDate": currentDate,
+                        })
+                        console.log(body)
+                        //var uId = sessionStorage.getItem('uId')
+                        var uId = 2
+                        var iId = sessionStorage.getItem('iId');
+                        console.log(iId);
+                        $.ajax({
+                            type: "POST",
+                            url: 'http://localhost:8080/ItineraryPlanner-war/webresources/events/' + uId + '/' + iId,
+                            data: body,
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data, textStatus, xhr)
+                            {
+                                console.log("Response: ", data)
+                                console.log(textStatus)
+                            },
+                            error: function (xhr, error, errorType) {
+                                console.log(error);
+                            }
+                        });
+                    }
+                }
+            }
+        </script>
+
+        <title>Create Itinerary</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <p class="navbar-brand" id="todaysDate"></p>
+            </div>
+        </nav>
+
+        <div class="col-md-4 text-center"> 
+            <button type="button" id="saveButton" class="btn btn-primary" onclick="save()">Save Itinerary</button>  
+        </div>
+
+
+
+
+        <div id='calendar2' class='calendar'></div>
+
+        <div class="modal fade" id="newEvent" role="dialog" aria-labelledby="eventFormLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="newEvent">New Activity</h4>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="title" class="form-control-label">Title</label>
+                                <input type="text" class="form-control" id="title">
+                            </div>
+                            <div class="form-group">
+                                <label for="activityType" class="form-control-label">Select Activity Type</label>
+                                <select class="selectpicker form-control" name="type" id="activityType">    
+                                    <option>Accomodation</option>
+                                    <option>Transport</option>
+                                    <option>Food</option>
+                                    <option>Attraction</option>
+                                    <option>Events</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="notes" class="form-control-label">Notes</label>
+                                <textarea class="form-control" rows="5" id="notes"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" id="submit">Create Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editEvent" role="dialog" aria-labelledby="eventFormLabel" aria-hidden="true" data-persist="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="editEvent">Update Activity</h4>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="title" class="form-control-label">Title</label>
+                                <input type="text" class="form-control" id="editTitle">
+                            </div>
+                            <div class="form-group">
+                                <label for="activityType" class="form-control-label">Select Activity Type</label>
+                                <select class="selectpicker form-control" name="type" id="editActivityType">    
+                                    <option>Accomodation</option>
+                                    <option>Transport</option>
+                                    <option>Food</option>
+                                    <option>Attraction</option>
+                                    <option>Events</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="notes" class="form-control-label">Notes</label>
+                                <textarea class="form-control" rows="5" id="editNotes"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger left" id="delete">Delete Event</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" id="update">Update Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
